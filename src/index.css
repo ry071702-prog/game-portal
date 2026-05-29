@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: system-ui, "Segoe UI", Roboto, sans-serif;
+}
+
+html,
+body,
+#root {
+  min-height: 100svh;
+}
+
+body {
+  margin: 0;
+  background: #0f1117;
+  color: #e5e7eb;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ゲーム中の意図しないスクロール/選択を抑制 */
+.game-surface {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* 神経衰弱のカードめくり */
+.flip-card {
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease;
+}
+.flip-card.is-flipped {
+  transform: rotateY(180deg);
+}
+.flip-face {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.flip-back {
+  transform: rotateY(180deg);
+}

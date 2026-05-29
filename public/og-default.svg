@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#13152090"/>
+      <stop offset="1" stop-color="#0f1117"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#0f1117"/>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <g transform="translate(90 250)">
+    <rect x="0" y="-70" width="120" height="120" rx="28" fill="#a78bfa"/>
+    <text x="60" y="14" font-size="64" text-anchor="middle" font-family="system-ui, sans-serif">🎮</text>
+  </g>
+  <text x="240" y="270" font-size="84" font-weight="700" fill="#ffffff" font-family="system-ui, sans-serif">Game Portal</text>
+  <text x="92" y="380" font-size="40" fill="#9ca3af" font-family="system-ui, sans-serif">登録不要・無料で遊べるミニゲーム集</text>
+  <g font-size="38" font-family="system-ui, sans-serif" fill="#e5e7eb">
+    <text x="92" y="500">🔢 2048</text>
+    <text x="380" y="500">🐍 スネーク</text>
+    <text x="760" y="500">🃏 神経衰弱</text>
+  </g>
+</svg>
