@@ -28,7 +28,7 @@ export function todayJST(): string {
 }
 
 /** デイリー対象ゲーム (seed で盤面が完全一致するもの)。日替わりでこの中から選ぶ。 */
-export const DAILY_POOL = ['lightsout', 'memory', 'simon'] as const
+export const DAILY_POOL = ['lightsout', 'memory', 'simon', 'slide15'] as const
 
 /** その日の出題ゲームID。 */
 export function dailyGameId(dateStr: string = todayJST()): string {
