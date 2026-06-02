@@ -5,8 +5,11 @@ import { validateRegistry } from './types'
 import game2048 from '../games/2048/manifest'
 import snake from '../games/snake/manifest'
 import memory from '../games/memory/manifest'
+import lightsout from '../games/lightsout/manifest'
+import breakout from '../games/breakout/manifest'
+import simon from '../games/simon/manifest'
 
-const raw: GameManifest[] = [game2048, snake, memory]
+const raw: GameManifest[] = [game2048, snake, memory, lightsout, breakout, simon]
 
 /** 検証済みゲーム一覧。id 重複や形式不正は起動時に throw される。 */
 export const games = validateRegistry(raw)

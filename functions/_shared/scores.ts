@@ -22,6 +22,9 @@ export const SCORE_CAP: Record<string, number> = {
   '2048': 200000,
   snake: 290,
   memory: 800,
+  lightsout: 1000,
+  breakout: 1000000,
+  simon: 200,
 }
 
 export const KNOWN_GAME_IDS = Object.keys(SCORE_CAP)
