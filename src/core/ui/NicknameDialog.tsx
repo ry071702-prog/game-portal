@@ -30,8 +30,8 @@ export function NicknameDialog({ open, initialName = '', onSubmit, onClose }: Ni
         className="w-full max-w-xs rounded-2xl border border-cyan-400/40 bg-[var(--bg-overlay)] p-5"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="neon-text mb-1 text-lg font-bold text-cyan-300">ニックネーム</h2>
-        <p className="mb-4 text-xs text-gray-400">
+        <h2 className="neon-text mb-1 text-lg font-bold text-accent">ニックネーム</h2>
+        <p className="mb-4 text-xs text-muted">
           ランキングに表示される名前です (最大{MAX_NAME_LEN}文字)。端末に保存され、次回から自動で使われます。
         </p>
         <input
@@ -40,12 +40,12 @@ export function NicknameDialog({ open, initialName = '', onSubmit, onClose }: Ni
           onChange={(e) => setValue(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && submit()}
           placeholder="名無しのプレイヤー"
-          className="mb-4 w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-white outline-none focus:border-cyan-400"
+          className="mb-4 w-full rounded-lg border border-line bg-surface-2 px-3 py-2 text-fg outline-none focus:border-cyan-400"
         />
         <div className="flex gap-2">
           <button
             onClick={onClose}
-            className="flex-1 rounded-lg bg-white/10 px-4 py-2 text-sm text-white hover:bg-white/20"
+            className="flex-1 rounded-lg bg-surface-2 px-4 py-2 text-sm text-fg hover:opacity-80"
           >
             あとで
           </button>

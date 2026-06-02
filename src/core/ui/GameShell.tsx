@@ -97,19 +97,19 @@ export function GameShell({ game, Component }: GameShellProps) {
   return (
     <div>
       <div className="mb-3 flex items-center justify-between gap-2">
-        <h1 className="neon-text text-xl font-bold text-cyan-300">{game.title}</h1>
+        <h1 className="neon-text text-xl font-bold text-accent">{game.title}</h1>
         <div className="flex items-center gap-4 text-sm">
-          <span className="text-gray-400">
-            SCORE <span className="font-pixel ml-1 text-base text-white">{score}</span>
+          <span className="text-muted">
+            SCORE <span className="font-pixel ml-1 text-base text-fg">{score}</span>
           </span>
-          <span className="flex items-center gap-1 text-yellow-300">
+          <span className="flex items-center gap-1 text-gold">
             <Trophy size={14} />
             <span className="font-pixel text-base">{best}</span>
           </span>
         </div>
       </div>
 
-      <div className="neon-box relative overflow-hidden rounded-2xl border border-cyan-400/20 bg-white/[0.03] p-3">
+      <div className="neon-box relative overflow-hidden rounded-2xl border border-cyan-400/20 bg-surface p-3">
         {/* ゲーム本体: restartSignal を key にしてリスタート=再マウント */}
         <Component
           key={restartSignal}
@@ -120,23 +120,23 @@ export function GameShell({ game, Component }: GameShellProps) {
         />
 
         {gameOver && (
-          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-black/75 px-4 text-center backdrop-blur-sm">
-            <p className="font-pixel text-xl text-cyan-300">
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-white/85 px-4 text-center backdrop-blur-sm dark:bg-black/80">
+            <p className="font-pixel text-xl text-accent">
               {ended === 'win' ? 'CLEAR!' : 'GAME OVER'}
             </p>
-            <p className="text-sm text-gray-300">
-              スコア <span className="font-pixel text-white">{score}</span>
+            <p className="text-sm text-muted">
+              スコア <span className="font-pixel text-fg">{score}</span>
             </p>
-            {submitting && <p className="text-xs text-gray-400">ランキング送信中…</p>}
+            {submitting && <p className="text-xs text-muted">ランキング送信中…</p>}
             {ranks && (
-              <p className="text-sm text-yellow-200">
+              <p className="text-sm text-amber-700 dark:text-yellow-200">
                 全期間 <span className="font-pixel">{ranks.alltimeRank}</span> 位 / 今日{' '}
                 <span className="font-pixel">{ranks.dailyRank}</span> 位
               </p>
             )}
             <button
               onClick={restart}
-              className="mt-1 flex items-center gap-2 rounded-xl border border-cyan-400/50 bg-cyan-500/20 px-5 py-2.5 font-bold text-cyan-100 hover:bg-cyan-500/30"
+              className="mt-1 flex items-center gap-2 rounded-xl border border-cyan-500/50 bg-cyan-500/20 px-5 py-2.5 font-bold text-accent hover:bg-cyan-500/30 dark:text-cyan-100"
             >
               <RotateCcw size={18} />
               もう一度
@@ -150,7 +150,7 @@ export function GameShell({ game, Component }: GameShellProps) {
           onClick={() => setPaused((p) => !p)}
           disabled={gameOver}
           className={cn(
-            'flex items-center gap-1.5 rounded-xl bg-white/10 px-4 py-2 text-sm text-white hover:bg-white/20',
+            'flex items-center gap-1.5 rounded-xl bg-surface-2 px-4 py-2 text-sm text-fg hover:bg-surface-2',
             gameOver && 'opacity-40',
           )}
         >
@@ -159,14 +159,14 @@ export function GameShell({ game, Component }: GameShellProps) {
         </button>
         <button
           onClick={restart}
-          className="flex items-center gap-1.5 rounded-xl bg-white/10 px-4 py-2 text-sm text-white hover:bg-white/20"
+          className="flex items-center gap-1.5 rounded-xl bg-surface-2 px-4 py-2 text-sm text-fg hover:bg-surface-2"
         >
           <RotateCcw size={16} />
           リスタート
         </button>
         <button
           onClick={() => setShowHelp((s) => !s)}
-          className="ml-auto flex items-center gap-1.5 rounded-xl bg-white/10 px-4 py-2 text-sm text-white hover:bg-white/20"
+          className="ml-auto flex items-center gap-1.5 rounded-xl bg-surface-2 px-4 py-2 text-sm text-fg hover:bg-surface-2"
         >
           <HelpCircle size={16} />
           操作
@@ -174,7 +174,7 @@ export function GameShell({ game, Component }: GameShellProps) {
       </div>
 
       {showHelp && (
-        <ul className="mt-3 list-disc space-y-1 rounded-xl border border-white/10 bg-white/[0.03] p-4 pl-8 text-sm text-gray-300">
+        <ul className="mt-3 list-disc space-y-1 rounded-xl border border-line bg-surface p-4 pl-8 text-sm text-muted">
           {game.instructions.map((line) => (
             <li key={line}>{line}</li>
           ))}

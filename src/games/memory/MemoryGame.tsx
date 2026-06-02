@@ -53,7 +53,7 @@ export default function MemoryGame({ paused, onScore, onGameOver }: GameComponen
 
   return (
     <div className="flex flex-col items-center gap-3">
-      <p className="text-sm text-gray-400">手数: {state.moves}</p>
+      <p className="text-sm text-muted">手数: {state.moves}</p>
       <div className="grid w-full max-w-sm grid-cols-4 gap-2">
         {state.cards.map((card, i) => {
           const shown = card.revealed || card.matched
@@ -68,12 +68,12 @@ export default function MemoryGame({ paused, onScore, onGameOver }: GameComponen
               <div className={`flip-card relative h-full w-full ${shown ? 'is-flipped' : ''}`}>
                 {/* 裏面 */}
                 <div className="flip-face absolute inset-0 flex items-center justify-center rounded-lg bg-amber-500/20 ring-1 ring-amber-500/30">
-                  <span className="text-2xl text-amber-300/60">?</span>
+                  <span className="text-2xl text-amber-700/70 dark:text-amber-300/60">?</span>
                 </div>
                 {/* 表面 */}
                 <div
                   className={`flip-face flip-back absolute inset-0 flex items-center justify-center rounded-lg text-3xl ${
-                    card.matched ? 'bg-emerald-500/20 ring-1 ring-emerald-500/40' : 'bg-white/10'
+                    card.matched ? 'bg-emerald-500/20 ring-1 ring-emerald-500/40' : 'bg-surface-2'
                   }`}
                 >
                   {card.emoji}

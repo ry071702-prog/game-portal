@@ -14,21 +14,21 @@ export function Header({ showBack }: HeaderProps) {
         {showBack && (
           <Link
             to="/"
-            className="flex items-center gap-1 rounded-lg px-2 py-1 text-sm text-gray-300 hover:bg-white/10"
+            className="flex items-center gap-1 rounded-lg px-2 py-1 text-sm text-muted hover:bg-surface-2"
           >
             <ChevronLeft size={18} />
             一覧
           </Link>
         )}
-        <Link to="/" className="flex items-center gap-2 text-white">
-          <Gamepad2 size={22} className="neon-text text-cyan-400" />
-          <span className="font-pixel flicker text-sm text-cyan-300">GAME PORTAL</span>
+        <Link to="/" className="flex items-center gap-2 text-fg">
+          <Gamepad2 size={22} className="neon-text text-accent" />
+          <span className="font-pixel flicker text-sm text-accent">GAME PORTAL</span>
         </Link>
         <Link
           to="/leaderboard"
-          className="ml-auto flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm text-gray-300 hover:bg-white/10 hover:text-yellow-300"
+          className="ml-auto flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm text-muted hover:bg-surface-2 hover:text-gold"
         >
-          <Trophy size={16} className="text-yellow-300" />
+          <Trophy size={16} className="text-gold" />
           <span className="hidden sm:inline">ランキング</span>
         </Link>
         <ProfileMenu />

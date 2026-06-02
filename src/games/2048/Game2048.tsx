@@ -23,7 +23,7 @@ function reducer(state: State, action: Action): State {
 }
 
 const TILE_BG: Record<number, string> = {
-  0: 'bg-white/5',
+  0: 'bg-surface-2',
   2: 'bg-violet-200 text-violet-900',
   4: 'bg-violet-300 text-violet-900',
   8: 'bg-violet-400 text-white',
@@ -64,7 +64,7 @@ export default function Game2048({ paused, onScore, onGameOver }: GameComponentP
     <div className="flex justify-center">
       <div
         ref={surfaceRef}
-        className="game-surface grid aspect-square w-full max-w-sm grid-cols-4 gap-2 rounded-xl bg-white/5 p-2"
+        className="game-surface grid aspect-square w-full max-w-sm grid-cols-4 gap-2 rounded-xl bg-surface p-2"
       >
         {state.board.flat().map((value, i) => (
           <div
