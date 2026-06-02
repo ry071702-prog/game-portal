@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { Header } from './Header'
+import { Toaster } from './Toaster'
 
 interface LayoutProps {
   children: ReactNode
@@ -14,6 +15,8 @@ export function Layout({ children, showBack }: LayoutProps) {
       <footer className="border-t border-white/10 py-4 text-center text-xs text-gray-500">
         Game Portal — 無料・登録不要で遊べるミニゲーム集
       </footer>
+      <div className="scanlines" aria-hidden />
+      <Toaster />
     </div>
   )
 }

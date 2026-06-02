@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Gamepad2, ChevronLeft } from 'lucide-react'
+import { Gamepad2, ChevronLeft, Trophy } from 'lucide-react'
 
 interface HeaderProps {
   /** 戻るリンクを表示する (ゲーム画面用) */
@@ -8,7 +8,7 @@ interface HeaderProps {
 
 export function Header({ showBack }: HeaderProps) {
   return (
-    <header className="sticky top-0 z-10 border-b border-white/10 bg-[#0f1117]/80 backdrop-blur">
+    <header className="sticky top-0 z-30 border-b border-cyan-400/20 bg-[#0a0a12]/85 backdrop-blur">
       <div className="mx-auto flex h-14 max-w-3xl items-center gap-3 px-4">
         {showBack && (
           <Link
@@ -19,9 +19,16 @@ export function Header({ showBack }: HeaderProps) {
             一覧
           </Link>
         )}
-        <Link to="/" className="flex items-center gap-2 font-semibold text-white">
-          <Gamepad2 size={22} className="text-violet-400" />
-          Game Portal
+        <Link to="/" className="flex items-center gap-2 text-white">
+          <Gamepad2 size={22} className="neon-text text-cyan-400" />
+          <span className="font-pixel flicker text-sm text-cyan-300">GAME PORTAL</span>
+        </Link>
+        <Link
+          to="/leaderboard"
+          className="ml-auto flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm text-gray-300 hover:bg-white/10 hover:text-yellow-300"
+        >
+          <Trophy size={16} className="text-yellow-300" />
+          ランキング
         </Link>
       </div>
     </header>
