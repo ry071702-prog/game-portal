@@ -9,7 +9,7 @@ interface HeaderProps {
 
 export function Header({ showBack }: HeaderProps) {
   return (
-    <header className="sticky top-0 z-30 border-b border-cyan-400/20 bg-[var(--bg-panel)] backdrop-blur">
+    <header className="sticky top-0 z-30 border-b border-[#ffe000]/20 bg-[var(--bg-panel)] backdrop-blur">
       <div className="mx-auto flex h-14 max-w-3xl items-center gap-3 px-4">
         {showBack && (
           <Link
@@ -21,8 +21,10 @@ export function Header({ showBack }: HeaderProps) {
           </Link>
         )}
         <Link to="/" className="flex items-center gap-2 text-fg">
-          <Gamepad2 size={22} className="neon-text text-accent" />
-          <span className="font-pixel flicker text-sm text-accent">GAME PORTAL</span>
+          <span className="flex h-7 w-7 items-center justify-center rounded bg-[#ffe000] text-black">
+            <Gamepad2 size={18} />
+          </span>
+          <span className="font-display text-lg tracking-wide text-fg">GAME PORTAL</span>
         </Link>
         <Link
           to="/daily"

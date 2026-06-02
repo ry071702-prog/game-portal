@@ -26,10 +26,10 @@ export function ProfileMenu() {
     <div className="relative">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="flex items-center gap-2 rounded-full border border-line bg-surface py-1 pr-3 pl-1 hover:border-cyan-400/40"
+        className="flex items-center gap-2 rounded-full border border-line bg-surface py-1 pr-3 pl-1 hover:border-[#ffe000]/40"
         aria-label="ユーザー設定"
       >
-        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-cyan-500/20 text-base">
+        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#ffe000]/20 text-base">
           {avatar}
         </span>
         <span className="max-w-24 truncate text-sm text-fg">{name || 'ゲスト'}</span>
@@ -38,10 +38,10 @@ export function ProfileMenu() {
       {open && (
         <>
           <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} aria-hidden />
-          <div className="absolute right-0 z-50 mt-2 w-72 rounded-2xl border border-cyan-400/30 bg-[var(--bg-overlay)] p-4 shadow-xl">
+          <div className="absolute right-0 z-50 mt-2 w-72 rounded-2xl border border-[#ffe000]/30 bg-[var(--bg-overlay)] p-4 shadow-xl">
             {/* 現在のプロフィール */}
             <div className="mb-4 flex items-center gap-3">
-              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-cyan-500/20 text-2xl">
+              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#ffe000]/20 text-2xl">
                 {avatar}
               </span>
               <div className="min-w-0">
@@ -65,7 +65,7 @@ export function ProfileMenu() {
                   onClick={() => setAvatar(a)}
                   className={cn(
                     'flex aspect-square items-center justify-center rounded-lg text-lg hover:bg-surface-2',
-                    a === avatar && 'bg-cyan-500/25 ring-1 ring-cyan-400/60',
+                    a === avatar && 'bg-[#ffe000]/25 ring-1 ring-[#ffe000]/60',
                   )}
                   aria-label={`アイコン ${a}`}
                 >
@@ -83,7 +83,7 @@ export function ProfileMenu() {
                   onClick={() => setTheme(value)}
                   className={cn(
                     'flex flex-1 items-center justify-center gap-1 rounded-md px-2 py-1.5 text-xs',
-                    theme === value ? 'bg-cyan-500 font-bold text-black' : 'text-muted',
+                    theme === value ? 'bg-[#ffe000] font-bold text-black' : 'text-muted',
                   )}
                 >
                   {theme === value ? <Check size={13} /> : <Icon size={13} />}
