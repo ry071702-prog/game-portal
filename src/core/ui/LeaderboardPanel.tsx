@@ -60,7 +60,7 @@ export function LeaderboardPanel({
                 onClick={() => setPeriod(p)}
                 className={cn(
                   'rounded-md px-3 py-1',
-                  period === p ? 'bg-cyan-500 font-bold text-black' : 'text-muted',
+                  period === p ? 'bg-[#ffe000] font-bold text-black' : 'text-muted',
                 )}
               >
                 {p === 'daily' ? '今日' : '全期間'}
@@ -88,7 +88,7 @@ export function LeaderboardPanel({
                 key={i}
                 className={cn(
                   'flex items-center gap-3 rounded-lg px-3 py-1.5 text-sm',
-                  isSelf ? 'bg-cyan-500/15 ring-1 ring-cyan-400/40' : 'odd:bg-surface',
+                  isSelf ? 'bg-[#ffe000]/15 ring-1 ring-[#ffe000]/40' : 'odd:bg-surface',
                 )}
               >
                 <span
@@ -101,7 +101,7 @@ export function LeaderboardPanel({
                 </span>
                 <span className="text-base">{row.avatar || '🎮'}</span>
                 <span className="flex-1 truncate text-fg">{row.name}</span>
-                <span className="font-pixel text-sm tabular-nums text-fg">{row.best}</span>
+                <span className="font-display text-sm tabular-nums text-fg">{row.best}</span>
               </li>
             )
           })}

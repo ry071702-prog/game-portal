@@ -21,8 +21,8 @@ export default function DailyPage() {
         title="今日のチャレンジ — Game Portal"
         description="全員が同じお題に挑戦するデイリーチャレンジ。専用ランキングで競おう。"
       />
-      <div className="mb-5 rounded-2xl border border-cyan-400/30 bg-gradient-to-b from-cyan-500/10 to-transparent p-5 text-center">
-        <p className="font-pixel neon-text mb-1 text-sm text-accent">DAILY CHALLENGE</p>
+      <div className="mb-5 rounded-2xl border border-[#ffe000]/30 bg-gradient-to-b from-[#ffe000]/10 to-transparent p-5 text-center">
+        <p className="font-display neon-text mb-1 text-sm text-accent">DAILY CHALLENGE</p>
         <p className="text-sm text-muted">{today}</p>
         <p className="mt-2 text-fg">
           今日はみんなで <span className="font-bold text-accent">{game.title}</span>{' '}

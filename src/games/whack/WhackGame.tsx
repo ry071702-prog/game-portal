@@ -44,10 +44,10 @@ export default function WhackGame({ paused, onScore, onGameOver }: GameComponent
     <div className="flex flex-col items-center gap-3">
       <div className="flex w-full max-w-xs justify-between text-sm text-muted">
         <span>
-          残り <span className="font-pixel text-fg">{timeLeft}</span> 秒
+          残り <span className="font-display text-fg">{timeLeft}</span> 秒
         </span>
         <span>
-          叩いた数 <span className="font-pixel text-fg">{score}</span>
+          叩いた数 <span className="font-display text-fg">{score}</span>
         </span>
       </div>
       <div className="grid w-full max-w-xs grid-cols-3 gap-3">

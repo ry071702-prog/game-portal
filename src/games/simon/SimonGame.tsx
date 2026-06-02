@@ -77,7 +77,7 @@ export default function SimonGame({ paused, onScore, onGameOver, seed }: GameCom
     <div className="flex flex-col items-center gap-4">
       <p className="text-sm text-muted">
         {phase === 'showing' ? '覚えてね…' : phase === 'input' ? 'あなたの番！' : 'ミス！'} / ラウンド{' '}
-        <span className="font-pixel text-fg">{score}</span>
+        <span className="font-display text-fg">{score}</span>
       </p>
       <div className="grid w-full max-w-xs grid-cols-2 gap-3">
         {PADS.map((p, i) => {

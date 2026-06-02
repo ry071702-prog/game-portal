@@ -3,46 +3,44 @@
 /* 手動トグル用: .dark クラスでダーク配色を制御 */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* 配色トークン。ライト(既定)=白基調・濃い文字 / .dark=ニアブラック・ライト文字。 */
+/* ZZZ (Zenless Zone Zero) 風: イエロー×ブラックの高コントラスト。
+   ライト(既定)=オフホワイト+濃い文字 / .dark=ニアブラック+ライト文字。
+   イエローは「塗り」として使い、テキスト用 --accent は両モードで可読な値にする。 */
 :root {
-  --bg-base: #eef1f9;
-  --bg-glow: rgba(124, 58, 237, 0.1);
-  --bg-panel: rgba(255, 255, 255, 0.85);
+  --bg-base: #f3f3ee;
+  --bg-glow: rgba(245, 208, 0, 0.12);
+  --bg-panel: rgba(255, 255, 255, 0.9);
   --bg-overlay: rgba(255, 255, 255, 0.98);
-  --fg: #14152a;
-  --muted: #4b5563;
-  --faint: #6b7280;
-  --surface: rgba(20, 20, 50, 0.04);
-  --surface-2: rgba(20, 20, 50, 0.07);
-  --line: rgba(20, 20, 50, 0.12);
-  --accent: #0e7490;
-  --accent-bg: rgba(8, 145, 178, 0.12);
-  --gold: #b45309;
-  --scan-line: rgba(20, 20, 50, 0.04);
-  --scan-vignette: rgba(0, 0, 0, 0.08);
+  --fg: #131313;
+  --muted: #52525b;
+  --faint: #71717a;
+  --surface: rgba(10, 10, 10, 0.05);
+  --surface-2: rgba(10, 10, 10, 0.09);
+  --line: rgba(10, 10, 10, 0.16);
+  --accent: #8a6d00; /* 白地で読める濃イエロー(テキスト/枠用) */
+  --gold: #a16207;
+  --vignette: rgba(0, 0, 0, 0.06);
 }
 .dark {
-  --bg-base: #0a0a12;
-  --bg-glow: rgba(124, 58, 237, 0.18);
-  --bg-panel: rgba(10, 10, 18, 0.85);
-  --bg-overlay: rgba(18, 18, 28, 0.97);
-  --fg: #e5e7eb;
-  --muted: #9ca3af;
-  --faint: #6b7280;
-  --surface: rgba(255, 255, 255, 0.03);
-  --surface-2: rgba(255, 255, 255, 0.06);
-  --line: rgba(255, 255, 255, 0.1);
-  --accent: #22d3ee;
-  --accent-bg: rgba(34, 211, 238, 0.15);
+  --bg-base: #0c0c0c;
+  --bg-glow: rgba(245, 208, 0, 0.14);
+  --bg-panel: rgba(12, 12, 12, 0.88);
+  --bg-overlay: rgba(18, 18, 18, 0.98);
+  --fg: #f4f4f5;
+  --muted: #a1a1aa;
+  --faint: #71717a;
+  --surface: rgba(255, 255, 255, 0.05);
+  --surface-2: rgba(255, 255, 255, 0.09);
+  --line: rgba(255, 255, 255, 0.16);
+  --accent: #ffe000; /* 暗地ではビビッドイエロー */
   --gold: #fde047;
-  --scan-line: rgba(255, 255, 255, 0.035);
-  --scan-vignette: rgba(0, 0, 0, 0.45);
+  --vignette: rgba(0, 0, 0, 0.5);
 }
 
 @theme {
-  /* 本文・UI: 日本語対応ピクセルフォント。アクセント: 英数字ドット絵フォント */
-  --font-sans: "DotGothic16", system-ui, "Segoe UI", sans-serif;
-  --font-pixel: "Press Start 2P", "DotGothic16", monospace;
+  /* 本文・UI: Noto Sans JP / 見出し: Anton (英数字) + Noto Sans JP 900 */
+  --font-sans: "Noto Sans JP", system-ui, "Segoe UI", sans-serif;
+  --font-display: "Anton", "Noto Sans JP", sans-serif;
 
   /* 意味ベースのトークン (text-fg / bg-surface / border-line / text-accent など) */
   --color-fg: var(--fg);
@@ -52,31 +50,37 @@
   --color-surface-2: var(--surface-2);
   --color-line: var(--line);
   --color-accent: var(--accent);
-  --color-accent-bg: var(--accent-bg);
   --color-gold: var(--gold);
 
-  --color-neon-cyan: #22d3ee;
-  --color-neon-magenta: #ff2bd1;
-  --color-neon-yellow: #fde047;
-  --color-neon-green: #22c55e;
+  /* 固定のZZZイエロー (塗り・ボタン用。黒文字を載せる) */
+  --color-zzz: #ffe000;
 }
 
-/* ネオン発光は暗い場面でのみ。明るい場面では発光を切って可読性を優先 */
+/* 見出し用クラス。Anton(英数) + Noto900(日本語) の極太・コンデンス */
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 900;
+  letter-spacing: 0.01em;
+  line-height: 1.05;
+}
+
+/* ハザードストライプ (アクセント帯) */
+.zzz-stripe {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    #ffe000 0,
+    #ffe000 10px,
+    #0c0c0c 10px,
+    #0c0c0c 20px
+  );
+}
+
+/* 旧 neon-* はZZZでは発光させない (互換のため残す) */
 .neon-text {
   text-shadow: none;
 }
-.dark .neon-text {
-  text-shadow:
-    0 0 4px currentColor,
-    0 0 12px currentColor;
-}
 .neon-box {
-  box-shadow: 0 0 0 1px var(--line);
-}
-.dark .neon-box {
-  box-shadow:
-    0 0 0 1px rgba(34, 211, 238, 0.15),
-    0 0 24px -6px rgba(34, 211, 238, 0.45);
+  box-shadow: 0 0 0 2px var(--line);
 }
 
 html,
@@ -88,55 +92,28 @@ body,
 body {
   margin: 0;
   background:
-    radial-gradient(1200px 600px at 50% -10%, var(--bg-glow), transparent 60%),
+    radial-gradient(1100px 520px at 50% -10%, var(--bg-glow), transparent 60%),
     var(--bg-base);
   color: var(--fg);
   font-family: var(--font-sans);
+  font-size: 16px;
   -webkit-font-smoothing: antialiased;
   transition:
     background-color 0.3s ease,
     color 0.3s ease;
 }
 
-.font-pixel {
-  font-family: var(--font-pixel);
-  letter-spacing: 0.02em;
-}
-
-/* CRT 風スキャンライン + ビネット (Layout に1枚かぶせる)。明暗で濃さを切替 */
+/* 画面端のビネットのみ (CRT スキャンラインは廃止) */
 .scanlines {
   position: fixed;
   inset: 0;
   z-index: 40;
   pointer-events: none;
-  background:
-    repeating-linear-gradient(
-      to bottom,
-      var(--scan-line) 0px,
-      var(--scan-line) 1px,
-      transparent 1px,
-      transparent 3px
-    ),
-    radial-gradient(120% 120% at 50% 50%, transparent 60%, var(--scan-vignette) 100%);
+  background: radial-gradient(120% 120% at 50% 50%, transparent 64%, var(--vignette) 100%);
 }
 
-@keyframes flicker {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  48% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.82;
-  }
-  52% {
-    opacity: 1;
-  }
-}
-.dark .flicker {
-  animation: flicker 4s infinite;
+.flicker {
+  /* ZZZ では点滅させない (互換用に残す) */
 }
 
 /* ゲーム中の意図しないスクロール/選択を抑制 */

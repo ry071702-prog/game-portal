@@ -148,19 +148,19 @@ export function GameShell({ game, Component, mode = 'free', seed }: GameShellPro
   return (
     <div>
       <div className="mb-3 flex items-center justify-between gap-2">
-        <h1 className="neon-text text-xl font-bold text-accent">{game.title}</h1>
+        <h1 className="font-display text-2xl text-fg">{game.title}</h1>
         <div className="flex items-center gap-4 text-sm">
           <span className="text-muted">
-            SCORE <span className="font-pixel ml-1 text-base text-fg">{score}</span>
+            SCORE <span className="font-display ml-1 text-base text-fg">{score}</span>
           </span>
           <span className="flex items-center gap-1 text-gold">
             <Trophy size={14} />
-            <span className="font-pixel text-base">{best}</span>
+            <span className="font-display text-base">{best}</span>
           </span>
         </div>
       </div>
 
-      <div className="neon-box relative overflow-hidden rounded-2xl border border-cyan-400/20 bg-surface p-3">
+      <div className="neon-box relative overflow-hidden rounded-2xl border border-[#ffe000]/20 bg-surface p-3">
         {/* ゲーム本体: restartSignal を key にしてリスタート=再マウント */}
         <Component
           key={restartSignal}
@@ -173,21 +173,21 @@ export function GameShell({ game, Component, mode = 'free', seed }: GameShellPro
 
         {!started && !gameOver && (
           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 bg-white/90 px-5 text-center backdrop-blur-sm dark:bg-black/85">
-            <div className="text-5xl">{game.thumbnail}</div>
-            <p className="font-pixel text-lg text-accent">{game.title}</p>
-            <ul className="max-w-xs space-y-1.5 text-left text-sm text-muted">
+            <div className="text-6xl">{game.thumbnail}</div>
+            <p className="font-display text-2xl text-fg">{game.title}</p>
+            <ul className="max-w-xs space-y-2 text-left text-sm font-medium text-fg">
               {game.instructions.map((line) => (
                 <li key={line} className="flex gap-2">
-                  <span className="text-accent">▸</span>
+                  <span className="font-bold text-accent">▸</span>
                   <span>{line}</span>
                 </li>
               ))}
             </ul>
             <button
               onClick={start}
-              className="mt-1 flex items-center gap-2 rounded-xl border border-cyan-500/50 bg-cyan-500/20 px-8 py-3 font-bold text-accent hover:bg-cyan-500/30 dark:text-cyan-100"
+              className="mt-1 flex items-center gap-2 rounded-xl bg-[#ffe000] px-10 py-3 text-lg font-extrabold text-black transition hover:brightness-110"
             >
-              <Play size={18} />
+              <Play size={20} />
               スタート
             </button>
           </div>
@@ -196,25 +196,25 @@ export function GameShell({ game, Component, mode = 'free', seed }: GameShellPro
         {gameOver && (
           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-white/85 px-4 text-center backdrop-blur-sm dark:bg-black/80">
             {newRecord && (
-              <p className="font-pixel animate-pulse text-sm text-gold">★ NEW RECORD ★</p>
+              <p className="font-display animate-pulse text-sm text-gold">★ NEW RECORD ★</p>
             )}
-            <p className="font-pixel text-xl text-accent">
+            <p className="font-display text-3xl text-fg">
               {ended === 'win' ? 'CLEAR!' : 'GAME OVER'}
             </p>
             <p className="text-sm text-muted">
-              スコア <span className="font-pixel text-fg">{score}</span>
+              スコア <span className="font-display text-fg">{score}</span>
             </p>
             {submitting && <p className="text-xs text-muted">ランキング送信中…</p>}
             {ranks && (
               <p className="text-sm text-amber-700 dark:text-yellow-200">
-                全期間 <span className="font-pixel">{ranks.alltimeRank}</span> 位 / 今日{' '}
-                <span className="font-pixel">{ranks.dailyRank}</span> 位
+                全期間 <span className="font-display">{ranks.alltimeRank}</span> 位 / 今日{' '}
+                <span className="font-display">{ranks.dailyRank}</span> 位
               </p>
             )}
             <div className="mt-1 flex items-center gap-2">
               <button
                 onClick={restart}
-                className="flex items-center gap-2 rounded-xl border border-cyan-500/50 bg-cyan-500/20 px-5 py-2.5 font-bold text-accent hover:bg-cyan-500/30 dark:text-cyan-100"
+                className="flex items-center gap-2 rounded-xl bg-[#ffe000] px-6 py-2.5 font-extrabold text-black transition hover:brightness-110"
               >
                 <RotateCcw size={18} />
                 もう一度

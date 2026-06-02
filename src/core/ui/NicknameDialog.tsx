@@ -27,7 +27,7 @@ export function NicknameDialog({ open, initialName = '', onSubmit, onClose }: Ni
       onClick={onClose}
     >
       <div
-        className="w-full max-w-xs rounded-2xl border border-cyan-400/40 bg-[var(--bg-overlay)] p-5"
+        className="w-full max-w-xs rounded-2xl border border-[#ffe000]/40 bg-[var(--bg-overlay)] p-5"
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="neon-text mb-1 text-lg font-bold text-accent">ニックネーム</h2>
@@ -40,7 +40,7 @@ export function NicknameDialog({ open, initialName = '', onSubmit, onClose }: Ni
           onChange={(e) => setValue(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && submit()}
           placeholder="名無しのプレイヤー"
-          className="mb-4 w-full rounded-lg border border-line bg-surface-2 px-3 py-2 text-fg outline-none focus:border-cyan-400"
+          className="mb-4 w-full rounded-lg border border-line bg-surface-2 px-3 py-2 text-fg outline-none focus:border-[#ffe000]"
         />
         <div className="flex gap-2">
           <button
@@ -52,7 +52,7 @@ export function NicknameDialog({ open, initialName = '', onSubmit, onClose }: Ni
           <button
             onClick={submit}
             disabled={!valid}
-            className="flex-1 rounded-lg bg-cyan-500 px-4 py-2 text-sm font-bold text-black hover:bg-cyan-400 disabled:opacity-40"
+            className="flex-1 rounded-lg bg-[#ffe000] px-4 py-2 text-sm font-extrabold text-black transition hover:brightness-110 disabled:opacity-40"
           >
             決定
           </button>

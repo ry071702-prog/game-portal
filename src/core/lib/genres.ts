@@ -7,9 +7,18 @@ interface GenreInfo {
 }
 
 export const GENRES: Record<GameGenre, GenreInfo> = {
-  puzzle: { label: 'パズル', badgeClass: 'bg-violet-500/15 text-violet-300 ring-violet-500/30' },
-  arcade: { label: 'アーケード', badgeClass: 'bg-cyan-500/15 text-cyan-300 ring-cyan-500/30' },
-  board: { label: 'ボード', badgeClass: 'bg-amber-500/15 text-amber-300 ring-amber-500/30' },
+  puzzle: {
+    label: 'パズル',
+    badgeClass: 'bg-violet-500/15 text-violet-700 ring-violet-500/40 dark:text-violet-300',
+  },
+  arcade: {
+    label: 'アーケード',
+    badgeClass: 'bg-[#ffe000]/20 text-amber-700 ring-[#ffe000]/50 dark:text-[#ffe000]',
+  },
+  board: {
+    label: 'ボード',
+    badgeClass: 'bg-emerald-500/15 text-emerald-700 ring-emerald-500/40 dark:text-emerald-300',
+  },
 }
 
 /** 一覧で表示するジャンルの順序 */

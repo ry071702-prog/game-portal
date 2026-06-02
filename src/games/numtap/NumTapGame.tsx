@@ -48,10 +48,10 @@ export default function NumTapGame({ paused, onScore, onGameOver, seed }: GameCo
     <div className="flex flex-col items-center gap-3">
       <div className="flex w-full max-w-xs justify-between text-sm text-muted">
         <span>
-          次は <span className="font-pixel text-accent">{done ? '✓' : next}</span>
+          次は <span className="font-display text-accent">{done ? '✓' : next}</span>
         </span>
         <span>
-          <span className="font-pixel text-fg">{(elapsed / 1000).toFixed(1)}</span> 秒
+          <span className="font-display text-fg">{(elapsed / 1000).toFixed(1)}</span> 秒
         </span>
       </div>
       <div className="grid w-full max-w-xs grid-cols-5 gap-2">
@@ -63,7 +63,7 @@ export default function NumTapGame({ paused, onScore, onGameOver, seed }: GameCo
               onClick={() => tap(n)}
               disabled={paused || tapped}
               className={`flex aspect-square items-center justify-center rounded-lg text-lg font-bold transition ${
-                tapped ? 'bg-surface text-faint' : 'bg-cyan-500/80 text-white hover:bg-cyan-500'
+                tapped ? 'bg-surface text-faint' : 'bg-[#ffe000]/80 text-white hover:bg-[#ffe000]'
               }`}
             >
               {n}
