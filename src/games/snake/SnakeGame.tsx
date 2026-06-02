@@ -5,6 +5,7 @@ import { useGameLoop } from '../../core/hooks/useGameLoop'
 import { useKeyDirection } from '../../core/hooks/useKeyDirection'
 import { useSwipe } from '../../core/hooks/useSwipe'
 import { DPad } from '../../core/ui/DPad'
+import { sound } from '../../core/lib/sound'
 import { GRID, initialState, step, type SnakeState } from './logic'
 
 const CELL = 20
@@ -68,6 +69,7 @@ export default function SnakeGame({ paused, onScore, onGameOver }: GameComponent
       draw()
       if (stateRef.current.score !== reportedScore.current) {
         reportedScore.current = stateRef.current.score
+        sound.eat()
         onScore(stateRef.current.score)
       }
       if (!stateRef.current.alive && !gameOverReported.current) {

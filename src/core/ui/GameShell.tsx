@@ -1,13 +1,23 @@
 import { useCallback, useRef, useState } from 'react'
-import { Pause, Play, RotateCcw, HelpCircle, Trophy } from 'lucide-react'
+import { Pause, Play, RotateCcw, HelpCircle, Trophy, Share2 } from 'lucide-react'
 import type { GameComponent, GameManifest } from '../types'
 import { useScoreStore } from '../store/scoreStore'
 import { useIdentityStore } from '../store/identityStore'
 import { submitScore, type SubmitResult } from '../lib/leaderboard'
 import { toast } from '../store/toastStore'
+import { sound } from '../lib/sound'
 import { cn } from '../lib/cn'
 import { NicknameDialog } from './NicknameDialog'
 import { LeaderboardPanel } from './LeaderboardPanel'
+
+async function celebrate() {
+  try {
+    const confetti = (await import('canvas-confetti')).default
+    confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 } })
+  } catch {
+    /* confetti は演出のみ。失敗しても無視 */
+  }
+}
 
 interface GameShellProps {
   game: GameManifest
@@ -28,6 +38,7 @@ export function GameShell({ game, Component }: GameShellProps) {
   const [submitting, setSubmitting] = useState(false)
   const [nickOpen, setNickOpen] = useState(false)
   const [refreshKey, setRefreshKey] = useState(0)
+  const [newRecord, setNewRecord] = useState(false)
   const gameOver = ended !== null
 
   const scoreRef = useRef(0)
@@ -35,6 +46,8 @@ export function GameShell({ game, Component }: GameShellProps) {
 
   const best = useScoreStore((s) => s.best[game.id] ?? 0)
   const setBest = useScoreStore((s) => s.setBest)
+  // この回が始まる前のベスト (記録更新判定用)
+  const bestAtStart = useRef(useScoreStore.getState().best[game.id] ?? 0)
   const { clientId, name, avatar, setName } = useIdentityStore()
 
   const doSubmit = useCallback(
@@ -65,6 +78,14 @@ export function GameShell({ game, Component }: GameShellProps) {
     (result: 'over' | 'win' = 'over') => {
       setEnded(result)
       const finalScore = scoreRef.current
+      const isRecord = finalScore > 0 && finalScore > bestAtStart.current
+      setNewRecord(isRecord)
+      if (result === 'win' || isRecord) {
+        sound.win()
+        void celebrate()
+      } else {
+        sound.gameover()
+      }
       if (finalScore <= 0) return
       if (name) {
         doSubmit(name, finalScore)
@@ -77,13 +98,16 @@ export function GameShell({ game, Component }: GameShellProps) {
   )
 
   const restart = useCallback(() => {
+    bestAtStart.current = useScoreStore.getState().best[game.id] ?? 0
     setScore(0)
     scoreRef.current = 0
     setEnded(null)
     setPaused(false)
     setRanks(null)
+    setNewRecord(false)
+    sound.click()
     setRestartSignal((n) => n + 1)
-  }, [])
+  }, [game.id])
 
   const onNickSubmit = (newName: string) => {
     setName(newName)
@@ -91,6 +115,22 @@ export function GameShell({ game, Component }: GameShellProps) {
     if (pendingScore.current > 0) {
       doSubmit(newName, pendingScore.current)
       pendingScore.current = 0
+    }
+  }
+
+  const share = async () => {
+    const url = window.location.origin
+    const rankText = ranks ? ` 全期間${ranks.alltimeRank}位！` : '！'
+    const text = `Game Portal「${game.title}」で ${score}点${rankText} #GamePortal`
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: 'Game Portal', text, url })
+      } else {
+        await navigator.clipboard.writeText(`${text} ${url}`)
+        toast.success('共有テキストをコピーしました')
+      }
+    } catch {
+      /* キャンセル時など。無視 */
     }
   }
 
@@ -121,6 +161,9 @@ export function GameShell({ game, Component }: GameShellProps) {
 
         {gameOver && (
           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-white/85 px-4 text-center backdrop-blur-sm dark:bg-black/80">
+            {newRecord && (
+              <p className="font-pixel animate-pulse text-sm text-gold">★ NEW RECORD ★</p>
+            )}
             <p className="font-pixel text-xl text-accent">
               {ended === 'win' ? 'CLEAR!' : 'GAME OVER'}
             </p>
@@ -134,13 +177,24 @@ export function GameShell({ game, Component }: GameShellProps) {
                 <span className="font-pixel">{ranks.dailyRank}</span> 位
               </p>
             )}
-            <button
-              onClick={restart}
-              className="mt-1 flex items-center gap-2 rounded-xl border border-cyan-500/50 bg-cyan-500/20 px-5 py-2.5 font-bold text-accent hover:bg-cyan-500/30 dark:text-cyan-100"
-            >
-              <RotateCcw size={18} />
-              もう一度
-            </button>
+            <div className="mt-1 flex items-center gap-2">
+              <button
+                onClick={restart}
+                className="flex items-center gap-2 rounded-xl border border-cyan-500/50 bg-cyan-500/20 px-5 py-2.5 font-bold text-accent hover:bg-cyan-500/30 dark:text-cyan-100"
+              >
+                <RotateCcw size={18} />
+                もう一度
+              </button>
+              {score > 0 && (
+                <button
+                  onClick={share}
+                  className="flex items-center gap-2 rounded-xl border border-line bg-surface-2 px-4 py-2.5 font-bold text-fg hover:opacity-80"
+                >
+                  <Share2 size={18} />
+                  共有
+                </button>
+              )}
+            </div>
           </div>
         )}
       </div>

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { GameComponentProps } from '../../core/types'
 import { useGameLoop } from '../../core/hooks/useGameLoop'
+import { sound } from '../../core/lib/sound'
 import { WIDTH, HEIGHT, makeBricks, intersects, ballRect, type Brick } from './logic'
 
 const PADDLE_W = 68
@@ -115,6 +116,7 @@ export default function BreakoutGame({ paused, onScore, onGameOver }: GameCompon
     // パドル
     const paddle = { x: s.paddleX - PADDLE_W / 2, y: PADDLE_Y, w: PADDLE_W, h: PADDLE_H }
     if (s.vy > 0 && intersects(ballRect(s.bx, s.by, BALL_R), paddle)) {
+      sound.hit()
       const hit = (s.bx - s.paddleX) / (PADDLE_W / 2) // -1..1
       const speed = s.speed
       s.vx = hit * speed * 1.1
@@ -129,6 +131,7 @@ export default function BreakoutGame({ paused, onScore, onGameOver }: GameCompon
       const b = s.bricks[hit]
       s.bricks = s.bricks.map((x, i) => (i === hit ? { ...x, alive: false } : x))
       s.score += 10
+      sound.brick()
       // 横から当たったら左右反転、それ以外は上下反転 (簡易)
       const fromSide = s.bx < b.x || s.bx > b.x + b.w
       if (fromSide) s.vx = -s.vx

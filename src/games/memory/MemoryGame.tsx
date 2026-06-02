@@ -1,5 +1,6 @@
 import { useEffect, useReducer } from 'react'
 import type { GameComponentProps } from '../../core/types'
+import { sound } from '../../core/lib/sound'
 import {
   initialState,
   flip,
@@ -28,12 +29,18 @@ function toScore(state: MemoryState): number {
 export default function MemoryGame({ paused, onScore, onGameOver }: GameComponentProps) {
   const [state, dispatch] = useReducer(reducer, undefined, () => initialState())
 
-  // 2枚めくったら一定時間後に判定
+  // 2枚めくったら一定時間後に判定 (一致/不一致で効果音)
   useEffect(() => {
-    if (state.secondIndex === null) return
-    const t = setTimeout(() => dispatch({ type: 'resolve' }), 750)
+    if (state.firstIndex === null || state.secondIndex === null) return
+    const isMatch =
+      state.cards[state.firstIndex].pairId === state.cards[state.secondIndex].pairId
+    const t = setTimeout(() => {
+      if (isMatch) sound.match()
+      else sound.hit()
+      dispatch({ type: 'resolve' })
+    }, 750)
     return () => clearTimeout(t)
-  }, [state.secondIndex])
+  }, [state.secondIndex, state.firstIndex, state.cards])
 
   // スコア通知
   useEffect(() => {
@@ -48,6 +55,7 @@ export default function MemoryGame({ paused, onScore, onGameOver }: GameComponen
   const busy = state.secondIndex !== null
   const handleClick = (index: number) => {
     if (paused || busy) return
+    sound.flip()
     dispatch({ type: 'flip', index })
   }
 

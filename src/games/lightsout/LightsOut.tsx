@@ -1,5 +1,6 @@
 import { useEffect, useReducer } from 'react'
 import type { GameComponentProps } from '../../core/types'
+import { sound } from '../../core/lib/sound'
 import { scramble, toggle, isCleared, toScore, type Grid } from './logic'
 
 interface State {
@@ -33,7 +34,11 @@ export default function LightsOut({ paused, onScore, onGameOver }: GameComponent
           row.map((on, c) => (
             <button
               key={`${r}-${c}`}
-              onClick={() => !paused && dispatch({ type: 'toggle', r, c })}
+              onClick={() => {
+                if (paused) return
+                sound.toggle()
+                dispatch({ type: 'toggle', r, c })
+              }}
               disabled={paused}
               aria-label={`ライト ${r}-${c}`}
               className={`aspect-square rounded-lg transition-colors ${
