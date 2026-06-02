@@ -1,0 +1,8 @@
+name = "game-portal"
+pages_build_output_dir = "./dist"
+compatibility_date = "2025-01-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "game-portal-db"
+database_id = "ca31ad0e-af51-4b5e-8f08-b97820bfb310"

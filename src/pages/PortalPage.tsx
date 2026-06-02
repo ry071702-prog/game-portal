@@ -11,17 +11,21 @@ export default function PortalPage() {
         title="Game Portal — 無料ミニゲーム集"
         description="登録不要・無料で遊べるミニゲーム集。2048・スネーク・神経衰弱など。"
       />
-      <h1 className="mb-1 text-2xl font-bold text-white">ミニゲーム集</h1>
-      <p className="mb-6 text-sm text-gray-400">
-        登録不要・無料。スマホでもPCでも遊べます。
-      </p>
+      <div className="mb-8 rounded-2xl border border-cyan-400/20 bg-gradient-to-b from-violet-500/10 to-transparent p-6 text-center">
+        <h1 className="font-pixel neon-text mb-3 text-lg leading-relaxed text-cyan-300 sm:text-2xl">
+          INSERT COIN
+        </h1>
+        <p className="text-sm text-gray-300">
+          登録不要・無料のミニゲーム集。スコアでみんなと競おう。
+        </p>
+      </div>
 
       {GENRE_ORDER.map((genre) => {
         const list = games.filter((g) => g.genre === genre)
         if (list.length === 0) return null
         return (
           <section key={genre} className="mb-8">
-            <h2 className="mb-3 text-sm font-semibold tracking-wide text-gray-400 uppercase">
+            <h2 className="mb-3 font-pixel text-xs tracking-wide text-gray-400 uppercase">
               {GENRES[genre].label}
             </h2>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
