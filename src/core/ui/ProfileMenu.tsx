@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { Pencil, Monitor, Sun, Moon, Check } from 'lucide-react'
+import { Pencil, Monitor, Sun, Moon, Check, Volume2, VolumeX } from 'lucide-react'
 import { useIdentityStore } from '../store/identityStore'
+import { useSoundStore } from '../store/soundStore'
 import { AVATARS } from '../lib/avatars'
 import { useTheme, type Theme } from '../lib/theme'
 import { NicknameDialog } from './NicknameDialog'
@@ -15,6 +16,8 @@ const THEME_OPTS: { value: Theme; label: string; Icon: typeof Monitor }[] = [
 /** 右上のユーザーアイコン + 名前。クリックで設定 (名前・アイコン・テーマ) を開く。 */
 export function ProfileMenu() {
   const { name, avatar, setName, setAvatar } = useIdentityStore()
+  const muted = useSoundStore((s) => s.muted)
+  const toggleMuted = useSoundStore((s) => s.toggleMuted)
   const [theme, setTheme] = useTheme()
   const [open, setOpen] = useState(false)
   const [nickOpen, setNickOpen] = useState(false)
@@ -88,6 +91,21 @@ export function ProfileMenu() {
                 </button>
               ))}
             </div>
+
+            {/* サウンド */}
+            <p className="mt-4 mb-2 text-xs font-bold tracking-wide text-muted uppercase">サウンド</p>
+            <button
+              onClick={toggleMuted}
+              className="flex w-full items-center justify-between rounded-lg bg-surface-2 px-3 py-2 text-sm text-fg"
+            >
+              <span className="flex items-center gap-2">
+                {muted ? <VolumeX size={15} /> : <Volume2 size={15} />}
+                効果音
+              </span>
+              <span className={cn('text-xs font-bold', muted ? 'text-faint' : 'text-accent')}>
+                {muted ? 'OFF' : 'ON'}
+              </span>
+            </button>
           </div>
         </>
       )}

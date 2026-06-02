@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#0a0a12"/>
+  <!-- マスカブル安全圏 (中央80%) に収める -->
+  <g transform="translate(96 150)">
+    <rect x="0" y="40" width="320" height="190" rx="95" fill="#a78bfa"/>
+    <rect x="60" y="120" width="90" height="24" rx="12" fill="#0a0a12"/>
+    <rect x="93" y="87" width="24" height="90" rx="12" fill="#0a0a12"/>
+    <circle cx="235" cy="120" r="22" fill="#22d3ee"/>
+    <circle cx="280" cy="165" r="22" fill="#f59e0b"/>
+  </g>
+</svg>

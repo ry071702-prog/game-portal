@@ -3,6 +3,7 @@ import type { GameComponentProps } from '../../core/types'
 import type { Direction } from '../../core/lib/direction'
 import { useKeyDirection } from '../../core/hooks/useKeyDirection'
 import { useSwipe } from '../../core/hooks/useSwipe'
+import { sound } from '../../core/lib/sound'
 import { initialBoard, move, spawn, isGameOver, type Board } from './logic'
 
 interface State {
@@ -55,7 +56,11 @@ export default function Game2048({ paused, onScore, onGameOver }: GameComponentP
   }, [state.board, onGameOver])
 
   const handleDir = (dir: Direction) => {
-    if (!paused) dispatch({ type: 'move', dir })
+    if (paused) return
+    const { moved, gained } = move(state.board, dir)
+    if (gained > 0) sound.merge()
+    else if (moved) sound.move()
+    dispatch({ type: 'move', dir })
   }
   useKeyDirection(handleDir, !paused)
   useSwipe(surfaceRef, handleDir, !paused)

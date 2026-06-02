@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import type { GameComponentProps } from '../../core/types'
+import { sound } from '../../core/lib/sound'
 import { extend, type Pad } from './logic'
 
 type Phase = 'showing' | 'input' | 'over'
@@ -32,7 +33,12 @@ export default function SimonGame({ paused, onScore, onGameOver }: GameComponent
     clearTimers()
     const step = 600
     seq.forEach((pad, i) => {
-      timers.current.push(setTimeout(() => setActive(pad), i * step + 250))
+      timers.current.push(
+        setTimeout(() => {
+          setActive(pad)
+          sound.pad(pad)
+        }, i * step + 250),
+      )
       timers.current.push(setTimeout(() => setActive(null), i * step + 250 + 350))
     })
     timers.current.push(
@@ -47,9 +53,11 @@ export default function SimonGame({ paused, onScore, onGameOver }: GameComponent
   const press = (pad: Pad) => {
     if (phase !== 'input' || paused) return
     setActive(pad)
+    sound.pad(pad)
     timers.current.push(setTimeout(() => setActive(null), 150))
 
     if (pad !== seq[inputIndex.current]) {
+      sound.wrong()
       setPhase('over')
       onGameOver()
       return
