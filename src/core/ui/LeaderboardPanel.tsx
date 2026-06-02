@@ -88,8 +88,9 @@ export function LeaderboardPanel({ gameId, refreshKey = 0, selfName }: Leaderboa
                 >
                   {i + 1}
                 </span>
+                <span className="text-base">{row.avatar || '🎮'}</span>
                 <span className="flex-1 truncate text-gray-200">{row.name}</span>
-                <span className="font-bold tabular-nums text-white">{row.best}</span>
+                <span className="font-pixel text-sm tabular-nums text-white">{row.best}</span>
               </li>
             )
           })}

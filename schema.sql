@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS scores (
   id         INTEGER PRIMARY KEY AUTOINCREMENT,
   game_id    TEXT    NOT NULL,
   name       TEXT    NOT NULL,
+  avatar     TEXT    NOT NULL DEFAULT '🎮',  -- ユーザーアイコン (絵文字)
   score      INTEGER NOT NULL,
   client_id  TEXT    NOT NULL,   -- 端末ごとの匿名UUID
   created_at INTEGER NOT NULL,   -- unix ms

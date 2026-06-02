@@ -28,6 +28,18 @@ export const KNOWN_GAME_IDS = Object.keys(SCORE_CAP)
 
 export const MAX_NAME_LEN = 12
 
+// 選択可能なユーザーアイコン。クライアント src/core/lib/avatars.ts と同期。
+const AVATARS = [
+  '🎮', '👾', '🤖', '👽', '🐱', '🐶', '🦊', '🐼', '🐸',
+  '🦄', '🐲', '🦖', '⭐', '🔥', '🌈', '💀', '🎧', '🍩',
+]
+export const DEFAULT_AVATAR = '🎮'
+
+/** 未知のアイコンは既定にフォールバック (緩い検証)。 */
+export function sanitizeAvatar(raw: unknown): string {
+  return typeof raw === 'string' && AVATARS.includes(raw) ? raw : DEFAULT_AVATAR
+}
+
 const NG_WORDS = ['死ね', 'fuck', 'shit', 'ちんこ', 'まんこ']
 
 /** 名前を安全化: 制御文字除去・空白圧縮・最大12文字・NG語伏字・空ならゲスト。 */
@@ -64,6 +76,7 @@ export function normalizeScore(gameId: string, raw: unknown): number | null {
 
 export interface LeaderboardRow {
   name: string
+  avatar: string
   best: number
 }
 
@@ -75,7 +88,8 @@ export async function getLeaderboard(
   limit: number,
 ): Promise<LeaderboardRow[]> {
   const where = period === 'daily' ? 'WHERE game_id = ? AND day = ?' : 'WHERE game_id = ?'
-  const sql = `SELECT name, MAX(score) AS best FROM scores ${where} GROUP BY client_id ORDER BY best DESC, MIN(created_at) ASC LIMIT ?`
+  // MAX(score) と同じ行の name/avatar が返る (SQLite の bare column ルール)
+  const sql = `SELECT name, avatar, MAX(score) AS best FROM scores ${where} GROUP BY client_id ORDER BY best DESC, MIN(created_at) ASC LIMIT ?`
   const stmt =
     period === 'daily'
       ? db.prepare(sql).bind(gameId, todayJST(), limit)
