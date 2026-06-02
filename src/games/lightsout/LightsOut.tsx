@@ -1,6 +1,7 @@
-import { useEffect, useReducer } from 'react'
+import { useEffect, useMemo, useReducer } from 'react'
 import type { GameComponentProps } from '../../core/types'
 import { sound } from '../../core/lib/sound'
+import { mulberry32 } from '../../core/lib/daily'
 import { scramble, toggle, isCleared, toScore, type Grid } from './logic'
 
 interface State {
@@ -14,8 +15,12 @@ function reducer(state: State, action: Action): State {
   return { grid: toggle(state.grid, action.r, action.c), moves: state.moves + 1 }
 }
 
-export default function LightsOut({ paused, onScore, onGameOver }: GameComponentProps) {
-  const [state, dispatch] = useReducer(reducer, undefined, () => ({ grid: scramble(), moves: 0 }))
+export default function LightsOut({ paused, onScore, onGameOver, seed }: GameComponentProps) {
+  const rng = useMemo(() => (seed != null ? mulberry32(seed) : Math.random), [seed])
+  const [state, dispatch] = useReducer(reducer, undefined, () => ({
+    grid: scramble(rng),
+    moves: 0,
+  }))
   const cleared = isCleared(state.grid)
 
   useEffect(() => {

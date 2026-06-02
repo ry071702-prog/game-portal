@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Gamepad2, ChevronLeft, Trophy } from 'lucide-react'
+import { Gamepad2, ChevronLeft, Trophy, CalendarDays } from 'lucide-react'
 import { ProfileMenu } from './ProfileMenu'
 
 interface HeaderProps {
@@ -25,8 +25,15 @@ export function Header({ showBack }: HeaderProps) {
           <span className="font-pixel flicker text-sm text-accent">GAME PORTAL</span>
         </Link>
         <Link
+          to="/daily"
+          className="ml-auto flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm text-muted hover:bg-surface-2 hover:text-accent"
+        >
+          <CalendarDays size={16} className="text-accent" />
+          <span className="hidden sm:inline">今日の</span>
+        </Link>
+        <Link
           to="/leaderboard"
-          className="ml-auto flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm text-muted hover:bg-surface-2 hover:text-gold"
+          className="flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm text-muted hover:bg-surface-2 hover:text-gold"
         >
           <Trophy size={16} className="text-gold" />
           <span className="hidden sm:inline">ランキング</span>

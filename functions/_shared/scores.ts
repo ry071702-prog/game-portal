@@ -16,6 +16,12 @@ export interface Env {
 }
 
 export type Period = 'alltime' | 'daily'
+export type Mode = 'free' | 'daily'
+
+/** mode を 'free' | 'daily' に正規化 (既定 free)。 */
+export function sanitizeMode(raw: unknown): Mode {
+  return raw === 'daily' ? 'daily' : 'free'
+}
 
 /** スコア上限 (緩い不正対策のサニティチェック)。gameId は registry と同期。 */
 export const SCORE_CAP: Record<string, number> = {
@@ -83,20 +89,24 @@ export interface LeaderboardRow {
   best: number
 }
 
-/** 上位 N (client_id ごとの最高点)。period=daily は当日のみ。 */
+/** 上位 N (client_id ごとの最高点)。period=daily は当日のみ。mode で free/daily を分離。 */
 export async function getLeaderboard(
   db: D1Database,
   gameId: string,
   period: Period,
   limit: number,
+  mode: Mode = 'free',
 ): Promise<LeaderboardRow[]> {
-  const where = period === 'daily' ? 'WHERE game_id = ? AND day = ?' : 'WHERE game_id = ?'
+  const where =
+    period === 'daily'
+      ? 'WHERE game_id = ? AND mode = ? AND day = ?'
+      : 'WHERE game_id = ? AND mode = ?'
   // MAX(score) と同じ行の name/avatar が返る (SQLite の bare column ルール)
   const sql = `SELECT name, avatar, MAX(score) AS best FROM scores ${where} GROUP BY client_id ORDER BY best DESC, MIN(created_at) ASC LIMIT ?`
   const stmt =
     period === 'daily'
-      ? db.prepare(sql).bind(gameId, todayJST(), limit)
-      : db.prepare(sql).bind(gameId, limit)
+      ? db.prepare(sql).bind(gameId, mode, todayJST(), limit)
+      : db.prepare(sql).bind(gameId, mode, limit)
   const { results } = await stmt.all<LeaderboardRow>()
   return results
 }
@@ -107,16 +117,17 @@ export async function getRank(
   gameId: string,
   period: Period,
   score: number,
+  mode: Mode = 'free',
 ): Promise<number> {
   const inner =
     period === 'daily'
-      ? 'SELECT MAX(score) b FROM scores WHERE game_id = ? AND day = ? GROUP BY client_id'
-      : 'SELECT MAX(score) b FROM scores WHERE game_id = ? GROUP BY client_id'
+      ? 'SELECT MAX(score) b FROM scores WHERE game_id = ? AND mode = ? AND day = ? GROUP BY client_id'
+      : 'SELECT MAX(score) b FROM scores WHERE game_id = ? AND mode = ? GROUP BY client_id'
   const sql = `SELECT COUNT(*) AS c FROM (${inner}) WHERE b > ?`
   const stmt =
     period === 'daily'
-      ? db.prepare(sql).bind(gameId, todayJST(), score)
-      : db.prepare(sql).bind(gameId, score)
+      ? db.prepare(sql).bind(gameId, mode, todayJST(), score)
+      : db.prepare(sql).bind(gameId, mode, score)
   const row = await stmt.first<{ c: number }>()
   return (row?.c ?? 0) + 1
 }

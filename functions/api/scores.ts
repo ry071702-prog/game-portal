@@ -4,6 +4,7 @@ import {
   KNOWN_GAME_IDS,
   sanitizeName,
   sanitizeAvatar,
+  sanitizeMode,
   normalizeScore,
   todayJST,
   getRank,
@@ -16,6 +17,7 @@ interface Body {
   avatar?: unknown
   score?: unknown
   clientId?: unknown
+  mode?: unknown
 }
 
 const json = (data: unknown, status = 200) =>
@@ -46,6 +48,7 @@ export const onRequestPost: (ctx: { request: Request; env: Env }) => Promise<Res
 
   const name = sanitizeName(body.name)
   const avatar = sanitizeAvatar(body.avatar)
+  const mode = sanitizeMode(body.mode)
   const now = Date.now()
 
   // レート制限: 直近10秒で3件超
@@ -53,14 +56,14 @@ export const onRequestPost: (ctx: { request: Request; env: Env }) => Promise<Res
   if (recent > 3) return json({ error: 'rate limited' }, 429)
 
   await env.DB.prepare(
-    'INSERT INTO scores (game_id, name, avatar, score, client_id, created_at, day) VALUES (?, ?, ?, ?, ?, ?, ?)',
+    'INSERT INTO scores (game_id, name, avatar, score, client_id, created_at, day, mode) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
   )
-    .bind(gameId, name, avatar, score, clientId, now, todayJST(new Date(now)))
+    .bind(gameId, name, avatar, score, clientId, now, todayJST(new Date(now)), mode)
     .run()
 
   const [alltimeRank, dailyRank] = await Promise.all([
-    getRank(env.DB, gameId, 'alltime', score),
-    getRank(env.DB, gameId, 'daily', score),
+    getRank(env.DB, gameId, 'alltime', score, mode),
+    getRank(env.DB, gameId, 'daily', score, mode),
   ])
 
   return json({ ok: true, name, score, alltimeRank, dailyRank })

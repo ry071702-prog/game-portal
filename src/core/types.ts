@@ -18,6 +18,8 @@ export interface GameComponentProps {
   onGameOver: (result?: 'over' | 'win') => void
   /** インクリメントされたらリスタートする (useEffect の依存に入れる) */
   restartSignal: number
+  /** デイリーチャレンジ時の seed。指定時はこの seed で盤面を生成し全員同一にする */
+  seed?: number
 }
 
 export type GameComponent = ComponentType<GameComponentProps>

@@ -1,12 +1,14 @@
-import { useEffect, useReducer } from 'react'
+import { useEffect, useMemo, useReducer } from 'react'
 import type { GameComponentProps } from '../../core/types'
 import { sound } from '../../core/lib/sound'
+import { mulberry32 } from '../../core/lib/daily'
 import {
   initialState,
   flip,
   resolve,
   isCleared,
   matchedPairs,
+  PAIRS,
   type MemoryState,
 } from './logic'
 
@@ -26,8 +28,9 @@ function toScore(state: MemoryState): number {
   return Math.max(0, matchedPairs(state) * 100 - state.moves * 5)
 }
 
-export default function MemoryGame({ paused, onScore, onGameOver }: GameComponentProps) {
-  const [state, dispatch] = useReducer(reducer, undefined, () => initialState())
+export default function MemoryGame({ paused, onScore, onGameOver, seed }: GameComponentProps) {
+  const rng = useMemo(() => (seed != null ? mulberry32(seed) : Math.random), [seed])
+  const [state, dispatch] = useReducer(reducer, undefined, () => initialState(PAIRS, rng))
 
   // 2枚めくったら一定時間後に判定 (一致/不一致で効果音)
   useEffect(() => {

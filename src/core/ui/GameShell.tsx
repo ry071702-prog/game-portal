@@ -3,7 +3,7 @@ import { Pause, Play, RotateCcw, HelpCircle, Trophy, Share2 } from 'lucide-react
 import type { GameComponent, GameManifest } from '../types'
 import { useScoreStore } from '../store/scoreStore'
 import { useIdentityStore } from '../store/identityStore'
-import { submitScore, type SubmitResult } from '../lib/leaderboard'
+import { submitScore, type SubmitResult, type Mode } from '../lib/leaderboard'
 import { toast } from '../store/toastStore'
 import { sound } from '../lib/sound'
 import { cn } from '../lib/cn'
@@ -22,13 +22,17 @@ async function celebrate() {
 interface GameShellProps {
   game: GameManifest
   Component: GameComponent
+  /** 'daily' はデイリーチャレンジ (seed 固定・専用ランキング) */
+  mode?: Mode
+  /** デイリー時の seed */
+  seed?: number
 }
 
 /**
  * 全ゲーム共通の枠。スコア/ベスト・ポーズ・リスタート・終了モーダル・操作説明に加え、
  * 終了時のオンラインスコア送信とランキング表示を担う。
  */
-export function GameShell({ game, Component }: GameShellProps) {
+export function GameShell({ game, Component, mode = 'free', seed }: GameShellProps) {
   const [score, setScore] = useState(0)
   const [paused, setPaused] = useState(false)
   const [ended, setEnded] = useState<null | 'over' | 'win'>(null)
@@ -53,7 +57,7 @@ export function GameShell({ game, Component }: GameShellProps) {
   const doSubmit = useCallback(
     (playerName: string, finalScore: number) => {
       setSubmitting(true)
-      submitScore({ gameId: game.id, name: playerName, avatar, score: finalScore, clientId })
+      submitScore({ gameId: game.id, name: playerName, avatar, score: finalScore, clientId, mode })
         .then((res) => {
           setRanks(res)
           setRefreshKey((k) => k + 1)
@@ -62,7 +66,7 @@ export function GameShell({ game, Component }: GameShellProps) {
         .catch(() => toast.error('スコア送信に失敗しました'))
         .finally(() => setSubmitting(false))
     },
-    [game.id, clientId, avatar],
+    [game.id, clientId, avatar, mode],
   )
 
   const handleScore = useCallback(
@@ -157,6 +161,7 @@ export function GameShell({ game, Component }: GameShellProps) {
           onScore={handleScore}
           onGameOver={handleGameOver}
           restartSignal={restartSignal}
+          seed={seed}
         />
 
         {gameOver && (
@@ -235,7 +240,12 @@ export function GameShell({ game, Component }: GameShellProps) {
         </ul>
       )}
 
-      <LeaderboardPanel gameId={game.id} refreshKey={refreshKey} selfName={name || undefined} />
+      <LeaderboardPanel
+        gameId={game.id}
+        refreshKey={refreshKey}
+        selfName={name || undefined}
+        mode={mode}
+      />
 
       <NicknameDialog
         open={nickOpen}

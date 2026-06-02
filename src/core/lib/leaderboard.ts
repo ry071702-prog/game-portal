@@ -1,6 +1,7 @@
 // ランキング API クライアント + 名前サニタイズ (サーバーと同等ルール)
 
 export type Period = 'alltime' | 'daily'
+export type Mode = 'free' | 'daily'
 
 export interface LeaderboardRow {
   name: string
@@ -35,6 +36,7 @@ export async function submitScore(params: {
   avatar: string
   score: number
   clientId: string
+  mode?: Mode
 }): Promise<SubmitResult> {
   const res = await fetch(`${API_BASE}/scores`, {
     method: 'POST',
@@ -52,9 +54,10 @@ export async function fetchLeaderboard(
   gameId: string,
   period: Period,
   limit = 20,
+  mode: Mode = 'free',
 ): Promise<LeaderboardRow[]> {
   const res = await fetch(
-    `${API_BASE}/leaderboard?game=${encodeURIComponent(gameId)}&period=${period}&limit=${limit}`,
+    `${API_BASE}/leaderboard?game=${encodeURIComponent(gameId)}&period=${period}&limit=${limit}&mode=${mode}`,
   )
   if (!res.ok) throw new Error(`leaderboard fetch failed (${res.status})`)
   const data = (await res.json()) as { rows: LeaderboardRow[] }
