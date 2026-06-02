@@ -31,6 +31,10 @@ export const SCORE_CAP: Record<string, number> = {
   lightsout: 1000,
   breakout: 1000000,
   simon: 200,
+  slide15: 1000,
+  whack: 300,
+  flap: 10000,
+  numtap: 30000,
 }
 
 export const KNOWN_GAME_IDS = Object.keys(SCORE_CAP)
