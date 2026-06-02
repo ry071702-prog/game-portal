@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import type { GameComponentProps } from '../../core/types'
 import { sound } from '../../core/lib/sound'
+import { mulberry32 } from '../../core/lib/daily'
 import { extend, type Pad } from './logic'
 
 type Phase = 'showing' | 'input' | 'over'
@@ -12,8 +13,9 @@ const PADS: { base: string; lit: string }[] = [
   { base: 'bg-blue-700', lit: 'bg-blue-400' },
 ]
 
-export default function SimonGame({ paused, onScore, onGameOver }: GameComponentProps) {
-  const [seq, setSeq] = useState<Pad[]>(() => [Math.floor(Math.random() * 4) as Pad])
+export default function SimonGame({ paused, onScore, onGameOver, seed }: GameComponentProps) {
+  const rng = useMemo(() => (seed != null ? mulberry32(seed) : Math.random), [seed])
+  const [seq, setSeq] = useState<Pad[]>(() => [Math.floor(rng() * 4) as Pad])
   const [phase, setPhase] = useState<Phase>('showing')
   const [active, setActive] = useState<Pad | null>(null)
   const [score, setScore] = useState(0)
@@ -67,7 +69,7 @@ export default function SimonGame({ paused, onScore, onGameOver }: GameComponent
       // 1ラウンドクリア → スコア加算して次へ
       setScore(seq.length)
       setPhase('showing')
-      timers.current.push(setTimeout(() => setSeq((s) => extend(s)), 900))
+      timers.current.push(setTimeout(() => setSeq((s) => extend(s, rng)), 900))
     }
   }
 

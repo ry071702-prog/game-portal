@@ -6,7 +6,8 @@ CREATE TABLE IF NOT EXISTS scores (
   score      INTEGER NOT NULL,
   client_id  TEXT    NOT NULL,   -- 端末ごとの匿名UUID
   created_at INTEGER NOT NULL,   -- unix ms
-  day        TEXT    NOT NULL    -- Asia/Tokyo の YYYY-MM-DD
+  day        TEXT    NOT NULL,   -- Asia/Tokyo の YYYY-MM-DD
+  mode       TEXT    NOT NULL DEFAULT 'free'  -- 'free' | 'daily' (デイリーチャレンジ)
 );
 CREATE INDEX IF NOT EXISTS idx_alltime ON scores(game_id, score DESC);
 CREATE INDEX IF NOT EXISTS idx_daily   ON scores(game_id, day, score DESC);

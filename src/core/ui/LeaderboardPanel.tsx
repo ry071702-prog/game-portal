@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Trophy } from 'lucide-react'
-import { fetchLeaderboard, type LeaderboardRow, type Period } from '../lib/leaderboard'
+import { fetchLeaderboard, type LeaderboardRow, type Period, type Mode } from '../lib/leaderboard'
 import { cn } from '../lib/cn'
 
 interface LeaderboardPanelProps {
@@ -9,14 +9,23 @@ interface LeaderboardPanelProps {
   refreshKey?: number
   /** 自分の行をハイライトするための名前 */
   selfName?: string
+  /** 'daily' はデイリーチャレンジの専用ランキング (期間タブ無し) */
+  mode?: Mode
 }
 
 const RANK_COLOR = ['text-gold', 'text-muted', 'text-amber-600']
 
-export function LeaderboardPanel({ gameId, refreshKey = 0, selfName }: LeaderboardPanelProps) {
-  const [period, setPeriod] = useState<Period>('daily')
+export function LeaderboardPanel({
+  gameId,
+  refreshKey = 0,
+  selfName,
+  mode = 'free',
+}: LeaderboardPanelProps) {
+  const isDaily = mode === 'daily'
+  // デイリーは当日の専用ボード固定。フリーは 今日/全期間 を切替
+  const [period, setPeriod] = useState<Period>(isDaily ? 'daily' : 'daily')
   // リクエストキーで管理し、effect 内の同期 setState を避ける
-  const reqKey = `${gameId}|${period}|${refreshKey}`
+  const reqKey = `${gameId}|${period}|${mode}|${refreshKey}`
   const [data, setData] = useState<{ key: string; rows: LeaderboardRow[]; error: boolean }>({
     key: '',
     rows: [],
@@ -28,35 +37,37 @@ export function LeaderboardPanel({ gameId, refreshKey = 0, selfName }: Leaderboa
 
   useEffect(() => {
     let alive = true
-    fetchLeaderboard(gameId, period)
+    fetchLeaderboard(gameId, period, 20, mode)
       .then((r) => alive && setData({ key: reqKey, rows: r, error: false }))
       .catch(() => alive && setData({ key: reqKey, rows: [], error: true }))
     return () => {
       alive = false
     }
-  }, [reqKey, gameId, period])
+  }, [reqKey, gameId, period, mode])
 
   return (
     <section className="mt-6 rounded-2xl border border-line bg-surface p-4">
       <div className="mb-3 flex items-center justify-between">
         <h2 className="flex items-center gap-2 font-bold text-fg">
           <Trophy size={18} className="text-gold" />
-          ランキング
+          {isDaily ? 'デイリーランキング' : 'ランキング'}
         </h2>
-        <div className="flex gap-1 rounded-lg bg-surface-2 p-1 text-xs">
-          {(['daily', 'alltime'] as const).map((p) => (
-            <button
-              key={p}
-              onClick={() => setPeriod(p)}
-              className={cn(
-                'rounded-md px-3 py-1',
-                period === p ? 'bg-cyan-500 font-bold text-black' : 'text-muted',
-              )}
-            >
-              {p === 'daily' ? '今日' : '全期間'}
-            </button>
-          ))}
-        </div>
+        {!isDaily && (
+          <div className="flex gap-1 rounded-lg bg-surface-2 p-1 text-xs">
+            {(['daily', 'alltime'] as const).map((p) => (
+              <button
+                key={p}
+                onClick={() => setPeriod(p)}
+                className={cn(
+                  'rounded-md px-3 py-1',
+                  period === p ? 'bg-cyan-500 font-bold text-black' : 'text-muted',
+                )}
+              >
+                {p === 'daily' ? '今日' : '全期間'}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {error && <p className="py-4 text-center text-sm text-faint">読み込みに失敗しました</p>}
