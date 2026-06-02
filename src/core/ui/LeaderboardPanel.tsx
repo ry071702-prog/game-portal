@@ -11,7 +11,7 @@ interface LeaderboardPanelProps {
   selfName?: string
 }
 
-const RANK_COLOR = ['text-yellow-300', 'text-gray-300', 'text-amber-600']
+const RANK_COLOR = ['text-gold', 'text-muted', 'text-amber-600']
 
 export function LeaderboardPanel({ gameId, refreshKey = 0, selfName }: LeaderboardPanelProps) {
   const [period, setPeriod] = useState<Period>('daily')
@@ -37,20 +37,20 @@ export function LeaderboardPanel({ gameId, refreshKey = 0, selfName }: Leaderboa
   }, [reqKey, gameId, period])
 
   return (
-    <section className="mt-6 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+    <section className="mt-6 rounded-2xl border border-line bg-surface p-4">
       <div className="mb-3 flex items-center justify-between">
-        <h2 className="flex items-center gap-2 font-bold text-white">
-          <Trophy size={18} className="text-yellow-300" />
+        <h2 className="flex items-center gap-2 font-bold text-fg">
+          <Trophy size={18} className="text-gold" />
           ランキング
         </h2>
-        <div className="flex gap-1 rounded-lg bg-black/40 p-1 text-xs">
+        <div className="flex gap-1 rounded-lg bg-surface-2 p-1 text-xs">
           {(['daily', 'alltime'] as const).map((p) => (
             <button
               key={p}
               onClick={() => setPeriod(p)}
               className={cn(
                 'rounded-md px-3 py-1',
-                period === p ? 'bg-cyan-500 font-bold text-black' : 'text-gray-300',
+                period === p ? 'bg-cyan-500 font-bold text-black' : 'text-muted',
               )}
             >
               {p === 'daily' ? '今日' : '全期間'}
@@ -59,12 +59,12 @@ export function LeaderboardPanel({ gameId, refreshKey = 0, selfName }: Leaderboa
         </div>
       </div>
 
-      {error && <p className="py-4 text-center text-sm text-gray-500">読み込みに失敗しました</p>}
+      {error && <p className="py-4 text-center text-sm text-faint">読み込みに失敗しました</p>}
       {!error && rows === null && (
-        <p className="py-4 text-center text-sm text-gray-500">読み込み中…</p>
+        <p className="py-4 text-center text-sm text-faint">読み込み中…</p>
       )}
       {!error && rows?.length === 0 && (
-        <p className="py-4 text-center text-sm text-gray-500">
+        <p className="py-4 text-center text-sm text-faint">
           まだ記録がありません。一番乗りを狙おう！
         </p>
       )}
@@ -77,20 +77,20 @@ export function LeaderboardPanel({ gameId, refreshKey = 0, selfName }: Leaderboa
                 key={i}
                 className={cn(
                   'flex items-center gap-3 rounded-lg px-3 py-1.5 text-sm',
-                  isSelf ? 'bg-cyan-500/15 ring-1 ring-cyan-400/40' : 'odd:bg-white/[0.02]',
+                  isSelf ? 'bg-cyan-500/15 ring-1 ring-cyan-400/40' : 'odd:bg-surface',
                 )}
               >
                 <span
                   className={cn(
                     'w-6 text-right font-bold tabular-nums',
-                    RANK_COLOR[i] ?? 'text-gray-500',
+                    RANK_COLOR[i] ?? 'text-faint',
                   )}
                 >
                   {i + 1}
                 </span>
                 <span className="text-base">{row.avatar || '🎮'}</span>
-                <span className="flex-1 truncate text-gray-200">{row.name}</span>
-                <span className="font-pixel text-sm tabular-nums text-white">{row.best}</span>
+                <span className="flex-1 truncate text-fg">{row.name}</span>
+                <span className="font-pixel text-sm tabular-nums text-fg">{row.best}</span>
               </li>
             )
           })}

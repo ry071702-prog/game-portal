@@ -12,10 +12,10 @@ export default function PortalPage() {
         description="登録不要・無料で遊べるミニゲーム集。2048・スネーク・神経衰弱など。"
       />
       <div className="mb-8 rounded-2xl border border-cyan-400/20 bg-gradient-to-b from-violet-500/10 to-transparent p-6 text-center">
-        <h1 className="font-pixel neon-text mb-3 text-lg leading-relaxed text-cyan-300 sm:text-2xl">
+        <h1 className="font-pixel neon-text mb-3 text-lg leading-relaxed text-accent sm:text-2xl">
           INSERT COIN
         </h1>
-        <p className="text-sm text-gray-300">
+        <p className="text-sm text-muted">
           登録不要・無料のミニゲーム集。スコアでみんなと競おう。
         </p>
       </div>
@@ -25,7 +25,7 @@ export default function PortalPage() {
         if (list.length === 0) return null
         return (
           <section key={genre} className="mb-8">
-            <h2 className="mb-3 font-pixel text-xs tracking-wide text-gray-400 uppercase">
+            <h2 className="mb-3 font-pixel text-xs tracking-wide text-muted uppercase">
               {GENRES[genre].label}
             </h2>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

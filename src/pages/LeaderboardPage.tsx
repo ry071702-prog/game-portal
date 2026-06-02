@@ -10,15 +10,15 @@ export default function LeaderboardPage() {
   return (
     <Layout showBack>
       <Seo title="ランキング — Game Portal" description="各ゲームのトップスコアランキング。" />
-      <h1 className="neon-text mb-1 text-2xl font-bold text-cyan-300">ランキング</h1>
-      <p className="mb-6 text-sm text-gray-400">各ゲームの上位プレイヤー。今日 / 全期間で切替。</p>
+      <h1 className="neon-text mb-1 text-2xl font-bold text-accent">ランキング</h1>
+      <p className="mb-6 text-sm text-muted">各ゲームの上位プレイヤー。今日 / 全期間で切替。</p>
 
       <div className="space-y-8">
         {games.map((game) => (
           <div key={game.id}>
             <Link
               to={`/games/${game.id}`}
-              className="flex items-center gap-2 text-lg font-bold text-white hover:text-cyan-300"
+              className="flex items-center gap-2 text-lg font-bold text-fg hover:text-accent"
             >
               <span className="text-2xl">{game.thumbnail}</span>
               {game.title}

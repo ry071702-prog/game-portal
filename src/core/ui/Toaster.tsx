@@ -2,9 +2,9 @@ import { useToastStore } from '../store/toastStore'
 import { cn } from '../lib/cn'
 
 const KIND_CLASS = {
-  info: 'border-cyan-400/60 text-cyan-100',
-  success: 'border-green-400/60 text-green-100',
-  error: 'border-rose-400/60 text-rose-100',
+  info: 'border-cyan-500/60 text-cyan-700 dark:text-cyan-200',
+  success: 'border-green-500/60 text-green-700 dark:text-green-200',
+  error: 'border-rose-500/60 text-rose-700 dark:text-rose-200',
 }
 
 /** 画面下部のトースト表示。Layout に1つ配置する。 */

@@ -22,7 +22,7 @@ export default function GamePage() {
     <Layout showBack>
       <Seo title={`${game.title} — Game Portal`} description={game.description} />
       <Suspense
-        fallback={<p className="py-20 text-center text-gray-400">読み込み中…</p>}
+        fallback={<p className="py-20 text-center text-muted">読み込み中…</p>}
       >
         <GameShell key={game.id} game={game} Component={Component} />
       </Suspense>
