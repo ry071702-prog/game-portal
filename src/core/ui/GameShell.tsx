@@ -43,6 +43,7 @@ export function GameShell({ game, Component, mode = 'free', seed }: GameShellPro
   const [nickOpen, setNickOpen] = useState(false)
   const [refreshKey, setRefreshKey] = useState(0)
   const [newRecord, setNewRecord] = useState(false)
+  const [started, setStarted] = useState(false)
   const gameOver = ended !== null
 
   const scoreRef = useRef(0)
@@ -109,9 +110,15 @@ export function GameShell({ game, Component, mode = 'free', seed }: GameShellPro
     setPaused(false)
     setRanks(null)
     setNewRecord(false)
+    setStarted(true)
     sound.click()
     setRestartSignal((n) => n + 1)
   }, [game.id])
+
+  const start = () => {
+    sound.click()
+    setStarted(true)
+  }
 
   const onNickSubmit = (newName: string) => {
     setName(newName)
@@ -157,12 +164,34 @@ export function GameShell({ game, Component, mode = 'free', seed }: GameShellPro
         {/* ゲーム本体: restartSignal を key にしてリスタート=再マウント */}
         <Component
           key={restartSignal}
-          paused={paused || gameOver}
+          paused={paused || gameOver || !started}
           onScore={handleScore}
           onGameOver={handleGameOver}
           restartSignal={restartSignal}
           seed={seed}
         />
+
+        {!started && !gameOver && (
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 bg-white/90 px-5 text-center backdrop-blur-sm dark:bg-black/85">
+            <div className="text-5xl">{game.thumbnail}</div>
+            <p className="font-pixel text-lg text-accent">{game.title}</p>
+            <ul className="max-w-xs space-y-1.5 text-left text-sm text-muted">
+              {game.instructions.map((line) => (
+                <li key={line} className="flex gap-2">
+                  <span className="text-accent">▸</span>
+                  <span>{line}</span>
+                </li>
+              ))}
+            </ul>
+            <button
+              onClick={start}
+              className="mt-1 flex items-center gap-2 rounded-xl border border-cyan-500/50 bg-cyan-500/20 px-8 py-3 font-bold text-accent hover:bg-cyan-500/30 dark:text-cyan-100"
+            >
+              <Play size={18} />
+              スタート
+            </button>
+          </div>
+        )}
 
         {gameOver && (
           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-white/85 px-4 text-center backdrop-blur-sm dark:bg-black/80">
