@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Gamepad2, ChevronLeft, Trophy } from 'lucide-react'
+import { ThemeToggle } from './ThemeToggle'
 
 interface HeaderProps {
   /** 戻るリンクを表示する (ゲーム画面用) */
@@ -8,7 +9,7 @@ interface HeaderProps {
 
 export function Header({ showBack }: HeaderProps) {
   return (
-    <header className="sticky top-0 z-30 border-b border-cyan-400/20 bg-[#0a0a12]/85 backdrop-blur">
+    <header className="sticky top-0 z-30 border-b border-cyan-400/20 bg-[var(--bg-panel)] backdrop-blur">
       <div className="mx-auto flex h-14 max-w-3xl items-center gap-3 px-4">
         {showBack && (
           <Link
@@ -28,8 +29,9 @@ export function Header({ showBack }: HeaderProps) {
           className="ml-auto flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm text-gray-300 hover:bg-white/10 hover:text-yellow-300"
         >
           <Trophy size={16} className="text-yellow-300" />
-          ランキング
+          <span className="hidden sm:inline">ランキング</span>
         </Link>
+        <ThemeToggle />
       </div>
     </header>
   )

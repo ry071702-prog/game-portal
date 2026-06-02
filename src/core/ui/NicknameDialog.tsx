@@ -27,7 +27,7 @@ export function NicknameDialog({ open, initialName = '', onSubmit, onClose }: Ni
       onClick={onClose}
     >
       <div
-        className="w-full max-w-xs rounded-2xl border border-cyan-400/40 bg-[#12121c] p-5"
+        className="w-full max-w-xs rounded-2xl border border-cyan-400/40 bg-[var(--bg-overlay)] p-5"
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="neon-text mb-1 text-lg font-bold text-cyan-300">ニックネーム</h2>

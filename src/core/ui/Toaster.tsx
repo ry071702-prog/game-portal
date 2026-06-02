@@ -16,7 +16,7 @@ export function Toaster() {
         <div
           key={t.id}
           className={cn(
-            'pointer-events-auto rounded-lg border bg-[#0a0a12]/95 px-4 py-2 text-sm shadow-lg',
+            'pointer-events-auto rounded-lg border bg-[var(--bg-overlay)] px-4 py-2 text-sm shadow-lg',
             KIND_CLASS[t.kind],
           )}
         >
