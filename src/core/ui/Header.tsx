@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Gamepad2, ChevronLeft, Trophy } from 'lucide-react'
-import { ThemeToggle } from './ThemeToggle'
+import { ProfileMenu } from './ProfileMenu'
 
 interface HeaderProps {
   /** 戻るリンクを表示する (ゲーム画面用) */
@@ -31,7 +31,7 @@ export function Header({ showBack }: HeaderProps) {
           <Trophy size={16} className="text-yellow-300" />
           <span className="hidden sm:inline">ランキング</span>
         </Link>
-        <ThemeToggle />
+        <ProfileMenu />
       </div>
     </header>
   )

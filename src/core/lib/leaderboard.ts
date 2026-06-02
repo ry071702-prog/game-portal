@@ -4,6 +4,7 @@ export type Period = 'alltime' | 'daily'
 
 export interface LeaderboardRow {
   name: string
+  avatar: string
   best: number
 }
 
@@ -31,6 +32,7 @@ export function sanitizeName(raw: string): string {
 export async function submitScore(params: {
   gameId: string
   name: string
+  avatar: string
   score: number
   clientId: string
 }): Promise<SubmitResult> {

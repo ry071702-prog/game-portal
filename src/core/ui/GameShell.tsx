@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from 'react'
-import { Pause, Play, RotateCcw, HelpCircle, Trophy, Pencil } from 'lucide-react'
+import { Pause, Play, RotateCcw, HelpCircle, Trophy } from 'lucide-react'
 import type { GameComponent, GameManifest } from '../types'
 import { useScoreStore } from '../store/scoreStore'
 import { useIdentityStore } from '../store/identityStore'
@@ -35,12 +35,12 @@ export function GameShell({ game, Component }: GameShellProps) {
 
   const best = useScoreStore((s) => s.best[game.id] ?? 0)
   const setBest = useScoreStore((s) => s.setBest)
-  const { clientId, name, setName } = useIdentityStore()
+  const { clientId, name, avatar, setName } = useIdentityStore()
 
   const doSubmit = useCallback(
     (playerName: string, finalScore: number) => {
       setSubmitting(true)
-      submitScore({ gameId: game.id, name: playerName, score: finalScore, clientId })
+      submitScore({ gameId: game.id, name: playerName, avatar, score: finalScore, clientId })
         .then((res) => {
           setRanks(res)
           setRefreshKey((k) => k + 1)
@@ -49,7 +49,7 @@ export function GameShell({ game, Component }: GameShellProps) {
         .catch(() => toast.error('スコア送信に失敗しました'))
         .finally(() => setSubmitting(false))
     },
-    [game.id, clientId],
+    [game.id, clientId, avatar],
   )
 
   const handleScore = useCallback(
@@ -182,19 +182,6 @@ export function GameShell({ game, Component }: GameShellProps) {
       )}
 
       <LeaderboardPanel gameId={game.id} refreshKey={refreshKey} selfName={name || undefined} />
-
-      <div className="mt-3 flex items-center justify-center gap-2 text-xs text-gray-500">
-        <span>
-          プレイヤー名: <span className="text-gray-300">{name || '未設定'}</span>
-        </span>
-        <button
-          onClick={() => setNickOpen(true)}
-          className="flex items-center gap-1 rounded-md px-2 py-1 hover:bg-white/10 hover:text-gray-300"
-        >
-          <Pencil size={12} />
-          変更
-        </button>
-      </div>
 
       <NicknameDialog
         open={nickOpen}
