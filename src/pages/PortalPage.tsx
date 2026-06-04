@@ -13,13 +13,19 @@ export default function PortalPage() {
         title="Game Portal — 無料ミニゲーム集"
         description="登録不要・無料で遊べるミニゲーム集。2048・スネーク・神経衰弱など。"
       />
-      <div className="mb-6 overflow-hidden rounded-2xl border-2 border-[#ffe000] bg-gradient-to-b from-[#ffe000]/15 to-transparent">
-        <div className="zzz-stripe h-2" />
-        <div className="p-6 text-center">
-          <h1 className="font-display mb-2 text-4xl text-fg sm:text-5xl">
-            GAME <span className="bg-[#ffe000] px-2 text-black">PORTAL</span>
+      <div className="glass rise-in mb-8 overflow-hidden rounded-3xl border-[#ffe000]/40">
+        <div className="zzz-stripe h-2.5" />
+        <div className="px-6 py-16 text-center sm:py-20">
+          <p className="font-display mb-3 text-xs tracking-[0.3em] text-accent uppercase">
+            Free Mini Games
+          </p>
+          <h1 className="font-display mb-4 text-5xl leading-none text-fg sm:text-8xl">
+            GAME{' '}
+            <span className="inline-block -skew-x-6 bg-[#ffe000] px-3 text-black shadow-[6px_6px_0_0_rgba(0,0,0,0.18)]">
+              PORTAL
+            </span>
           </h1>
-          <p className="text-sm font-bold text-muted">
+          <p className="text-sm font-bold text-muted sm:text-base">
             登録不要・無料のミニゲーム集。スコアでみんなと競おう。
           </p>
         </div>
@@ -27,7 +33,7 @@ export default function PortalPage() {
 
       <Link
         to="/daily"
-        className="mb-8 flex items-center gap-3 rounded-2xl border border-[#ffe000]/30 bg-[#ffe000]/10 p-4 transition hover:bg-[#ffe000]/15"
+        className="glass-card rise-in mb-10 flex items-center gap-3 rounded-2xl p-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ffe000]"
       >
         <CalendarDays className="shrink-0 text-accent" />
         <div className="flex-1">
@@ -46,8 +52,14 @@ export default function PortalPage() {
               {GENRES[genre].label}
             </h2>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              {list.map((game) => (
-                <GameCard key={game.id} game={game} />
+              {list.map((game, i) => (
+                <div
+                  key={game.id}
+                  className="rise-in"
+                  style={{ animationDelay: `${i * 40}ms` }}
+                >
+                  <GameCard game={game} />
+                </div>
               ))}
             </div>
           </section>

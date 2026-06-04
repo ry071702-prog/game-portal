@@ -20,6 +20,13 @@
   --accent: #8a6d00; /* 白地で読める濃イエロー(テキスト/枠用) */
   --gold: #a16207;
   --vignette: rgba(0, 0, 0, 0.06);
+  /* Apple "Liquid Glass" ブレンド: 透過パネル + 上端スペキュラ縁光 */
+  --glass-bg: rgba(255, 255, 255, 0.42);
+  --glass-border: rgba(255, 255, 255, 0.75);
+  --glass-blur: blur(22px) saturate(165%);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+  --glass-shadow: 0 10px 34px -14px rgba(10, 10, 10, 0.28);
 }
 .dark {
   --bg-base: #0c0c0c;
@@ -35,6 +42,12 @@
   --accent: #ffe000; /* 暗地ではビビッドイエロー */
   --gold: #fde047;
   --vignette: rgba(0, 0, 0, 0.5);
+  /* ダークでは縁光を抑えて白飛びを防ぐ */
+  --glass-bg: rgba(18, 18, 18, 0.42);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+  --glass-shadow: 0 14px 40px -16px rgba(0, 0, 0, 0.7);
 }
 
 @theme {
@@ -62,6 +75,122 @@
   font-weight: 900;
   letter-spacing: 0.01em;
   line-height: 1.05;
+}
+
+/* アンビエント背景。ガラスが透かす「色と奥行き」を作る漂うオーブ。 */
+.ambient {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.ambient .orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  will-change: transform;
+}
+.ambient .orb-1 {
+  width: 52vw;
+  height: 52vw;
+  left: -12vw;
+  top: -14vw;
+  opacity: 0.72;
+  background: radial-gradient(circle, #ffe000, transparent 62%);
+  animation: float-a 18s ease-in-out infinite alternate;
+}
+.ambient .orb-2 {
+  width: 44vw;
+  height: 44vw;
+  right: -10vw;
+  top: 26vh;
+  opacity: 0.5;
+  background: radial-gradient(circle, #f59e0b, transparent 62%);
+  animation: float-b 23s ease-in-out infinite alternate;
+}
+.ambient .orb-3 {
+  width: 40vw;
+  height: 40vw;
+  left: 24vw;
+  bottom: -16vw;
+  opacity: 0.38;
+  background: radial-gradient(circle, #fb923c, transparent 64%);
+  animation: float-a 27s ease-in-out infinite alternate-reverse;
+}
+.dark .ambient .orb-1 {
+  opacity: 0.4;
+}
+.dark .ambient .orb-2 {
+  opacity: 0.32;
+}
+.dark .ambient .orb-3 {
+  opacity: 0.24;
+}
+@keyframes float-a {
+  to {
+    transform: translate(6vw, 5vh) scale(1.14);
+  }
+}
+@keyframes float-b {
+  to {
+    transform: translate(-5vw, 4vh) scale(0.88);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ambient .orb {
+    animation: none;
+  }
+}
+
+/* ガラスパネル (Apple Liquid Glass ブレンド)。透過 + blur + 上端の縁光。 */
+.glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow), var(--glass-highlight);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+}
+
+/* ガラスカード + ホバー演出。浮上はやわらかく(Apple)、縁はイエロー1px(ZZZ)。 */
+.glass-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow), var(--glass-highlight);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  transition:
+    transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1),
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+.glass-card:hover {
+  transform: translateY(-4px);
+  border-color: #ffe000;
+  box-shadow: 0 20px 46px -16px rgba(10, 10, 10, 0.4), 0 0 0 1px #ffe000, var(--glass-highlight);
+}
+.dark .glass-card:hover {
+  box-shadow: 0 24px 54px -18px rgba(0, 0, 0, 0.8), 0 0 0 1px #ffe000, var(--glass-highlight);
+}
+
+/* カード入場: ふわっと持ち上がる。stagger は style の animation-delay で付与。 */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.rise-in {
+  animation: rise-in 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) backwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rise-in {
+    animation: none;
+  }
 }
 
 /* ハザードストライプ (アクセント帯) */
