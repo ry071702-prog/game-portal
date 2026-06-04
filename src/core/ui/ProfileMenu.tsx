@@ -38,7 +38,7 @@ export function ProfileMenu() {
       {open && (
         <>
           <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} aria-hidden />
-          <div className="absolute right-0 z-50 mt-2 w-72 rounded-2xl border border-[#ffe000]/30 bg-[var(--bg-overlay)] p-4 shadow-xl">
+          <div className="glass-strong absolute right-0 z-50 mt-2 w-72 rounded-2xl border-[#ffe000]/30 p-4">
             {/* 現在のプロフィール */}
             <div className="mb-4 flex items-center gap-3">
               <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#ffe000]/20 text-2xl">

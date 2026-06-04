@@ -160,7 +160,7 @@ export function GameShell({ game, Component, mode = 'free', seed }: GameShellPro
         </div>
       </div>
 
-      <div className="neon-box relative overflow-hidden rounded-2xl border border-[#ffe000]/20 bg-surface p-3">
+      <div className="glass relative overflow-hidden rounded-2xl border-[#ffe000]/20 p-3">
         {/* ゲーム本体: restartSignal を key にしてリスタート=再マウント */}
         <Component
           key={restartSignal}
@@ -262,7 +262,7 @@ export function GameShell({ game, Component, mode = 'free', seed }: GameShellPro
       </div>
 
       {showHelp && (
-        <ul className="mt-3 list-disc space-y-1 rounded-xl border border-line bg-surface p-4 pl-8 text-sm text-muted">
+        <ul className="glass mt-3 list-disc space-y-1 rounded-xl p-4 pl-8 text-sm text-muted">
           {game.instructions.map((line) => (
             <li key={line}>{line}</li>
           ))}
