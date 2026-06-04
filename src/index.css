@@ -99,7 +99,7 @@
   left: -12vw;
   top: -14vw;
   opacity: 0.72;
-  background: radial-gradient(circle, #ffe000, transparent 62%);
+  background: radial-gradient(circle, var(--orb-a, #ffe000), transparent 62%);
   animation: float-a 18s ease-in-out infinite alternate;
 }
 .ambient .orb-2 {
@@ -108,7 +108,7 @@
   right: -10vw;
   top: 26vh;
   opacity: 0.5;
-  background: radial-gradient(circle, #f59e0b, transparent 62%);
+  background: radial-gradient(circle, var(--orb-b, #f59e0b), transparent 62%);
   animation: float-b 23s ease-in-out infinite alternate;
 }
 .ambient .orb-3 {
@@ -117,7 +117,7 @@
   left: 24vw;
   bottom: -16vw;
   opacity: 0.38;
-  background: radial-gradient(circle, #fb923c, transparent 64%);
+  background: radial-gradient(circle, var(--orb-c, #fb923c), transparent 64%);
   animation: float-a 27s ease-in-out infinite alternate-reverse;
 }
 .dark .ambient .orb-1 {
