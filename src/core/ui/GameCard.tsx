@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import type { GameManifest } from '../types'
 import { GENRES } from '../lib/genres'
@@ -6,17 +7,29 @@ import { useScoreStore } from '../store/scoreStore'
 export function GameCard({ game }: { game: GameManifest }) {
   const best = useScoreStore((s) => s.best[game.id] ?? 0)
   const genre = GENRES[game.genre]
+  // 生成済みアイコン (public/icons/<id>.png) があれば画像、無ければ絵文字にフォールバック
+  const [iconFailed, setIconFailed] = useState(false)
 
   return (
     <Link
       to={`/games/${game.id}`}
-      className="group flex flex-col gap-3 rounded-2xl border-2 border-line bg-surface p-4 transition hover:-translate-y-0.5 hover:border-[#ffe000] hover:shadow-[4px_4px_0_0_#ffe000]"
+      className="glass-card group flex flex-col gap-3 rounded-2xl p-5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ffe000]"
     >
       <div
-        className="flex h-24 items-center justify-center rounded-xl text-5xl transition group-hover:scale-110"
+        className="flex h-24 items-center justify-center overflow-hidden rounded-xl text-5xl transition group-hover:scale-110"
         style={{ background: game.accentColor ?? 'rgba(255,255,255,0.05)' }}
       >
-        {game.thumbnail}
+        {iconFailed ? (
+          game.thumbnail
+        ) : (
+          <img
+            src={`/icons/${game.id}.png`}
+            alt=""
+            loading="lazy"
+            className="h-full w-full object-contain"
+            onError={() => setIconFailed(true)}
+          />
+        )}
       </div>
       <div className="flex items-center gap-2">
         <h3 className="font-display text-lg text-fg">{game.title}</h3>

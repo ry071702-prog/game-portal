@@ -9,7 +9,7 @@ interface HeaderProps {
 
 export function Header({ showBack }: HeaderProps) {
   return (
-    <header className="sticky top-0 z-30 border-b border-[#ffe000]/20 bg-[var(--bg-panel)] backdrop-blur">
+    <header className="glass sticky top-0 z-30 border-x-0 border-t-0 border-b border-[#ffe000]/25">
       <div className="mx-auto flex h-14 max-w-3xl items-center gap-3 px-4">
         {showBack && (
           <Link
