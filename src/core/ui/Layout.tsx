@@ -1,16 +1,23 @@
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 import { Header } from './Header'
 import { Toaster } from './Toaster'
 
 interface LayoutProps {
   children: ReactNode
   showBack?: boolean
+  /** 設定するとアンビエント(発光オーブ)がこの色を帯びる。ゲーム画面でジャンル色に。 */
+  accent?: string
 }
 
-export function Layout({ children, showBack }: LayoutProps) {
+export function Layout({ children, showBack, accent }: LayoutProps) {
+  // accent が来たら3つのオーブを同系色に。未指定はポータル既定(黄/琥珀/橙)。
+  const ambientStyle = accent
+    ? ({ '--orb-a': accent, '--orb-b': accent, '--orb-c': accent } as CSSProperties)
+    : undefined
+
   return (
     <div className="flex min-h-svh flex-col">
-      <div className="ambient" aria-hidden>
+      <div className="ambient" aria-hidden style={ambientStyle}>
         <span className="orb orb-1" />
         <span className="orb orb-2" />
         <span className="orb orb-3" />

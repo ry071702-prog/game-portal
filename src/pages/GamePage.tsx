@@ -1,6 +1,7 @@
 import { lazy, Suspense, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import { gameById } from '../core/registry'
+import { GENRES } from '../core/lib/genres'
 import { GameShell } from '../core/ui/GameShell'
 import { Layout } from '../core/ui/Layout'
 import { Seo } from '../core/ui/Seo'
@@ -19,7 +20,7 @@ export default function GamePage() {
   if (!game || !Component) return <NotFoundPage />
 
   return (
-    <Layout showBack>
+    <Layout showBack accent={GENRES[game.genre].orb}>
       <Seo title={`${game.title} — Game Portal`} description={game.description} />
       <Suspense
         fallback={<p className="py-20 text-center text-muted">読み込み中…</p>}
