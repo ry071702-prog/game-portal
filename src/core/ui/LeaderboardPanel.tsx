@@ -46,7 +46,7 @@ export function LeaderboardPanel({
   }, [reqKey, gameId, period, mode])
 
   return (
-    <section className="mt-6 rounded-2xl border border-line bg-surface p-4">
+    <section className="glass mt-6 rounded-2xl p-4">
       <div className="mb-3 flex items-center justify-between">
         <h2 className="flex items-center gap-2 font-bold text-fg">
           <Trophy size={18} className="text-gold" />

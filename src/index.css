@@ -24,6 +24,7 @@
   --glass-bg: rgba(255, 255, 255, 0.42);
   --glass-border: rgba(255, 255, 255, 0.75);
   --glass-blur: blur(22px) saturate(165%);
+  --glass-strong-bg: rgba(255, 255, 255, 0.82);
   --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.9),
     inset 0 0 0 1px rgba(255, 255, 255, 0.25);
   --glass-shadow: 0 10px 34px -14px rgba(10, 10, 10, 0.28);
@@ -45,6 +46,7 @@
   /* ダークでは縁光を抑えて白飛びを防ぐ */
   --glass-bg: rgba(18, 18, 18, 0.42);
   --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-strong-bg: rgba(20, 20, 22, 0.82);
   --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.12),
     inset 0 0 0 1px rgba(255, 255, 255, 0.04);
   --glass-shadow: 0 14px 40px -16px rgba(0, 0, 0, 0.7);
@@ -146,6 +148,15 @@
 /* ガラスパネル (Apple Liquid Glass ブレンド)。透過 + blur + 上端の縁光。 */
 .glass {
   background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow), var(--glass-highlight);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+}
+
+/* 読みやすさ優先の濃いガラス (ダイアログ / メニュー / トースト)。 */
+.glass-strong {
+  background: var(--glass-strong-bg);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow), var(--glass-highlight);
   backdrop-filter: var(--glass-blur);
