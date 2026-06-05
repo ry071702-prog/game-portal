@@ -27,6 +27,7 @@ export function Layout({ children, showBack, accent }: LayoutProps) {
       <footer className="relative z-10 border-t border-line py-4 text-center text-xs text-faint">
         Game Portal — 無料・登録不要で遊べるミニゲーム集
       </footer>
+      <div className="grain" aria-hidden />
       <div className="scanlines" aria-hidden />
       <Toaster />
     </div>

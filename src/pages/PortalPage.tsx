@@ -48,8 +48,13 @@ export default function PortalPage() {
         if (list.length === 0) return null
         return (
           <section key={genre} className="mb-8">
-            <h2 className="mb-3 font-display text-xs tracking-wide text-muted uppercase">
+            <h2 className="mb-3 flex items-center gap-2 font-display text-sm tracking-wide text-fg uppercase">
+              <span
+                className="h-4 w-1 rounded-full"
+                style={{ background: GENRES[genre].orb }}
+              />
               {GENRES[genre].label}
+              <span className="text-xs font-normal text-faint">{list.length}</span>
             </h2>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               {list.map((game, i) => (
