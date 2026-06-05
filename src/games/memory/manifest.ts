@@ -4,6 +4,7 @@ const manifest: GameManifest = {
   id: 'memory',
   title: '神経衰弱',
   genre: 'board',
+  category: 'Casual',
   description: '同じ絵柄のペアを揃える記憶ゲーム。少ない手数を目指そう。',
   instructions: [
     'カードをタップ/クリックして2枚めくる',
@@ -15,6 +16,7 @@ const manifest: GameManifest = {
   difficulty: 'easy',
   minutes: 3,
   featured: true,
+  popularity: 90,
   component: () => import('./MemoryGame'),
 }
 

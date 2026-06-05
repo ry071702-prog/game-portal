@@ -4,6 +4,7 @@ const manifest: GameManifest = {
   id: '2048',
   title: '2048',
   genre: 'puzzle',
+  category: 'Puzzle',
   description: '同じ数字を合体させて 2048 を目指すパズル。',
   instructions: [
     'PC: 矢印キー / WASD でタイルを移動',
@@ -15,6 +16,7 @@ const manifest: GameManifest = {
   difficulty: 'normal',
   minutes: 5,
   featured: true,
+  popularity: 96,
   component: () => import('./Game2048'),
 }
 

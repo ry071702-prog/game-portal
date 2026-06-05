@@ -4,6 +4,7 @@ const manifest: GameManifest = {
   id: 'simon',
   title: 'サイモン',
   genre: 'board',
+  category: 'Casual',
   description: '光る順番を記憶して再現。ラウンドごとに1手ずつ増える記憶ゲーム。',
   instructions: [
     'パッドが光る順番を覚えます',
@@ -14,6 +15,7 @@ const manifest: GameManifest = {
   accentColor: 'rgba(34, 197, 94, 0.15)',
   difficulty: 'normal',
   minutes: 3,
+  popularity: 76,
   component: () => import('./SimonGame'),
 }
 
