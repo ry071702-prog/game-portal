@@ -11,18 +11,19 @@ interface GenreInfo {
 export const GENRES: Record<GameGenre, GenreInfo> = {
   puzzle: {
     label: 'パズル',
-    badgeClass: 'bg-violet-500/15 text-violet-700 ring-violet-500/40 dark:text-violet-300',
-    orb: '#8b5cf6',
+    badgeClass: 'bg-cyan-500/10 text-cyan-700 ring-cyan-500/35 dark:text-cyan-200',
+    orb: '#5ad1e6',
   },
   arcade: {
     label: 'アーケード',
-    badgeClass: 'bg-[#ffe000]/20 text-amber-700 ring-[#ffe000]/50 dark:text-[#ffe000]',
-    orb: '#ffe000',
+    badgeClass:
+      'bg-[rgba(232,200,122,0.16)] text-[#8d6a2a] ring-[rgba(232,200,122,0.45)] dark:text-[#e8c87a]',
+    orb: '#e8c87a',
   },
   board: {
     label: 'ボード',
-    badgeClass: 'bg-emerald-500/15 text-emerald-700 ring-emerald-500/40 dark:text-emerald-300',
-    orb: '#10b981',
+    badgeClass: 'bg-indigo-500/15 text-indigo-700 ring-indigo-400/40 dark:text-indigo-200',
+    orb: '#7a8cff',
   },
 }
 

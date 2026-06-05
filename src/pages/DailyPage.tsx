@@ -1,4 +1,5 @@
 import { lazy, Suspense, useMemo } from 'react'
+import { CalendarDays } from 'lucide-react'
 import { gameById } from '../core/registry'
 import { GameShell } from '../core/ui/GameShell'
 import { Layout } from '../core/ui/Layout'
@@ -21,13 +22,23 @@ export default function DailyPage() {
         title="今日のチャレンジ — Game Portal"
         description="全員が同じお題に挑戦するデイリーチャレンジ。専用ランキングで競おう。"
       />
-      <div className="glass rise-in mb-5 rounded-2xl border-[#ffe000]/30 p-5 text-center">
-        <p className="font-display neon-text mb-1 text-sm text-accent">DAILY CHALLENGE</p>
-        <p className="text-sm text-muted">{today}</p>
-        <p className="mt-2 text-fg">
-          今日はみんなで <span className="font-bold text-accent">{game.title}</span>{' '}
-          に挑戦！全員同じお題・専用ランキングで競おう
-        </p>
+      <div className="premium-panel rise-in mb-5 rounded-[1.35rem] border-accent/30 p-5">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="eyebrow mb-2">
+              <CalendarDays size={14} />
+              Daily Challenge
+            </p>
+            <p className="font-display text-3xl text-fg">{game.title}</p>
+            <p className="mt-2 text-sm font-bold text-muted">
+              全員同じお題・専用ランキングで競おう
+            </p>
+          </div>
+          <div className="rounded-2xl border border-accent/30 bg-accent-bg px-4 py-3 text-right shadow-[var(--glass-highlight)]">
+            <p className="text-xs font-bold text-faint">Today</p>
+            <p className="font-display text-xl text-accent">{today}</p>
+          </div>
+        </div>
       </div>
       <Suspense fallback={<p className="py-20 text-center text-muted">読み込み中…</p>}>
         <GameShell key={`daily-${id}`} game={game} Component={Component} mode="daily" seed={seed} />

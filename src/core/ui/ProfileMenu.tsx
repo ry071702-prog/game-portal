@@ -26,29 +26,33 @@ export function ProfileMenu() {
     <div className="relative">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="flex items-center gap-2 rounded-full border border-line bg-surface py-1 pr-3 pl-1 hover:border-[#ffe000]/40"
+        className="focus-ring flex min-h-10 items-center gap-2 rounded-full border border-line bg-[var(--control-bg)] py-1 pr-3 pl-1 shadow-[var(--glass-highlight)] transition hover:border-accent/45 hover:bg-[var(--control-hover)]"
         aria-label="ユーザー設定"
+        aria-haspopup="dialog"
+        aria-expanded={open}
       >
-        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#ffe000]/20 text-base">
+        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-accent-bg text-base ring-1 ring-accent/30">
           {avatar}
         </span>
-        <span className="max-w-24 truncate text-sm text-fg">{name || 'ゲスト'}</span>
+        <span className="hidden max-w-24 truncate text-sm font-bold text-fg sm:inline">
+          {name || 'ゲスト'}
+        </span>
       </button>
 
       {open && (
         <>
           <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} aria-hidden />
-          <div className="glass-strong absolute right-0 z-50 mt-2 w-72 rounded-2xl border-[#ffe000]/30 p-4">
+          <div className="glass-strong absolute right-0 z-50 mt-2 w-72 rounded-[1.35rem] border-accent/30 p-4">
             {/* 現在のプロフィール */}
             <div className="mb-4 flex items-center gap-3">
-              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#ffe000]/20 text-2xl">
+              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-accent-bg text-2xl ring-1 ring-accent/35">
                 {avatar}
               </span>
               <div className="min-w-0">
                 <p className="truncate font-bold text-fg">{name || 'ゲスト'}</p>
                 <button
                   onClick={() => setNickOpen(true)}
-                  className="flex items-center gap-1 text-xs text-accent hover:underline"
+                  className="focus-ring mt-1 flex items-center gap-1 rounded-md text-xs font-bold text-accent hover:underline"
                 >
                   <Pencil size={11} />
                   名前を変更
@@ -64,8 +68,8 @@ export function ProfileMenu() {
                   key={a}
                   onClick={() => setAvatar(a)}
                   className={cn(
-                    'flex aspect-square items-center justify-center rounded-lg text-lg hover:bg-surface-2',
-                    a === avatar && 'bg-[#ffe000]/25 ring-1 ring-[#ffe000]/60',
+                    'focus-ring flex aspect-square items-center justify-center rounded-xl text-lg transition hover:bg-surface-2',
+                    a === avatar && 'bg-accent-bg ring-1 ring-accent/60',
                   )}
                   aria-label={`アイコン ${a}`}
                 >
@@ -76,14 +80,14 @@ export function ProfileMenu() {
 
             {/* テーマ */}
             <p className="mb-2 text-xs font-bold tracking-wide text-muted uppercase">テーマ</p>
-            <div className="flex gap-1 rounded-lg bg-surface-2 p-1">
+            <div className="segmented">
               {THEME_OPTS.map(({ value, label, Icon }) => (
                 <button
                   key={value}
                   onClick={() => setTheme(value)}
                   className={cn(
-                    'flex flex-1 items-center justify-center gap-1 rounded-md px-2 py-1.5 text-xs',
-                    theme === value ? 'bg-[#ffe000] font-bold text-black' : 'text-muted',
+                    'flex flex-1 items-center justify-center gap-1 px-2 py-1.5 text-xs font-bold text-muted',
+                    theme === value && 'is-active',
                   )}
                 >
                   {theme === value ? <Check size={13} /> : <Icon size={13} />}
@@ -96,7 +100,7 @@ export function ProfileMenu() {
             <p className="mt-4 mb-2 text-xs font-bold tracking-wide text-muted uppercase">サウンド</p>
             <button
               onClick={toggleMuted}
-              className="flex w-full items-center justify-between rounded-lg bg-surface-2 px-3 py-2 text-sm text-fg"
+              className="focus-ring flex w-full items-center justify-between rounded-xl border border-line bg-[var(--control-bg)] px-3 py-2 text-sm font-bold text-fg transition hover:border-accent/45 hover:bg-[var(--control-hover)]"
             >
               <span className="flex items-center gap-2">
                 {muted ? <VolumeX size={15} /> : <Volume2 size={15} />}

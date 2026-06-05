@@ -2,7 +2,7 @@ import { useToastStore } from '../store/toastStore'
 import { cn } from '../lib/cn'
 
 const KIND_CLASS = {
-  info: 'border-[#ffe000]/70 text-fg',
+  info: 'border-accent/70 text-fg',
   success: 'border-green-500/60 text-green-700 dark:text-green-300',
   error: 'border-rose-500/60 text-rose-700 dark:text-rose-300',
 }
@@ -16,7 +16,7 @@ export function Toaster() {
         <div
           key={t.id}
           className={cn(
-            'glass-strong pointer-events-auto rounded-lg px-4 py-2 text-sm',
+            'glass-strong pointer-events-auto rounded-xl px-4 py-3 text-sm font-bold shadow-[var(--lift-shadow)]',
             KIND_CLASS[t.kind],
           )}
         >
