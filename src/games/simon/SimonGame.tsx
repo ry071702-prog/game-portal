@@ -9,7 +9,7 @@ type Phase = 'showing' | 'input' | 'over'
 const PADS: { base: string; lit: string }[] = [
   { base: 'bg-green-700', lit: 'bg-green-400' },
   { base: 'bg-red-700', lit: 'bg-red-400' },
-  { base: 'bg-yellow-600', lit: 'bg-yellow-300' },
+  { base: 'bg-[#8b6a2f]', lit: 'bg-[#e8c87a]' },
   { base: 'bg-blue-700', lit: 'bg-blue-400' },
 ]
 

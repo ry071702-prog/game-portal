@@ -23,14 +23,19 @@ export function NicknameDialog({ open, initialName = '', onSubmit, onClose }: Ni
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/65 p-4 backdrop-blur-md"
       onClick={onClose}
     >
       <div
-        className="glass-strong w-full max-w-xs rounded-2xl border-[#ffe000]/40 p-5"
+        className="glass-strong w-full max-w-xs rounded-[1.35rem] border-accent/40 p-5"
         onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="nickname-dialog-title"
       >
-        <h2 className="neon-text mb-1 text-lg font-bold text-accent">ニックネーム</h2>
+        <h2 id="nickname-dialog-title" className="font-display mb-1 text-2xl text-fg">
+          ニックネーム
+        </h2>
         <p className="mb-4 text-xs text-muted">
           ランキングに表示される名前です (最大{MAX_NAME_LEN}文字)。端末に保存され、次回から自動で使われます。
         </p>
@@ -40,19 +45,19 @@ export function NicknameDialog({ open, initialName = '', onSubmit, onClose }: Ni
           onChange={(e) => setValue(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && submit()}
           placeholder="名無しのプレイヤー"
-          className="mb-4 w-full rounded-lg border border-line bg-surface-2 px-3 py-2 text-fg outline-none focus:border-[#ffe000]"
+          className="input-premium mb-4 w-full rounded-xl px-3 py-2.5 outline-none"
         />
         <div className="flex gap-2">
           <button
             onClick={onClose}
-            className="flex-1 rounded-lg bg-surface-2 px-4 py-2 text-sm text-fg hover:opacity-80"
+            className="btn-soft flex-1 text-sm"
           >
             あとで
           </button>
           <button
             onClick={submit}
             disabled={!valid}
-            className="flex-1 rounded-lg bg-[#ffe000] px-4 py-2 text-sm font-extrabold text-black transition hover:brightness-110 disabled:opacity-40"
+            className="btn-primary flex-1 text-sm"
           >
             決定
           </button>

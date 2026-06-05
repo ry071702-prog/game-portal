@@ -63,7 +63,9 @@ export default function NumTapGame({ paused, onScore, onGameOver, seed }: GameCo
               onClick={() => tap(n)}
               disabled={paused || tapped}
               className={`flex aspect-square items-center justify-center rounded-lg text-lg font-bold transition ${
-                tapped ? 'bg-surface text-faint' : 'bg-[#ffe000]/80 text-white hover:bg-[#ffe000]'
+                tapped
+                  ? 'bg-surface text-faint'
+                  : 'bg-[linear-gradient(135deg,rgba(232,200,122,0.92),rgba(90,209,230,0.58))] text-[#101421] hover:brightness-110'
               }`}
             >
               {n}

@@ -8,7 +8,9 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "gen:icons": "tsx scripts/gen-icons.ts"
+    "gen:icons": "tsx scripts/gen-icons.ts",
+    "deploy": "npm run build && wrangler pages deploy dist --project-name game-portal --branch main",
+    "db:init": "wrangler d1 execute game-portal-db --remote --file=schema.sql"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.0",
