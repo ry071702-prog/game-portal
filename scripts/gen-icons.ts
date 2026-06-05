@@ -35,12 +35,13 @@ const onlyIds = argv.filter((a) => !a.startsWith('--'))
 
 // 全アイコン共通の画風。ここを変えると全体のトーンが揃って変わる。
 const STYLE_GUIDE = [
-  'A single mobile game icon.',
-  'Flat, modern, bold and simple shapes with clean thick outlines.',
-  'Centered subject, filling the frame, no padding text.',
-  'Vibrant neon arcade aesthetic on a dark sleek UI, glossy highlights.',
-  'Transparent background. No text, no letters, no numbers, no words.',
-  'Consistent art style across a set of icons for one game portal.',
+  'A single modern mobile game icon, centered, filling the frame.',
+  'Flat geometric design with clean bold shapes and crisp edges.',
+  'Cohesive "cyber arcade" icon set: violet (#8B5CF6) and cyan (#22D3EE) neon accents',
+  'with a subtle glow, on a deep dark theme. Premium, sleek and restrained —',
+  'not cartoonish, not overly glossy, no heavy 3D bevels.',
+  'Transparent background. No text, no letters, no numbers, no words, no UI frames.',
+  'Consistent lighting, palette and stroke weight across the whole icon set.',
 ].join(' ')
 
 /** 段1: ChatGPT にアイコン用の英語プロンプトを設計させる */
