@@ -4,6 +4,7 @@ const manifest: GameManifest = {
   id: 'flap',
   title: 'フラッピー',
   genre: 'arcade',
+  category: 'Reflex',
   description: 'タップで羽ばたいて土管の隙間をくぐる。通過した数がスコア。',
   instructions: [
     'タップ / クリック / スペースで上昇',
@@ -15,6 +16,7 @@ const manifest: GameManifest = {
   difficulty: 'normal',
   minutes: 2,
   isNew: true,
+  popularity: 80,
   component: () => import('./FlapGame'),
 }
 

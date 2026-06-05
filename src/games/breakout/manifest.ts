@@ -4,6 +4,7 @@ const manifest: GameManifest = {
   id: 'breakout',
   title: 'ブロック崩し',
   genre: 'arcade',
+  category: 'Action',
   description: 'パドルでボールを跳ね返してブロックを全消し。消すほど加速。',
   instructions: [
     'PC: ←→ キー、またはマウスでパドル移動',
@@ -14,6 +15,7 @@ const manifest: GameManifest = {
   accentColor: 'rgba(244, 63, 94, 0.15)',
   difficulty: 'normal',
   minutes: 5,
+  popularity: 84,
   component: () => import('./BreakoutGame'),
 }
 

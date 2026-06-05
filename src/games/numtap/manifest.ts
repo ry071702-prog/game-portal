@@ -4,6 +4,7 @@ const manifest: GameManifest = {
   id: 'numtap',
   title: '数字タッチ',
   genre: 'arcade',
+  category: 'Score Attack',
   description: 'バラバラの1〜25を順番に素早くタップ。クリアタイムを競う反射神経ゲーム。',
   instructions: ['1から25まで順番にタップ/クリック', '間違えてもタイムは進みます', '速いほど高スコア'],
   thumbnail: '⏱️',
@@ -11,6 +12,7 @@ const manifest: GameManifest = {
   difficulty: 'easy',
   minutes: 1,
   isNew: true,
+  popularity: 78,
   component: () => import('./NumTapGame'),
 }
 

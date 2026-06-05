@@ -7,6 +7,25 @@ export type GameGenre = z.infer<typeof gameGenreSchema>
 
 export const gameDifficultySchema = z.enum(['easy', 'normal', 'hard'])
 export type GameDifficulty = z.infer<typeof gameDifficultySchema>
+export const GAME_DIFFICULTY_ORDER: GameDifficulty[] = ['easy', 'normal', 'hard']
+
+export const gameCategorySchema = z.enum([
+  'Action',
+  'Puzzle',
+  'Reflex',
+  'Casual',
+  'Score Attack',
+  'Strategy',
+])
+export type GameCategory = z.infer<typeof gameCategorySchema>
+export const GAME_CATEGORY_ORDER: GameCategory[] = [
+  'Action',
+  'Puzzle',
+  'Reflex',
+  'Casual',
+  'Score Attack',
+  'Strategy',
+]
 
 /**
  * 各ゲーム本体に共通枠 (GameShell) から渡される props。
@@ -35,6 +54,8 @@ export interface GameManifest {
   genre: GameGenre
   /** 一覧カードの短い説明 */
   description: string
+  /** ポータル UI の検索・分類用カテゴリ。旧 genre は互換表示用に残す。 */
+  category?: GameCategory
   /** 操作説明 (PC / モバイル)。GameShell のヘルプに表示 */
   instructions: string[]
   /** カードの絵文字サムネ (軽量・追加が楽)。将来 SVG/画像 URL に差し替え可 */
@@ -48,6 +69,8 @@ export interface GameManifest {
   featured?: boolean
   /** 新着セクション用 */
   isNew?: boolean
+  /** 人気順用の編集者重み。実測プレイ数ではなく、表示順位調整にのみ使う。 */
+  popularity?: number
   /** 遅延ロードでコード分割。ゲーム追加が一覧描画コストに影響しない */
   component: () => Promise<{ default: GameComponent }>
 }
@@ -60,6 +83,7 @@ const manifestMetaSchema = z.object({
   title: z.string().min(1),
   genre: gameGenreSchema,
   description: z.string().min(1),
+  category: gameCategorySchema.optional(),
   instructions: z.array(z.string()).min(1),
   thumbnail: z.string().min(1),
   accentColor: z.string().optional(),
@@ -67,6 +91,7 @@ const manifestMetaSchema = z.object({
   minutes: z.number().positive().optional(),
   featured: z.boolean().optional(),
   isNew: z.boolean().optional(),
+  popularity: z.number().min(0).max(100).optional(),
 })
 
 /**

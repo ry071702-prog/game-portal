@@ -4,6 +4,7 @@ const manifest: GameManifest = {
   id: 'slide15',
   title: '15パズル',
   genre: 'puzzle',
+  category: 'Puzzle',
   description: 'タイルをスライドして1〜15を順番に並べる定番パズル。少手数を目指そう。',
   instructions: [
     '空きマスに隣接するタイルをタップ/クリックでスライド',
@@ -14,6 +15,7 @@ const manifest: GameManifest = {
   accentColor: 'rgba(139, 92, 246, 0.15)',
   difficulty: 'hard',
   minutes: 6,
+  popularity: 68,
   component: () => import('./Slide15'),
 }
 
