@@ -147,25 +147,25 @@ export function GameShell({ game, Component, mode = 'free', seed }: GameShellPro
 
   return (
     <div>
-      <div className="premium-panel mb-4 rounded-[1.35rem] border-accent/20 p-4">
+      <div className="mb-4 rounded-3xl border border-line bg-bg-panel p-4">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
             <span
-              className="flex h-12 w-12 items-center justify-center rounded-2xl text-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.22),0_0_24px_-18px_rgba(90,209,230,0.9)] ring-1 ring-accent/20"
+              className="flex h-12 w-12 items-center justify-center rounded-2xl text-2xl ring-1 ring-line"
               style={{ background: game.accentColor ?? 'var(--surface-2)' }}
             >
               {game.thumbnail}
             </span>
             <div>
-              <p className="eyebrow mb-1">Now Playing</p>
+              <p className="mb-1 text-xs font-black tracking-wide text-cyan uppercase">Now Playing</p>
               <h1 className="font-display text-3xl text-fg">{game.title}</h1>
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-2 text-sm">
-            <span className="rounded-xl border border-line bg-[var(--control-bg)] px-3 py-2 text-muted shadow-[var(--glass-highlight)]">
+            <span className="rounded-xl border border-line bg-control-bg px-3 py-2 text-muted">
               SCORE <span className="font-display ml-1 text-base text-fg">{score}</span>
             </span>
-            <span className="flex items-center gap-1 rounded-xl border border-accent/30 bg-accent-bg px-3 py-2 text-gold shadow-[var(--glass-highlight)]">
+            <span className="flex items-center gap-1 rounded-xl border border-yellow/30 bg-yellow/15 px-3 py-2 text-yellow">
               <Trophy size={14} />
               <span className="font-display text-base">{best}</span>
             </span>
@@ -173,7 +173,7 @@ export function GameShell({ game, Component, mode = 'free', seed }: GameShellPro
         </div>
       </div>
 
-      <div className="relative overflow-hidden rounded-[1.35rem] border border-accent/20 bg-[var(--bg-panel)] p-3 shadow-[var(--soft-shadow)]">
+      <div className="relative overflow-hidden rounded-3xl border border-line bg-bg-panel p-3 shadow-[var(--soft-shadow)]">
         {/* ゲーム本体: restartSignal を key にしてリスタート=再マウント */}
         <Component
           key={restartSignal}
@@ -185,13 +185,13 @@ export function GameShell({ game, Component, mode = 'free', seed }: GameShellPro
         />
 
         {!started && !gameOver && (
-          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 bg-[var(--bg-overlay)] px-5 text-center backdrop-blur-md">
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 bg-[var(--bg-overlay)] px-5 text-center">
             <div className="text-6xl">{game.thumbnail}</div>
             <p className="font-display text-2xl text-fg">{game.title}</p>
             <ul className="max-w-xs space-y-2 text-left text-sm font-medium text-fg">
               {game.instructions.map((line) => (
                 <li key={line} className="flex gap-2">
-                  <span className="font-bold text-accent">◆</span>
+                  <span className="font-bold text-yellow">•</span>
                   <span>{line}</span>
                 </li>
               ))}
@@ -204,9 +204,9 @@ export function GameShell({ game, Component, mode = 'free', seed }: GameShellPro
         )}
 
         {gameOver && (
-          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-[var(--bg-overlay)] px-4 text-center backdrop-blur-md">
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-[var(--bg-overlay)] px-4 text-center">
             {newRecord && (
-              <p className="font-display animate-pulse text-sm text-gold">NEW RECORD</p>
+              <p className="font-display animate-pulse text-sm text-yellow">NEW RECORD</p>
             )}
             <p className="font-display text-3xl text-fg">
               {ended === 'win' ? 'CLEAR!' : 'GAME OVER'}
@@ -216,7 +216,7 @@ export function GameShell({ game, Component, mode = 'free', seed }: GameShellPro
             </p>
             {submitting && <p className="text-xs text-muted">ランキング送信中…</p>}
             {ranks && (
-              <p className="text-sm text-accent">
+              <p className="text-sm text-cyan">
                 全期間 <span className="font-display">{ranks.alltimeRank}</span> 位 / 今日{' '}
                 <span className="font-display">{ranks.dailyRank}</span> 位
               </p>
@@ -266,7 +266,7 @@ export function GameShell({ game, Component, mode = 'free', seed }: GameShellPro
       </div>
 
       {showHelp && (
-        <ul className="glass-strong mt-3 list-disc space-y-1 rounded-xl p-4 pl-8 text-sm text-muted">
+        <ul className="mt-3 list-disc space-y-1 rounded-2xl border border-line bg-bg-panel p-4 pl-8 text-sm text-muted">
           {game.instructions.map((line) => (
             <li key={line}>{line}</li>
           ))}

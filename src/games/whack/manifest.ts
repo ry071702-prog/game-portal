@@ -8,6 +8,9 @@ const manifest: GameManifest = {
   instructions: ['穴から出たモグラ🐹をタップ/クリック', '制限時間は30秒', '叩いた数がスコア'],
   thumbnail: '🐹',
   accentColor: 'rgba(132, 204, 22, 0.15)',
+  difficulty: 'easy',
+  minutes: 1,
+  isNew: true,
   component: () => import('./WhackGame'),
 }
 

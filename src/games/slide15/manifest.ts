@@ -12,6 +12,8 @@ const manifest: GameManifest = {
   ],
   thumbnail: '🔢',
   accentColor: 'rgba(139, 92, 246, 0.15)',
+  difficulty: 'hard',
+  minutes: 6,
   component: () => import('./Slide15'),
 }
 

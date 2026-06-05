@@ -12,6 +12,9 @@ const manifest: GameManifest = {
   ],
   thumbnail: '🐍',
   accentColor: 'rgba(34, 211, 238, 0.15)',
+  difficulty: 'normal',
+  minutes: 4,
+  featured: true,
   component: () => import('./SnakeGame'),
 }
 

@@ -8,6 +8,9 @@ const manifest: GameManifest = {
   instructions: ['1から25まで順番にタップ/クリック', '間違えてもタイムは進みます', '速いほど高スコア'],
   thumbnail: '⏱️',
   accentColor: 'rgba(34, 211, 238, 0.15)',
+  difficulty: 'easy',
+  minutes: 1,
+  isNew: true,
   component: () => import('./NumTapGame'),
 }
 

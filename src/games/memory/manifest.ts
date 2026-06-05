@@ -12,6 +12,9 @@ const manifest: GameManifest = {
   ],
   thumbnail: '🃏',
   accentColor: 'rgba(245, 158, 11, 0.15)',
+  difficulty: 'easy',
+  minutes: 3,
+  featured: true,
   component: () => import('./MemoryGame'),
 }
 

@@ -12,6 +12,8 @@ const manifest: GameManifest = {
   ],
   thumbnail: '💡',
   accentColor: 'rgba(253, 224, 71, 0.15)',
+  difficulty: 'normal',
+  minutes: 4,
   component: () => import('./LightsOut'),
 }
 

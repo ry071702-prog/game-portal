@@ -13,7 +13,7 @@ interface LeaderboardPanelProps {
   mode?: Mode
 }
 
-const RANK_COLOR = ['text-gold', 'text-cyan', 'text-muted']
+const RANK_COLOR = ['text-yellow', 'text-cyan', 'text-muted']
 
 export function LeaderboardPanel({
   gameId,
@@ -46,10 +46,10 @@ export function LeaderboardPanel({
   }, [reqKey, gameId, period, mode])
 
   return (
-    <section className="glass mt-4 rounded-[1.35rem] border-accent/20 p-4 sm:p-5">
+    <section className="mt-4 rounded-3xl border border-line bg-bg-panel p-4 sm:p-5">
       <div className="mb-4 flex items-center justify-between gap-3">
         <h2 className="font-display flex items-center gap-2 text-xl text-fg">
-          <Trophy size={18} className="text-gold" />
+          <Trophy size={18} className="text-yellow" />
           {isDaily ? 'デイリーランキング' : 'ランキング'}
         </h2>
         {!isDaily && (
@@ -99,7 +99,7 @@ export function LeaderboardPanel({
                 className={cn(
                   'flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition',
                   isSelf
-                    ? 'bg-accent-bg ring-1 ring-accent/45'
+                    ? 'bg-yellow/15 ring-1 ring-yellow/40'
                     : 'odd:bg-surface hover:bg-surface-2',
                 )}
               >

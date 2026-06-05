@@ -12,6 +12,8 @@ const manifest: GameManifest = {
   ],
   thumbnail: '🎺',
   accentColor: 'rgba(34, 197, 94, 0.15)',
+  difficulty: 'normal',
+  minutes: 3,
   component: () => import('./SimonGame'),
 }
 
