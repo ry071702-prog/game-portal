@@ -48,7 +48,7 @@ export default function LightsOut({ paused, onScore, onGameOver, seed }: GameCom
               aria-label={`ライト ${r}-${c}`}
               className={`aspect-square rounded-lg transition-colors ${
                 on
-                  ? 'bg-[rgba(232,200,122,0.86)] shadow-[0_0_16px_-2px_rgba(232,200,122,0.75)]'
+                  ? 'bg-yellow'
                   : 'bg-surface-2 hover:bg-surface'
               }`}
             />

@@ -4,7 +4,7 @@ import { Layout } from '../core/ui/Layout'
 export default function NotFoundPage() {
   return (
     <Layout showBack>
-      <div className="premium-panel rise-in my-8 rounded-[1.35rem] border-accent/30 px-6 py-16 text-center">
+      <div className="rise-in my-8 rounded-3xl border border-line bg-bg-panel px-6 py-16 text-center">
         <p className="font-display mb-3 text-6xl text-fg">404</p>
         <p className="mb-6 text-sm font-bold text-muted">ゲームが見つかりませんでした。</p>
         <Link

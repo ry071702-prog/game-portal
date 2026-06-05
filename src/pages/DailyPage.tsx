@@ -22,10 +22,10 @@ export default function DailyPage() {
         title="今日のチャレンジ — Game Portal"
         description="全員が同じお題に挑戦するデイリーチャレンジ。専用ランキングで競おう。"
       />
-      <div className="premium-panel rise-in mb-5 rounded-[1.35rem] border-accent/30 p-5">
+      <div className="rise-in mb-5 rounded-3xl border border-line bg-bg-panel p-5">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="eyebrow mb-2">
+            <p className="mb-2 inline-flex items-center gap-2 text-xs font-black tracking-wide text-cyan uppercase">
               <CalendarDays size={14} />
               Daily Challenge
             </p>
@@ -34,9 +34,9 @@ export default function DailyPage() {
               全員同じお題・専用ランキングで競おう
             </p>
           </div>
-          <div className="rounded-2xl border border-accent/30 bg-accent-bg px-4 py-3 text-right shadow-[var(--glass-highlight)]">
+          <div className="rounded-2xl border border-yellow/30 bg-yellow/15 px-4 py-3 text-right">
             <p className="text-xs font-bold text-faint">Today</p>
-            <p className="font-display text-xl text-accent">{today}</p>
+            <p className="font-display text-xl text-yellow">{today}</p>
           </div>
         </div>
       </div>

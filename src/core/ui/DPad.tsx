@@ -4,7 +4,7 @@ import type { Direction } from '../lib/direction'
 /** モバイル向け方向パッド。タッチで Direction を発火する。 */
 export function DPad({ onDirection }: { onDirection: (dir: Direction) => void }) {
   const btn =
-    'flex h-14 w-14 items-center justify-center rounded-xl border border-line bg-surface-2 text-fg shadow-[var(--glass-highlight)] transition hover:border-accent/35 active:bg-accent-bg'
+    'focus-ring flex h-14 w-14 items-center justify-center rounded-xl border border-line bg-surface-2 text-fg transition hover:border-cyan/50 active:bg-cyan/15'
 
   const press = (dir: Direction) => (e: React.PointerEvent) => {
     e.preventDefault()

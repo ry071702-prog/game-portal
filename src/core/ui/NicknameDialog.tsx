@@ -23,11 +23,11 @@ export function NicknameDialog({ open, initialName = '', onSubmit, onClose }: Ni
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/65 p-4 backdrop-blur-md"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
       onClick={onClose}
     >
       <div
-        className="glass-strong w-full max-w-xs rounded-[1.35rem] border-accent/40 p-5"
+        className="w-full max-w-xs rounded-3xl border border-line bg-bg-panel p-5 shadow-[var(--lift-shadow)]"
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"

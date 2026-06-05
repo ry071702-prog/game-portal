@@ -12,6 +12,8 @@ const manifest: GameManifest = {
   ],
   thumbnail: '🧱',
   accentColor: 'rgba(244, 63, 94, 0.15)',
+  difficulty: 'normal',
+  minutes: 5,
   component: () => import('./BreakoutGame'),
 }
 

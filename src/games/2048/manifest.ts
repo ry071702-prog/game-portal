@@ -12,6 +12,9 @@ const manifest: GameManifest = {
   ],
   thumbnail: '🔢',
   accentColor: 'rgba(170, 59, 255, 0.15)',
+  difficulty: 'normal',
+  minutes: 5,
+  featured: true,
   component: () => import('./Game2048'),
 }
 

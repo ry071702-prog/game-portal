@@ -5,6 +5,9 @@ import { z } from 'zod'
 export const gameGenreSchema = z.enum(['puzzle', 'arcade', 'board'])
 export type GameGenre = z.infer<typeof gameGenreSchema>
 
+export const gameDifficultySchema = z.enum(['easy', 'normal', 'hard'])
+export type GameDifficulty = z.infer<typeof gameDifficultySchema>
+
 /**
  * 各ゲーム本体に共通枠 (GameShell) から渡される props。
  * ゲーム側はこれを受け取るだけで、ポーズ/リスタート/スコア表示の共通 UI に乗る。
@@ -38,6 +41,13 @@ export interface GameManifest {
   thumbnail: string
   /** カードのアクセントカラー (Tailwind の任意値 or CSS color) */
   accentColor?: string
+  difficulty?: GameDifficulty
+  /** 目安プレイ時間 (分) */
+  minutes?: number
+  /** 人気・おすすめセクション用 */
+  featured?: boolean
+  /** 新着セクション用 */
+  isNew?: boolean
   /** 遅延ロードでコード分割。ゲーム追加が一覧描画コストに影響しない */
   component: () => Promise<{ default: GameComponent }>
 }
@@ -53,6 +63,10 @@ const manifestMetaSchema = z.object({
   instructions: z.array(z.string()).min(1),
   thumbnail: z.string().min(1),
   accentColor: z.string().optional(),
+  difficulty: gameDifficultySchema.optional(),
+  minutes: z.number().positive().optional(),
+  featured: z.boolean().optional(),
+  isNew: z.boolean().optional(),
 })
 
 /**
