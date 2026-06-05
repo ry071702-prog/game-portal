@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "gen:icons": "tsx scripts/gen-icons.ts",
+    "icons:import": "bash scripts/import-icons.sh",
     "deploy": "npm run build && npx --yes wrangler@4 pages deploy dist --project-name game-portal --branch main",
     "db:init": "npx --yes wrangler@4 d1 execute game-portal-db --remote --file=schema.sql"
   },
