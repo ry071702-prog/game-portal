@@ -12,6 +12,12 @@ import slide15 from '../games/slide15/manifest'
 import whack from '../games/whack/manifest'
 import flap from '../games/flap/manifest'
 import numtap from '../games/numtap/manifest'
+import mines from '../games/mines/manifest'
+import blockfall from '../games/blockfall/manifest'
+import aim from '../games/aim/manifest'
+import tictactoe from '../games/tictactoe/manifest'
+import connect4 from '../games/connect4/manifest'
+import hitblow from '../games/hitblow/manifest'
 
 const raw: GameManifest[] = [
   game2048,
@@ -24,6 +30,12 @@ const raw: GameManifest[] = [
   whack,
   flap,
   numtap,
+  mines,
+  blockfall,
+  aim,
+  tictactoe,
+  connect4,
+  hitblow,
 ]
 
 /** 検証済みゲーム一覧。id 重複や形式不正は起動時に throw される。 */
