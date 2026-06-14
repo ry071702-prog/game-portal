@@ -16,7 +16,8 @@ export function useGameLoop(cb: (dtMs: number) => void, running: boolean): void 
     let raf = 0
     let last = performance.now()
     const tick = (now: number) => {
-      const dt = now - last
+      // 背景タブ復帰時の dt スパイクで tick が一気に消化されるのを防ぐ (数フレーム相当に制限)
+      const dt = Math.min(now - last, 100)
       last = now
       cbRef.current(dt)
       raf = requestAnimationFrame(tick)
