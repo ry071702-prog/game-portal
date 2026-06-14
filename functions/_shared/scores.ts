@@ -35,6 +35,12 @@ export const SCORE_CAP: Record<string, number> = {
   whack: 300,
   flap: 10000,
   numtap: 30000,
+  mines: 110, // 安全セル71 + 勝利ボーナス30
+  blockfall: 9999999, // 行消去のみだがレベル/ライン上限なし(速度80ms床=耐久次第で青天井)。CAP は不正対策のサニティ値
+  aim: 10000,
+  tictactoe: 100000, // 連勝チャレンジ: score = wins*100 + draws*20 で上限なく積み上がる。長期連勝でも弾かない
+  connect4: 140, // 100 + (42 - 最短手数)
+  hitblow: 100, // (11 - 1試行) × 10
 }
 
 export const KNOWN_GAME_IDS = Object.keys(SCORE_CAP)
