@@ -18,13 +18,32 @@
  *   GEMINI_API_KEY=... npm run gen:icons -- 2048 snake   # 指定 id だけ
  */
 import { writeFile, mkdir } from 'node:fs/promises'
-import { existsSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 import { games } from '../src/core/registry'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ICONS_DIR = join(__dirname, '..', 'public', 'icons')
+
+/**
+ * 鍵をコマンドラインや会話に貼らずに済むよう、環境変数が未設定なら
+ * gitignore 済みの .dev.vars から KEY=value を読み込む (既存の env を上書きしない)。
+ */
+function loadLocalEnv(): void {
+  if (process.env.GEMINI_API_KEY || process.env.OPENAI_API_KEY) return
+  const envPath = join(__dirname, '..', '.dev.vars')
+  if (!existsSync(envPath)) return
+  for (const line of readFileSync(envPath, 'utf8').split('\n')) {
+    const m = line.match(/^\s*([A-Z_][A-Z0-9_]*)\s*=\s*(.*?)\s*$/)
+    if (!m) continue
+    let val = m[2]
+    if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+      val = val.slice(1, -1)
+    }
+    if (!(m[1] in process.env)) process.env[m[1]] = val
+  }
+}
 
 // CLI 引数: --force と、任意の id 群
 const argv = process.argv.slice(2)
@@ -200,6 +219,7 @@ function fail(msg: string): never {
 }
 
 async function main() {
+  loadLocalEnv()
   const provider = pickProvider()
   console.log(`プロバイダ: ${provider.name}\n`)
   await mkdir(ICONS_DIR, { recursive: true })
