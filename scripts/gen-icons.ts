@@ -65,6 +65,17 @@ const STYLE_GUIDE = [
 const RENDER_SUFFIX =
   ' Render on a solid near-black background (#080B14) with a small even margin around the subject, square 1:1 composition. Output a single image only.'
 
+// 自動設計だと motif が弱い/伝わらないゲームに、明示プロンプトを当てる (段1の設計をスキップ)。
+// 値は段2 画像モデルへの本文。STYLE_GUIDE と RENDER_SUFFIX が後段で合成される。
+const ICON_PROMPT_OVERRIDES: Record<string, string> = {
+  tictactoe:
+    'A tic-tac-toe game icon: a clean 3x3 grid of thin glowing neon lines, with a bright violet glowing ring shape (an O) in one cell and a bright cyan glowing cross shape (an X) in another cell. The grid-with-O-and-X motif must be instantly recognizable as tic-tac-toe.',
+  connect4:
+    'A Connect Four game icon: a vertical board with round holes, glowing round discs stacked at the bottom, one violet disc dropping down a column and four cyan discs forming a connected diagonal line. The "drop discs to connect four in a row" motif must read at a glance.',
+  slide15:
+    'A sliding tile puzzle (15-puzzle) game icon: a 4x4 grid of rounded square tiles with exactly one empty gap, one tile shown mid-slide into the gap, with bright high-contrast violet and cyan neon edges clearly separating each tile on a dark background. Tiles must be crisp and legible, not dim or muddy.',
+}
+
 type Game = (typeof games)[number]
 
 interface Provider {
@@ -239,8 +250,15 @@ async function main() {
       continue
     }
     try {
-      process.stdout.write(`… design ${game.id} … `)
-      const prompt = await provider.designPrompt(game)
+      const override = ICON_PROMPT_OVERRIDES[game.id]
+      let prompt: string
+      if (override) {
+        process.stdout.write(`… override ${game.id} … `)
+        prompt = `${override} ${STYLE_GUIDE}`
+      } else {
+        process.stdout.write(`… design ${game.id} … `)
+        prompt = await provider.designPrompt(game)
+      }
       process.stdout.write('render … ')
       const png = await provider.renderIcon(prompt)
       await writeFile(out, png)
