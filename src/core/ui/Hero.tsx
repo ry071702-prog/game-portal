@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { ArrowRight, Clock, Play, Sparkles } from 'lucide-react'
 import type { GameManifest } from '../types'
 import { GENRES } from '../lib/genres'
+import { GameIcon } from './GameIcon'
 
 interface HeroProps {
   previewGame: GameManifest
@@ -92,7 +93,7 @@ export function Hero({ previewGame, gameCount, featuredCount }: HeroProps) {
               style={{ backgroundColor: previewGame.accentColor ?? 'rgba(139,92,246,0.16)' }}
               aria-hidden="true"
             >
-              {previewGame.thumbnail}
+              <GameIcon game={previewGame} className="h-20 w-20 object-contain" fallbackClassName="text-5xl" />
             </div>
           </div>
 

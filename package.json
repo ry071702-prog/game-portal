@@ -10,6 +10,8 @@
     "preview": "vite preview",
     "gen:icons": "tsx scripts/gen-icons.ts",
     "icons:import": "bash scripts/import-icons.sh",
+    "gen:sprites": "tsx scripts/gen-sprites.ts",
+    "sprites:resize": "for f in public/sprites/*.png; do sips --resampleHeightWidthMax 256 \"$f\" --out \"$f\" >/dev/null; done",
     "deploy": "npm run build && npx --yes wrangler@4 pages deploy dist --project-name game-portal --branch main",
     "db:init": "npx --yes wrangler@4 d1 execute game-portal-db --remote --file=schema.sql"
   },
