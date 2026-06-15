@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Trophy } from 'lucide-react'
 import { fetchLeaderboard, type LeaderboardRow, type Period, type Mode } from '../lib/leaderboard'
 import { cn } from '../lib/cn'
+import { EmojiArt } from './EmojiArt'
 
 interface LeaderboardPanelProps {
   gameId: string
@@ -112,7 +113,11 @@ export function LeaderboardPanel({
                   {i + 1}
                 </span>
                 <span className="flex h-8 w-8 items-center justify-center rounded-full border border-line bg-[var(--control-bg)] text-base">
-                  {row.avatar || '🎮'}
+                  <EmojiArt
+                    emoji={row.avatar || '🎮'}
+                    className="h-full w-full rounded-full object-cover"
+                    fallbackClassName="text-base"
+                  />
                 </span>
                 <span className="flex-1 truncate text-fg">{row.name}</span>
                 <span className="rounded-full bg-surface-2 px-3 py-1 font-display text-sm tabular-nums text-fg">

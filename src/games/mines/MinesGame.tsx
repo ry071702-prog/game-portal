@@ -15,6 +15,7 @@ import {
   WIN_BONUS,
   type Board,
 } from './logic'
+import { EmojiArt } from '../../core/ui/EmojiArt'
 
 /** 周囲地雷数 (1〜8) ごとの文字色 */
 const NUMBER_COLORS = [
@@ -77,8 +78,9 @@ export default function MinesGame({ paused, onScore, onGameOver, seed }: GameCom
   return (
     <div className="flex flex-col items-center gap-3">
       <div className="flex w-full max-w-sm items-center justify-between text-sm text-muted">
-        <span>
-          💣 残り <span className="font-display text-fg">{MINES - flags}</span>
+        <span className="flex items-center gap-1">
+          <EmojiArt emoji="💣" className="h-4 w-4 object-contain" fallbackClassName="" /> 残り{' '}
+          <span className="font-display text-fg">{MINES - flags}</span>
         </span>
         <button
           onClick={() => setFlagMode((f) => !f)}
@@ -88,7 +90,10 @@ export default function MinesGame({ paused, onScore, onGameOver, seed }: GameCom
             flagMode ? 'bg-yellow text-bg-base' : 'bg-surface-2 text-muted hover:bg-surface'
           }`}
         >
-          🚩 旗モード{flagMode ? ' ON' : ''}
+          <span className="inline-flex items-center gap-1">
+            <EmojiArt emoji="🚩" className="h-4 w-4 object-contain" fallbackClassName="" /> 旗モード
+            {flagMode ? ' ON' : ''}
+          </span>
         </button>
         <span>
           開放 <span className="font-display text-fg">{opened}</span>/{SIZE * SIZE - MINES}
@@ -121,12 +126,14 @@ export default function MinesGame({ paused, onScore, onGameOver, seed }: GameCom
               >
                 {shown
                   ? cell.mine
-                    ? '💣'
+                    ? <EmojiArt emoji="💣" className="h-full w-full object-contain p-px" fallbackClassName="" />
+
                     : cell.adjacent > 0
                       ? cell.adjacent
                       : ''
                   : cell.state === 'flagged'
-                    ? '🚩'
+                    ? <EmojiArt emoji="🚩" className="h-full w-full object-contain p-px" fallbackClassName="" />
+
                     : ''}
               </button>
             )

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import type { GameComponentProps } from '../../core/types'
 import { sound } from '../../core/lib/sound'
 import { randomHole, HOLES, DURATION } from './logic'
+import { EmojiArt } from '../../core/ui/EmojiArt'
 
 export default function WhackGame({ paused, onScore, onGameOver }: GameComponentProps) {
   const [score, setScore] = useState(0)
@@ -59,7 +60,9 @@ export default function WhackGame({ paused, onScore, onGameOver }: GameComponent
             aria-label={`穴 ${i}`}
             className="flex aspect-square items-center justify-center rounded-full bg-surface-2 text-3xl ring-1 ring-line transition active:scale-95"
           >
-            {active === i ? '🐹' : ''}
+            {active === i ? (
+              <EmojiArt emoji="🐹" className="h-full w-full rounded-full object-cover" fallbackClassName="text-3xl" />
+            ) : null}
           </button>
         ))}
       </div>

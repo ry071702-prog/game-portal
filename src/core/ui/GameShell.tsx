@@ -9,6 +9,7 @@ import { sound } from '../lib/sound'
 import { cn } from '../lib/cn'
 import { NicknameDialog } from './NicknameDialog'
 import { LeaderboardPanel } from './LeaderboardPanel'
+import { GameIcon } from './GameIcon'
 
 async function celebrate() {
   try {
@@ -151,10 +152,10 @@ export function GameShell({ game, Component, mode = 'free', seed }: GameShellPro
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
             <span
-              className="flex h-12 w-12 items-center justify-center rounded-2xl text-2xl ring-1 ring-line"
+              className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl text-2xl ring-1 ring-line"
               style={{ background: game.accentColor ?? 'var(--surface-2)' }}
             >
-              {game.thumbnail}
+              <GameIcon game={game} className="h-9 w-9 object-contain" fallbackClassName="text-2xl" />
             </span>
             <div>
               <p className="mb-1 text-xs font-black tracking-wide text-cyan uppercase">Now Playing</p>
@@ -186,7 +187,7 @@ export function GameShell({ game, Component, mode = 'free', seed }: GameShellPro
 
         {!started && !gameOver && (
           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 bg-[var(--bg-overlay)] px-5 text-center">
-            <div className="text-6xl">{game.thumbnail}</div>
+            <GameIcon game={game} className="h-24 w-24 object-contain" fallbackClassName="text-6xl" />
             <p className="font-display text-2xl text-fg">{game.title}</p>
             <ul className="max-w-xs space-y-2 text-left text-sm font-medium text-fg">
               {game.instructions.map((line) => (

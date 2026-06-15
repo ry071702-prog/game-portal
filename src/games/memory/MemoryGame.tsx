@@ -11,6 +11,7 @@ import {
   PAIRS,
   type MemoryState,
 } from './logic'
+import { EmojiArt } from '../../core/ui/EmojiArt'
 
 type Action = { type: 'flip'; index: number } | { type: 'resolve' }
 
@@ -87,7 +88,11 @@ export default function MemoryGame({ paused, onScore, onGameOver, seed }: GameCo
                     card.matched ? 'bg-emerald-500/20 ring-1 ring-emerald-500/40' : 'bg-surface-2'
                   }`}
                 >
-                  {card.emoji}
+                  <EmojiArt
+                    emoji={card.emoji}
+                    className="h-full w-full rounded-lg object-contain p-1"
+                    fallbackClassName="text-3xl"
+                  />
                 </div>
               </div>
             </button>

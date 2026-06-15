@@ -6,6 +6,7 @@ import { Layout } from '../core/ui/Layout'
 import { LeaderboardPanel } from '../core/ui/LeaderboardPanel'
 import { Seo } from '../core/ui/Seo'
 import { useIdentityStore } from '../core/store/identityStore'
+import { GameIcon } from '../core/ui/GameIcon'
 
 export default function LeaderboardPage() {
   const name = useIdentityStore((s) => s.name)
@@ -34,7 +35,7 @@ export default function LeaderboardPage() {
                 className="flex h-12 w-12 items-center justify-center rounded-2xl text-2xl"
                 style={{ backgroundColor: GENRES[game.genre].color }}
               >
-                {game.thumbnail}
+                <GameIcon game={game} className="h-9 w-9 object-contain" fallbackClassName="text-2xl" />
               </span>
               <span className="min-w-0 flex-1">
                 <span className="font-display block truncate text-2xl">{game.title}</span>

@@ -6,6 +6,7 @@ import { AVATARS } from '../lib/avatars'
 import { useTheme, type Theme } from '../lib/theme'
 import { NicknameDialog } from './NicknameDialog'
 import { cn } from '../lib/cn'
+import { EmojiArt } from './EmojiArt'
 
 const THEME_OPTS: { value: Theme; label: string; Icon: typeof Monitor }[] = [
   { value: 'system', label: 'システム', Icon: Monitor },
@@ -31,8 +32,8 @@ export function ProfileMenu() {
         aria-haspopup="dialog"
         aria-expanded={open}
       >
-        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-cyan/15 text-base ring-1 ring-cyan/30">
-          {avatar}
+        <span className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-cyan/15 text-base ring-1 ring-cyan/30">
+          <EmojiArt emoji={avatar} className="h-full w-full rounded-full object-cover" fallbackClassName="text-base" />
         </span>
         <span className="hidden max-w-24 truncate text-sm font-bold text-fg sm:inline">
           {name || 'ゲスト'}
@@ -45,8 +46,8 @@ export function ProfileMenu() {
           <div className="absolute right-0 z-50 mt-2 w-72 rounded-3xl border border-line bg-bg-panel p-4 shadow-[var(--lift-shadow)]">
             {/* 現在のプロフィール */}
             <div className="mb-4 flex items-center gap-3">
-              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-cyan/15 text-2xl ring-1 ring-cyan/35">
-                {avatar}
+              <span className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-cyan/15 text-2xl ring-1 ring-cyan/35">
+                <EmojiArt emoji={avatar} className="h-full w-full rounded-full object-cover" fallbackClassName="text-2xl" />
               </span>
               <div className="min-w-0">
                 <p className="truncate font-bold text-fg">{name || 'ゲスト'}</p>
@@ -73,7 +74,7 @@ export function ProfileMenu() {
                   )}
                   aria-label={`アイコン ${a}`}
                 >
-                  {a}
+                  <EmojiArt emoji={a} className="h-full w-full rounded-lg object-cover p-0.5" fallbackClassName="text-lg" />
                 </button>
               ))}
             </div>
