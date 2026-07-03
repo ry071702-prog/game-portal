@@ -21,16 +21,18 @@ export function Hero({ previewGame, gameCount, featuredCount }: HeroProps) {
   const category = previewGame.category ?? genre.label
 
   return (
-    <section className="grid gap-10 py-12 sm:py-16 lg:grid-cols-[1.02fr_0.98fr] lg:items-center lg:py-20">
-      <div className="rise-in">
-        <p className="mb-5 inline-flex rounded-full border border-cyan/25 bg-cyan/10 px-3 py-1.5 text-xs font-black tracking-[0.22em] text-cyan uppercase">
-          FREE MINI GAME PORTAL
+    <section className="arcade-hero grid gap-10 py-12 sm:py-16 lg:grid-cols-[1.02fr_0.98fr] lg:items-center lg:py-20">
+      <div className="rise-in relative">
+        <p className="mb-5 inline-flex border border-cyan/35 bg-cyan/10 px-3 py-1.5 text-xs font-black tracking-[0.22em] text-cyan uppercase">
+          Free Mini Game Portal
         </p>
-        <h1 className="font-display max-w-3xl text-4xl leading-[1.08] text-fg sm:text-6xl lg:text-7xl">
-          気軽に遊べる、無料ミニゲーム集。
+        <h1 className="font-display arcade-title max-w-4xl text-5xl leading-[0.9] text-fg sm:text-7xl lg:text-8xl">
+          すぐ遊べる
+          <span>GAME</span>
+          ARCADE
         </h1>
         <p className="mt-6 max-w-2xl text-base font-bold leading-8 text-muted sm:text-lg">
-          短時間で遊べるゲームを、ひとつの場所に。今後も新作を続々追加予定。
+          短時間で遊べるゲームを、ひとつの場所に。インストールなしで、気になったらそのまま1プレイ。
         </p>
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <a href="#games" className="btn-primary">
@@ -44,27 +46,25 @@ export function Hero({ previewGame, gameCount, featuredCount }: HeroProps) {
         </div>
 
         <div className="mt-10 grid max-w-xl grid-cols-3 gap-3">
-          <div className="rounded-2xl border border-line bg-white/[0.035] p-4">
+          <div className="arcade-stat">
             <p className="font-display text-2xl text-fg">{gameCount}</p>
             <p className="mt-1 text-xs font-black tracking-wide text-faint uppercase">Games</p>
           </div>
-          <div className="rounded-2xl border border-line bg-white/[0.035] p-4">
+          <div className="arcade-stat">
             <p className="font-display text-2xl text-fg">{featuredCount}</p>
             <p className="mt-1 text-xs font-black tracking-wide text-faint uppercase">Featured</p>
           </div>
-          <div className="rounded-2xl border border-line bg-white/[0.035] p-4">
+          <div className="arcade-stat">
             <p className="font-display text-2xl text-fg">Free</p>
             <p className="mt-1 text-xs font-black tracking-wide text-faint uppercase">Play</p>
           </div>
         </div>
       </div>
 
-      <div className="rise-in relative min-h-[360px] sm:min-h-[430px] lg:min-h-[520px]">
-        <div className="absolute inset-4 rounded-[2rem] border border-white/[0.06] bg-gradient-to-br from-yellow/15 via-white/[0.03] to-cyan/15 shadow-[0_32px_110px_-70px_rgba(34,211,238,0.9)]" />
-        <div className="absolute top-2 right-5 left-10 h-40 rounded-full bg-cyan/15 blur-3xl" />
-        <div className="absolute right-10 bottom-6 left-3 h-44 rounded-full bg-yellow/15 blur-3xl" />
+      <div className="rise-in relative min-h-[380px] sm:min-h-[450px] lg:min-h-[540px]">
+        <div className="arcade-frame absolute inset-3" />
 
-        <div className="absolute top-0 right-4 left-4 rounded-[1.75rem] border border-white/10 bg-[#101827]/92 p-5 shadow-[0_30px_90px_-55px_rgba(0,0,0,0.95)] backdrop-blur-xl sm:right-12 sm:left-12">
+        <div className="absolute top-0 right-4 left-4 rounded-[1.75rem] border border-white/10 bg-[#101827]/94 p-5 shadow-[0_30px_90px_-55px_rgba(0,0,0,0.95)] backdrop-blur-xl sm:right-12 sm:left-12">
           <div className="flex items-start justify-between gap-4">
             <div>
               <p className="text-xs font-black tracking-[0.2em] text-cyan uppercase">
@@ -89,7 +89,7 @@ export function Hero({ previewGame, gameCount, featuredCount }: HeroProps) {
               </div>
             </div>
             <div
-              className="flex items-center justify-center rounded-3xl border border-white/10 text-5xl"
+              className="flex items-center justify-center rounded-3xl border border-white/10 text-5xl shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]"
               style={{ backgroundColor: previewGame.accentColor ?? 'rgba(139,92,246,0.16)' }}
               aria-hidden="true"
             >
