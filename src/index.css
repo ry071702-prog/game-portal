@@ -15,10 +15,10 @@
   --line: rgba(255, 255, 255, 0.08);
   --control-bg: rgba(17, 24, 39, 0.86);
   --control-hover: rgba(31, 41, 55, 0.9);
-  --accent: #8b5cf6;
-  --yellow: #8b5cf6;
-  --cyan: #22d3ee;
-  --pink: #fb7185;
+  --accent: #e8355c;
+  --yellow: #ffd166;
+  --cyan: #28d7c4;
+  --pink: #ff6b8a;
   --soft-shadow: 0 22px 70px -50px rgba(0, 0, 0, 0.95);
   --lift-shadow: 0 28px 86px -56px rgba(0, 0, 0, 0.95);
   --focus-ring: 0 0 0 3px rgba(34, 211, 238, 0.24), 0 0 0 1px rgba(139, 92, 246, 0.72);
@@ -36,10 +36,10 @@
   --line: rgba(255, 255, 255, 0.08);
   --control-bg: rgba(17, 24, 39, 0.86);
   --control-hover: rgba(31, 41, 55, 0.9);
-  --accent: #8b5cf6;
-  --yellow: #8b5cf6;
-  --cyan: #22d3ee;
-  --pink: #fb7185;
+  --accent: #e8355c;
+  --yellow: #ffd166;
+  --cyan: #28d7c4;
+  --pink: #ff6b8a;
 }
 
 @theme {
@@ -105,14 +105,13 @@ body {
 
 .app-shell::before {
   background:
-    radial-gradient(circle at 12% 3%, rgba(139, 92, 246, 0.34), transparent 30rem),
-    radial-gradient(circle at 88% 2%, rgba(34, 211, 238, 0.22), transparent 28rem),
-    radial-gradient(circle at 50% 42%, rgba(17, 24, 39, 0.18), transparent 36rem),
-    linear-gradient(180deg, #080b14 0%, #090d18 48%, #080b14 100%);
+    linear-gradient(135deg, rgba(232, 53, 92, 0.13) 0 12%, transparent 12% 100%),
+    linear-gradient(225deg, rgba(255, 209, 102, 0.12) 0 14%, transparent 14% 100%),
+    linear-gradient(180deg, #080b14 0%, #0d1118 46%, #070a10 100%);
 }
 
 .app-shell::after {
-  opacity: 0.16;
+  opacity: 0.18;
   background-image:
     linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
@@ -120,6 +119,65 @@ body {
   background-size: 48px 48px;
   -webkit-mask-image: radial-gradient(circle at 50% 12%, black, transparent 72%);
   mask-image: radial-gradient(circle at 50% 12%, black, transparent 72%);
+}
+
+.arcade-hero {
+  position: relative;
+}
+
+.arcade-title {
+  position: relative;
+  text-transform: uppercase;
+}
+
+.arcade-title span {
+  display: block;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--yellow);
+  text-shadow: none;
+}
+
+.arcade-title::after {
+  display: inline-block;
+  margin-left: 0.15em;
+  padding: 0.08em 0.14em;
+  background: var(--accent);
+  color: #080b14;
+  content: "16";
+  font-size: 0.22em;
+  line-height: 1;
+  vertical-align: top;
+  transform: rotate(-4deg) translateY(0.18em);
+}
+
+.arcade-stat {
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--accent);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 1rem;
+}
+
+.arcade-frame {
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 2rem;
+  background:
+    linear-gradient(90deg, rgba(255, 209, 102, 0.18) 0 10%, transparent 10% 20%, rgba(40, 215, 196, 0.16) 20% 30%, transparent 30% 100%),
+    linear-gradient(135deg, rgba(232, 53, 92, 0.28), rgba(255, 255, 255, 0.03));
+  box-shadow: 0 32px 100px -70px rgba(40, 215, 196, 0.9);
+}
+
+.arcade-frame::after {
+  position: absolute;
+  right: -0.08em;
+  bottom: -0.16em;
+  color: rgba(255, 255, 255, 0.06);
+  content: "PLAY";
+  font-family: var(--font-display);
+  font-size: clamp(5rem, 16vw, 12rem);
+  font-weight: 900;
+  line-height: 0.8;
 }
 
 button,
