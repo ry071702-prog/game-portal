@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react'
 import { ADS, adsConfigured } from '../../config/ads'
-import { cn } from '../lib/cn'
 
 declare global {
   interface Window {
@@ -62,7 +61,7 @@ export function AdSlot({ className }: AdSlotProps) {
       <div className="rounded-2xl border border-line bg-white/[0.03] px-3 pb-3 pt-2">
         <p className="mb-1 text-[10px] font-bold tracking-[0.2em] text-faint">広告</p>
         <ins
-          className={cn('adsbygoogle block min-h-[90px] w-full')}
+          className="adsbygoogle block min-h-[90px] w-full"
           data-ad-client={ADS.client}
           data-ad-slot={ADS.slot}
           data-ad-format="auto"
