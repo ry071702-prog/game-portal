@@ -1,4 +1,5 @@
 import { ExternalLink, Gamepad2 } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { cn } from '../lib/cn'
 
 interface FooterProps {
@@ -25,6 +26,12 @@ export function Footer({ size = 'narrow' }: FooterProps) {
             <p className="font-display text-lg uppercase text-fg">GAME PORTAL</p>
             <p className="mt-1 text-sm font-bold text-muted">Free mini games collection.</p>
             <p className="mt-4 text-xs font-bold text-faint">Copyright © {year} Game Portal.</p>
+            <Link
+              className="focus-ring mt-1 inline-block rounded text-xs font-bold text-faint hover:text-fg"
+              to="/privacy"
+            >
+              プライバシーポリシー
+            </Link>
           </div>
         </div>
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-8">
@@ -43,7 +50,7 @@ export function Footer({ size = 'narrow' }: FooterProps) {
             className="focus-ring inline-flex min-h-11 items-center gap-2 rounded-full border border-line px-4 text-sm font-extrabold text-fg transition hover:border-cyan/45 hover:bg-white/[0.06]"
             href="https://github.com/ry071702-prog/game-portal"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
           >
             GitHub
             <ExternalLink size={15} />
