@@ -41,10 +41,13 @@ export function NicknameDialog({ open, initialName = '', onSubmit, onClose }: Ni
         </p>
         <input
           autoFocus
+          id="nickname"
+          name="nickname"
           value={value}
           onChange={(e) => setValue(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && submit()}
           placeholder="名無しのプレイヤー"
+          aria-label="ニックネーム"
           className="input-premium mb-4 w-full rounded-xl px-3 py-2.5 outline-none"
         />
         <div className="flex gap-2">
