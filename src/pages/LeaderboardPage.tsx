@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { ArrowRight, Trophy } from 'lucide-react'
 import { games } from '../core/registry'
 import { GENRES } from '../core/lib/genres'

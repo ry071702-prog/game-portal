@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter } from 'react-router'
 import PortalPage from './pages/PortalPage'
 import GamePage from './pages/GamePage'
 import LeaderboardPage from './pages/LeaderboardPage'

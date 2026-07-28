@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useMemo } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router'
 import { gameById } from '../core/registry'
 import { useRecentStore } from '../core/store/recentStore'
 import { GameShell } from '../core/ui/GameShell'
