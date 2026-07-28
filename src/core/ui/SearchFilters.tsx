@@ -99,6 +99,9 @@ export function SearchFilters({
           <label className="focus-within:focus-ring flex min-h-14 flex-1 items-center gap-3 rounded-2xl border border-line bg-[#0b1020]/80 px-4 text-muted transition focus-within:border-cyan/45">
             <Search size={20} className="shrink-0 text-cyan" />
             <input
+              id="game-search"
+              name="game-search"
+              type="search"
               value={query}
               onChange={(event) => onQueryChange(event.target.value)}
               className="min-w-0 flex-1 bg-transparent text-base font-bold text-fg outline-none placeholder:text-faint"
@@ -121,6 +124,8 @@ export function SearchFilters({
             <SlidersHorizontal size={18} className="text-yellow" />
             <span className="shrink-0">Sort</span>
             <select
+              id="game-sort"
+              name="game-sort"
               value={sortBy}
               onChange={(event) => onSortChange(event.target.value as GameSort)}
               className="focus-ring min-h-10 flex-1 rounded-xl border border-transparent bg-transparent px-2 text-sm font-extrabold text-fg outline-none"

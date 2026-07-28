@@ -37,6 +37,9 @@ export function CategoryTabs({
         <label className="focus-within:focus-ring flex min-h-12 w-full items-center gap-2 rounded-2xl border border-line bg-bg-panel px-4 text-muted lg:max-w-md">
           <Search size={18} />
           <input
+            id="category-search"
+            name="category-search"
+            type="search"
             value={searchQuery}
             onChange={(event) => onSearchChange(event.target.value)}
             className="min-w-0 flex-1 bg-transparent text-sm font-bold text-fg outline-none placeholder:text-faint"
