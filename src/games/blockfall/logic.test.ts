@@ -15,6 +15,9 @@ import {
   initialState,
   tick,
   hardDrop,
+  dropY,
+  merge,
+  spawn,
   type Board,
   type BlockfallState,
   type Piece,
@@ -142,5 +145,74 @@ describe('blockfall logic', () => {
     const r = tick(stateWith(board, current), () => 0)
     expect(r.locked).toBe(true)
     expect(r.state.alive).toBe(false)
+  })
+})
+
+describe('blockfall の端ケース', () => {
+  it('四方を塞がれていると回転できない (null)', () => {
+    const board = emptyBoard()
+    // T (x=3,y=5) の回転先 (中央列の下段) と壁蹴り先をすべて塞ぐ
+    for (let x = 0; x < COLS; x++) board[7][x] = 'I'
+    const p: Piece = { type: 'T', rot: 0, x: 3, y: 5 }
+    expect(tryRotate(board, p)).toBeNull()
+  })
+
+  it('右壁に接した縦 I ミノも壁蹴りで回転できる', () => {
+    const board = emptyBoard()
+    // rot=1 の I は bounding box の x+2 列を使う → x=COLS-3 で右壁に接する
+    const p: Piece = { type: 'I', rot: 1, x: COLS - 3, y: 5 }
+    expect(canPlace(board, p)).toBe(true)
+    const r = tryRotate(board, p)
+    expect(r).not.toBeNull()
+    expect(getCells(r!).every((c) => c.x >= 0 && c.x < COLS)).toBe(true)
+  })
+
+  it('dropY は着地位置を返し、ブロックの上で止まる', () => {
+    const board = emptyBoard()
+    const o: Piece = { type: 'O', rot: 0, x: 0, y: 0 }
+    expect(dropY(board, o)).toBe(ROWS - 2)
+    board[10][0] = 'I'
+    expect(dropY(board, o)).toBe(8)
+  })
+
+  it('盤面上端より上 (y<0) のセルは merge で捨てられる', () => {
+    const p: Piece = { type: 'O', rot: 0, x: 0, y: -1 }
+    const b = merge(emptyBoard(), p)
+    expect(b[0][0]).toBe('O')
+    expect(b.flat().filter((c) => c !== null)).toHaveLength(2)
+  })
+
+  it('alive=false なら tick / hardDrop は何もしない', () => {
+    const dead = { ...stateWith(emptyBoard(), spawn('T')), alive: false }
+    expect(tick(dead, () => 0)).toEqual({ state: dead, locked: false, cleared: 0 })
+    expect(hardDrop(dead, () => 0)).toEqual({ state: dead, locked: false, cleared: 0 })
+  })
+
+  it('離れた2行が同時に揃っても両方消える', () => {
+    const b = emptyBoard()
+    for (let x = 0; x < COLS; x++) {
+      b[ROWS - 1][x] = 'I'
+      b[ROWS - 3][x] = 'I'
+    }
+    b[ROWS - 2][0] = 'T'
+    const { board, cleared } = clearLines(b)
+    expect(cleared).toBe(2)
+    expect(board[ROWS - 1][0]).toBe('T')
+    expect(board.flat().filter((c) => c !== null)).toHaveLength(1)
+  })
+
+  it('最初の7ミノ (current の並び) は7種が1回ずつ', () => {
+    let state = initialState(() => 0.42)
+    const seen: string[] = []
+    for (let i = 0; i < 7; i++) {
+      seen.push(state.current.type)
+      state = hardDrop(state, () => 0.42).state
+    }
+    expect([...seen].sort()).toEqual([...PIECE_TYPES].sort())
+  })
+
+  it('scoreFor は想定外のライン数で 0', () => {
+    expect(scoreFor(0, 3)).toBe(0)
+    expect(scoreFor(5, 1)).toBe(0)
   })
 })
