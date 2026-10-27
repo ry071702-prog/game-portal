@@ -18,6 +18,9 @@ import aim from '../games/aim/manifest'
 import tictactoe from '../games/tictactoe/manifest'
 import connect4 from '../games/connect4/manifest'
 import hitblow from '../games/hitblow/manifest'
+import stack from '../games/stack/manifest'
+import colorword from '../games/colorword/manifest'
+import reversi from '../games/reversi/manifest'
 
 const raw: GameManifest[] = [
   game2048,
@@ -36,6 +39,9 @@ const raw: GameManifest[] = [
   tictactoe,
   connect4,
   hitblow,
+  stack,
+  colorword,
+  reversi,
 ]
 
 /** 検証済みゲーム一覧。id 重複や形式不正は起動時に throw される。 */

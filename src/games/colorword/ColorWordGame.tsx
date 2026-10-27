@@ -1,0 +1,104 @@
+import { useEffect, useRef, useState } from 'react'
+import type { GameComponentProps } from '../../core/types'
+import { sound } from '../../core/lib/sound'
+import {
+  makeQuestion,
+  answer,
+  initialState,
+  COLORS,
+  DURATION,
+  WRONG_PENALTY,
+  type ColorIndex,
+} from './logic'
+
+const RULE_LABEL = { ink: 'もじの「いろ」は？', word: 'かいてある「いみ」は？' } as const
+
+export default function ColorWordGame({ paused, onScore, onGameOver }: GameComponentProps) {
+  const [game, setGame] = useState(initialState)
+  const [question, setQuestion] = useState(() => makeQuestion())
+  const [timeLeft, setTimeLeft] = useState(DURATION)
+  const [miss, setMiss] = useState(false)
+  const overFired = useRef(false)
+  const over = timeLeft === 0
+
+  useEffect(() => onScore(game.score), [game.score, onScore])
+
+  // 時間切れで一度だけ終了通知
+  useEffect(() => {
+    if (timeLeft === 0 && !overFired.current) {
+      overFired.current = true
+      onGameOver()
+    }
+  }, [timeLeft, onGameOver])
+
+  useEffect(() => {
+    if (paused || over) return
+    const clock = setInterval(() => setTimeLeft((t) => Math.max(0, t - 1)), 1000)
+    return () => clearInterval(clock)
+  }, [paused, over])
+
+  const choose = (choice: ColorIndex) => {
+    if (paused || over) return
+    const { state, ok } = answer(game, question, choice)
+    if (ok) {
+      sound.click()
+      setMiss(false)
+    } else {
+      sound.wrong()
+      setMiss(true)
+      setTimeLeft((t) => Math.max(0, t - WRONG_PENALTY))
+    }
+    setGame(state)
+    setQuestion(makeQuestion(Math.random, state.score))
+  }
+
+  return (
+    <div className="flex flex-col items-center gap-4">
+      <div className="flex w-full max-w-xs justify-between text-sm text-muted">
+        <span>
+          残り <span className="font-display text-fg">{timeLeft}</span> 秒
+        </span>
+        <span>
+          連続 <span className="font-display text-yellow">{game.streak}</span>
+        </span>
+      </div>
+      <div
+        className={`flex w-full max-w-xs flex-col items-center gap-2 rounded-2xl bg-surface-2 py-6 ring-1 ${
+          miss ? 'ring-red-500' : 'ring-line'
+        }`}
+      >
+        <span
+          className={`rounded-full px-3 py-1 text-xs font-bold ${
+            question.rule === 'ink' ? 'bg-cyan/20 text-cyan' : 'bg-pink-500/20 text-pink-300'
+          }`}
+        >
+          {RULE_LABEL[question.rule]}
+        </span>
+        <span
+          className="font-display text-5xl font-black select-none"
+          style={{ color: COLORS[question.ink].css }}
+          aria-label={`${COLORS[question.word].label} と書かれた文字`}
+        >
+          {COLORS[question.word].label}
+        </span>
+      </div>
+      <div className="grid w-full max-w-xs grid-cols-2 gap-3">
+        {COLORS.map((c, i) => (
+          <button
+            key={c.key}
+            onClick={() => choose(i as ColorIndex)}
+            disabled={paused || over}
+            aria-label={c.label}
+            className="flex h-16 items-center justify-center gap-2 rounded-xl bg-surface-2 text-base font-bold text-fg ring-1 ring-line transition active:scale-95"
+          >
+            <span className="h-5 w-5 rounded-full" style={{ background: c.css }} />
+            {c.label}
+          </button>
+        ))}
+      </div>
+      <p className="text-xs text-faint">
+        お題どおりに答えよう。まちがえると残り時間 -{WRONG_PENALTY} 秒
+      </p>
+    </div>
+  )
+}
