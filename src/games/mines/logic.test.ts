@@ -141,3 +141,66 @@ describe('mines flag / win', () => {
     expect(countSafeRevealed(b)).toBe(SIZE * SIZE - MINES)
   })
 })
+
+/** 地雷の位置を指定して盤面を作る ('*' = 地雷, '.' = 安全) */
+function boardFrom(rows: string[]): Board {
+  const b: Board = rows.map((row) =>
+    [...row].map((ch) => ({ mine: ch === '*', adjacent: 0, state: 'hidden' as const })),
+  )
+  for (let r = 0; r < SIZE; r++) {
+    for (let c = 0; c < SIZE; c++) b[r][c].adjacent = recount(b, r, c)
+  }
+  return b
+}
+
+const CORNER_MINE = [
+  '*........',
+  '.........',
+  '.........',
+  '.........',
+  '.........',
+  '.........',
+  '.........',
+  '.........',
+  '.........',
+]
+
+describe('mines の端ケース', () => {
+  it('開放済みセルの reveal は何もしない', () => {
+    const b = boardFrom(CORNER_MINE)
+    const once = reveal(b, 0, 1).board
+    const twice = reveal(once, 0, 1)
+    expect(twice.board).toBe(once)
+    expect(twice.hitMine).toBe(false)
+  })
+
+  it('reveal は元の盤面を変更しない (純粋関数)', () => {
+    const b = boardFrom(CORNER_MINE)
+    reveal(b, 8, 8)
+    expect(countSafeRevealed(b)).toBe(0)
+  })
+
+  it('連鎖開放は旗付きセルを開けない', () => {
+    const b = toggleFlag(boardFrom(CORNER_MINE), 8, 7)
+    const { board: next } = reveal(b, 8, 8)
+    expect(next[8][7].state).toBe('flagged')
+    // 旗以外の安全セルはすべて開いている
+    expect(countSafeRevealed(next)).toBe(SIZE * SIZE - 1 - 1)
+    expect(isWin(next)).toBe(false)
+  })
+
+  it('連鎖開放で地雷以外がすべて開けば isWin', () => {
+    const { board: next } = reveal(boardFrom(CORNER_MINE), 8, 8)
+    expect(countSafeRevealed(next)).toBe(SIZE * SIZE - 1)
+    expect(isWin(next)).toBe(true)
+  })
+
+  it('開放済みセルには旗を立てられない (同じ盤面を返す)', () => {
+    const opened = reveal(boardFrom(CORNER_MINE), 0, 1).board
+    expect(toggleFlag(opened, 0, 1)).toBe(opened)
+  })
+
+  it('isWin は開始直後 false', () => {
+    expect(isWin(generateBoard(mulberry32(7)))).toBe(false)
+  })
+})

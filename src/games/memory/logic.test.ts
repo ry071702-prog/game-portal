@@ -6,6 +6,7 @@ import {
   isCleared,
   initialState,
   shuffle,
+  matchedPairs,
   type MemoryState,
 } from './logic'
 
@@ -89,5 +90,65 @@ describe('flip & resolve', () => {
       s = resolve(flip(flip(s, a), b))
     }
     expect(isCleared(s)).toBe(true)
+  })
+})
+
+describe('memory の端ケース', () => {
+  const fixed = (): MemoryState => ({
+    cards: [0, 1, 0, 1].map((pairId) => ({ pairId, emoji: 'x', revealed: false, matched: false })),
+    firstIndex: null,
+    secondIndex: null,
+    moves: 0,
+  })
+
+  it('範囲外の index は無視', () => {
+    const s = fixed()
+    expect(flip(s, 99)).toBe(s)
+    expect(flip(s, -1)).toBe(s)
+  })
+
+  it('同じカードを2回めくっても2枚目扱いにならない', () => {
+    const s1 = flip(fixed(), 0)
+    expect(flip(s1, 0)).toBe(s1)
+    expect(s1.moves).toBe(0)
+  })
+
+  it('matched 済みのカードはめくれない', () => {
+    const s = resolve(flip(flip(fixed(), 0), 2))
+    expect(flip(s, 0)).toBe(s)
+  })
+
+  it('1枚しか開いていなければ resolve は何もしない', () => {
+    const s = flip(fixed(), 0)
+    expect(resolve(s)).toBe(s)
+  })
+
+  it('moves は2枚目をめくった回数 (1ペア試行 = 1手)', () => {
+    let s = flip(flip(fixed(), 0), 1)
+    s = resolve(s)
+    s = flip(flip(s, 0), 2)
+    expect(s.moves).toBe(2)
+  })
+
+  it('matchedPairs は一致したペア数', () => {
+    let s = fixed()
+    expect(matchedPairs(s)).toBe(0)
+    s = resolve(flip(flip(s, 0), 2))
+    expect(matchedPairs(s)).toBe(1)
+    s = resolve(flip(flip(s, 1), 3))
+    expect(matchedPairs(s)).toBe(2)
+    expect(isCleared(s)).toBe(true)
+  })
+
+  it('EMOJIS より多いペア数でも各 pairId はちょうど2枚', () => {
+    const deck = createDeck(10, () => 0)
+    expect(deck).toHaveLength(20)
+    for (let p = 0; p < 10; p++) expect(deck.filter((c) => c.pairId === p)).toHaveLength(2)
+  })
+
+  it('initialState は全カード伏せ・手数0で始まる', () => {
+    const s = initialState(4, () => 0.3)
+    expect(s.cards.every((c) => !c.revealed && !c.matched)).toBe(true)
+    expect(s.moves).toBe(0)
   })
 })

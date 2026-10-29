@@ -200,3 +200,81 @@ describe('toScore', () => {
     expect(toScore(7)).toBe(100 + 42 - 7)
   })
 })
+
+describe('connect4 の端ケース', () => {
+  it('空の盤面では AI は中央列を選ぶ', () => {
+    expect(chooseAiMove(emptyBoard(), () => 0)).toBe(3)
+  })
+
+  it('盤端をまたいだ並びは4連にならない (横の折り返しなし)', () => {
+    const b = boardFrom([
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      'R......',
+      '....RRR',
+    ])
+    expect(findWin(b, 1)).toBeNull()
+  })
+
+  it('盤の右端・上端に接する4連も検出する', () => {
+    const b = boardFrom([
+      '...RRRR',
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+    ])
+    expect(findWin(b, 1)).toHaveLength(4)
+  })
+
+  it('5連でも勝ちになる', () => {
+    const b = boardFrom([
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      'YYYYY..',
+    ])
+    expect(findWin(b, 2)).not.toBeNull()
+    expect(findWin(b, 1)).toBeNull()
+  })
+
+  it('満杯の列は availableColumns から外れ、全列満杯で isFull', () => {
+    const b = emptyBoard()
+    for (let r = 0; r < ROWS; r++) b[r][0] = ((r % 2) + 1) as Cell
+    expect(availableColumns(b)).toEqual([1, 2, 3, 4, 5, 6])
+    expect(isFull(b)).toBe(false)
+    for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) b[r][c] = 1
+    expect(isFull(b)).toBe(true)
+  })
+
+  it('即勝ち・阻止がなければ自分のリーチを作る列を選ぶ', () => {
+    // c=0 に置くと縦に Y が3つ並びリーチ (+6) → 中央 c=3 (+3) より高い
+    const b = boardFrom([
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      'Y......',
+      'Y..R...',
+    ])
+    expect(chooseAiMove(b, () => 0)).toBe(0)
+  })
+
+  it('勝てる列が複数あるときは rng で選ぶ', () => {
+    const b = boardFrom([
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      '.YYY...',
+    ])
+    expect(chooseAiMove(b, () => 0)).toBe(0)
+    expect(chooseAiMove(b, () => 0.99)).toBe(4)
+  })
+})
