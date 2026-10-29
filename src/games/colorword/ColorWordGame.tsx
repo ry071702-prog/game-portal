@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import type { GameComponentProps } from '../../core/types'
 import { sound } from '../../core/lib/sound'
+import { now } from '../../core/lib/time'
 import {
   makeQuestion,
   answer,
@@ -16,24 +17,33 @@ const RULE_LABEL = { ink: 'もじの「いろ」は？', word: 'かいてある�
 export default function ColorWordGame({ paused, onScore, onGameOver }: GameComponentProps) {
   const [game, setGame] = useState(initialState)
   const [question, setQuestion] = useState(() => makeQuestion())
-  const [timeLeft, setTimeLeft] = useState(DURATION)
+  // 残り時間は ms で持つ、1秒刻みの setInterval だとポーズ⇔再開を1秒未満で繰り返すと時計が進まない
+  const [msLeft, setMsLeft] = useState(DURATION * 1000)
   const [miss, setMiss] = useState(false)
   const overFired = useRef(false)
-  const over = timeLeft === 0
+  const over = msLeft === 0
+  const timeLeft = Math.ceil(msLeft / 1000)
 
   useEffect(() => onScore(game.score), [game.score, onScore])
 
   // 時間切れで一度だけ終了通知
   useEffect(() => {
-    if (timeLeft === 0 && !overFired.current) {
+    if (over && !overFired.current) {
       overFired.current = true
       onGameOver()
     }
-  }, [timeLeft, onGameOver])
+  }, [over, onGameOver])
 
+  // 実経過時間で減らす (再開時は基準時刻を取り直すので、ポーズ中の時間だけが除かれる)
   useEffect(() => {
     if (paused || over) return
-    const clock = setInterval(() => setTimeLeft((t) => Math.max(0, t - 1)), 1000)
+    let last = now()
+    const clock = setInterval(() => {
+      const t = now()
+      const dt = t - last
+      last = t
+      setMsLeft((ms) => Math.max(0, ms - dt))
+    }, 100)
     return () => clearInterval(clock)
   }, [paused, over])
 
@@ -46,10 +56,10 @@ export default function ColorWordGame({ paused, onScore, onGameOver }: GameCompo
     } else {
       sound.wrong()
       setMiss(true)
-      setTimeLeft((t) => Math.max(0, t - WRONG_PENALTY))
+      setMsLeft((ms) => Math.max(0, ms - WRONG_PENALTY * 1000))
     }
     setGame(state)
-    setQuestion(makeQuestion(Math.random, state.score))
+    setQuestion(makeQuestion(Math.random, state.score, question))
   }
 
   return (

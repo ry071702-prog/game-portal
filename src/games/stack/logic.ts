@@ -1,5 +1,5 @@
-// スタックタワー: 左右に往復するブロックをタップで落とし、下の段からはみ出た分を削りながら積む。
-// 座標は盤面幅 W を 100 とした論理単位。描画側は % に変換するだけ。
+// スタックタワー: 左右に往復するブロックをタップで落とし、下の段からはみ出た分を削りながら積む
+// 座標は盤面幅 W を 100 とした論理単位、描画側は % に変換するだけ
 
 export const W = 100
 export const BASE_WIDTH = 60
@@ -8,6 +8,8 @@ export const PERFECT_TOLERANCE = 2
 /** パーフェクト連続でこの回数ごとに幅が少し戻る */
 export const PERFECT_GROW_EVERY = 3
 export const PERFECT_GROW = 4
+/** 重なりがこれ未満だと画面上でほぼ見えないので外れ扱いにする */
+export const MIN_WIDTH = 2
 
 export interface Block {
   /** 左端の x (0..W) */
@@ -32,7 +34,7 @@ export function floors(s: StackState): number {
   return s.tower.length - 1
 }
 
-/** 段数に応じた移動速度 (単位/ms)。上に行くほど速く、上限あり。 */
+/** 段数に応じた移動速度 (単位/ms)、上に行くほど速く、上限あり */
 export function speedFor(floor: number): number {
   return Math.min(0.045 + floor * 0.004, 0.13)
 }
@@ -42,12 +44,12 @@ export function createGame(): StackState {
   return { tower: [base], current: spawn(base, 0), dir: 1, combo: 0, over: false }
 }
 
-/** 次のブロックを画面の左右どちらかの端から出す (段数の偶奇で交互)。 */
+/** 次のブロックを画面の左右どちらかの端から出す (段数の偶奇で交互) */
 function spawn(top: Block, floor: number): Block {
   return { x: floor % 2 === 0 ? 0 : W - top.width, width: top.width }
 }
 
-/** 移動中ブロックを dt ms 進める。端で跳ね返る。 */
+/** 移動中ブロックを dt ms 進める、端で跳ね返る */
 export function step(s: StackState, dtMs: number): StackState {
   if (s.over) return s
   const max = W - s.current.width
@@ -69,8 +71,8 @@ export function step(s: StackState, dtMs: number): StackState {
 export type DropResult = 'perfect' | 'cut' | 'miss'
 
 /**
- * 下の段 prev に cur を落とした結果。重なった部分だけが残る。
- * ズレが PERFECT_TOLERANCE 以下なら prev にぴったり揃える。
+ * 下の段 prev に cur を落とした結果、重なった部分だけが残る
+ * ズレが PERFECT_TOLERANCE 以下なら prev にぴったり揃える、重なりが MIN_WIDTH 未満なら外れ
  */
 export function overlap(prev: Block, cur: Block): { block: Block | null; result: DropResult } {
   if (Math.abs(cur.x - prev.x) <= PERFECT_TOLERANCE) {
@@ -78,11 +80,11 @@ export function overlap(prev: Block, cur: Block): { block: Block | null; result:
   }
   const left = Math.max(prev.x, cur.x)
   const right = Math.min(prev.x + prev.width, cur.x + cur.width)
-  if (right - left <= 0) return { block: null, result: 'miss' }
+  if (right - left < MIN_WIDTH) return { block: null, result: 'miss' }
   return { block: { x: left, width: right - left }, result: 'cut' }
 }
 
-/** タップ: 現在のブロックを確定し、次のブロックを出す。外れたらゲームオーバー。 */
+/** タップ: 現在のブロックを確定し、次のブロックを出す、外れたらゲームオーバー */
 export function drop(s: StackState): { state: StackState; result: DropResult } {
   if (s.over) return { state: s, result: 'miss' }
   const top = s.tower[s.tower.length - 1]

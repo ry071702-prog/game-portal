@@ -4,7 +4,7 @@ import { useGameLoop } from '../../core/hooks/useGameLoop'
 import { sound } from '../../core/lib/sound'
 import { createGame, step, drop, floors, W, type Block } from './logic'
 
-/** 画面に見える段数。これより高くなると下の段は画面外へスクロールする */
+/** 画面に見える段数、これより高くなると下の段は画面外へスクロールする */
 const VISIBLE = 12
 /** 現在のブロックの上に空けておく段数 */
 const HEADROOM = 3
@@ -20,10 +20,14 @@ export default function StackGame({ paused, onScore, onGameOver }: GameComponent
 
   useEffect(() => onScore(score), [score, onScore])
 
+  // 崩れた様子を少し見せてから終了通知、fired は発火時に立てる
+  // (先に立てると onGameOver の identity 変化でタイマーだけ消えて二度と通知されない)
   useEffect(() => {
     if (!state.over || overFired.current) return
-    overFired.current = true
-    const t = setTimeout(() => onGameOver(), 600)
+    const t = setTimeout(() => {
+      overFired.current = true
+      onGameOver()
+    }, 600)
     return () => clearTimeout(t)
   }, [state.over, onGameOver])
 
@@ -32,8 +36,10 @@ export default function StackGame({ paused, onScore, onGameOver }: GameComponent
   const tap = useCallback(() => {
     if (paused || state.over) return
     const { state: next, result } = drop(state)
-    if (result === 'miss') sound.wrong()
-    else if (result === 'perfect') {
+    if (result === 'miss') {
+      sound.wrong()
+      setFlash(null)
+    } else if (result === 'perfect') {
       sound.match()
       setFlash(next.combo > 1 ? `PERFECT ×${next.combo}` : 'PERFECT')
     } else {
@@ -45,6 +51,8 @@ export default function StackGame({ paused, onScore, onGameOver }: GameComponent
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      // 停止中・終了後は素通しする (終了後のニックネーム入力で Space / Enter を潰さないため)
+      if (e.repeat || paused || state.over) return
       if (e.key === ' ' || e.key === 'Enter') {
         e.preventDefault()
         tap()
@@ -52,7 +60,7 @@ export default function StackGame({ paused, onScore, onGameOver }: GameComponent
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [tap])
+  }, [tap, paused, state.over])
 
   // 上に積むほど視点を持ち上げる
   const currentFloor = state.tower.length

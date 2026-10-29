@@ -9,6 +9,8 @@ import {
   count,
   chooseCpuMove,
   toScore,
+  opponent,
+  SIZE,
   type Board,
   type Player,
 } from './logic'
@@ -25,13 +27,13 @@ interface State {
 
 const initial = (): State => ({ board: initialBoard(), turn: 1, last: null, passed: null })
 
-/** 手番の石を idx に置いて次の手番まで進めた状態を返す。 */
+/** 手番の石を idx に置いて次の手番まで進めた状態を返す */
 function place(state: State, idx: number): State {
   if (state.turn === null) return state
   const board = applyMove(state.board, idx, state.turn)
   if (!board) return state
   const turn = nextTurn(board, state.turn)
-  return { board, turn, last: idx, passed: turn === state.turn ? (state.turn === 1 ? 2 : 1) : null }
+  return { board, turn, last: idx, passed: turn === state.turn ? opponent(state.turn) : null }
 }
 
 export default function ReversiGame({ paused, onScore, onGameOver }: GameComponentProps) {
@@ -53,14 +55,16 @@ export default function ReversiGame({ paused, onScore, onGameOver }: GameCompone
     return () => clearTimeout(t)
   }, [paused, state])
 
-  // 終局: スコア通知 → 盤面を見せてから結果モーダルへ
+  // 終局: スコア通知 → 盤面を見せてから結果モーダルへ、firedRef は発火時に立てる
+  // (先に立てると onGameOver の identity 変化でタイマーだけ消えて二度と通知されない)
   useEffect(() => {
     if (state.turn !== null || firedRef.current) return
-    firedRef.current = true
     const score = toScore(state.board)
     onScore(score)
-    const won = score > 100
-    const t = setTimeout(() => onGameOver(won ? 'win' : 'over'), 900)
+    const t = setTimeout(() => {
+      firedRef.current = true
+      onGameOver(score > 100 ? 'win' : 'over')
+    }, 900)
     return () => clearTimeout(t)
   }, [state.turn, state.board, onScore, onGameOver])
 
@@ -106,7 +110,7 @@ export default function ReversiGame({ paused, onScore, onGameOver }: GameCompone
               key={i}
               onClick={() => tap(i)}
               disabled={paused || !hint}
-              aria-label={`${Math.floor(i / 6) + 1}行${(i % 6) + 1}列${hint ? ' (置ける)' : ''}`}
+              aria-label={`${Math.floor(i / SIZE) + 1}行${(i % SIZE) + 1}列${hint ? ' (置ける)' : ''}`}
               className="flex aspect-square items-center justify-center rounded-sm bg-emerald-700 p-[12%]"
             >
               {cell !== 0 ? (

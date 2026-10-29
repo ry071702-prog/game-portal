@@ -1,5 +1,5 @@
-// 6×6 ミニリバーシ。8×8 より短く、1局 2〜3 分で終わるサイズ。
-// 盤面は長さ SIZE*SIZE の 1 次元配列 (index = row * SIZE + col)。
+// 6×6 ミニリバーシ、8×8 より短く、1局 2〜3 分で終わるサイズ
+// 盤面は長さ SIZE*SIZE の 1 次元配列 (index = row * SIZE + col)
 
 export const SIZE = 6
 export type Cell = 0 | 1 | 2
@@ -25,7 +25,7 @@ export function initialBoard(): Board {
   return b
 }
 
-/** idx に player が置いたときに裏返る石の index 一覧 (置けないなら空)。 */
+/** idx に player が置いたときに裏返る石の index 一覧 (置けないなら空) */
 export function flipsFor(board: Board, idx: number, player: Player): number[] {
   if (board[idx] !== 0) return []
   const r0 = Math.floor(idx / SIZE)
@@ -56,7 +56,7 @@ export function legalMoves(board: Board, player: Player): number[] {
   return moves
 }
 
-/** 石を置いて挟んだ石を裏返した新しい盤面。置けない手なら null。 */
+/** 石を置いて挟んだ石を裏返した新しい盤面、置けない手なら null */
 export function applyMove(board: Board, idx: number, player: Player): Board | null {
   const flips = flipsFor(board, idx, player)
   if (flips.length === 0) return null
@@ -67,8 +67,8 @@ export function applyMove(board: Board, idx: number, player: Player): Board | nu
 }
 
 /**
- * 直前に mover が打った後の手番。相手が打てなければパスで mover が続行、
- * 双方打てなければ null (終局)。
+ * 直前に mover が打った後の手番、相手が打てなければパスで mover が続行、
+ * 双方打てなければ null (終局)
  */
 export function nextTurn(board: Board, mover: Player): Player | null {
   const opp = opponent(mover)
@@ -88,7 +88,7 @@ export function count(board: Board): { 1: number; 2: number } {
 }
 
 /**
- * 6×6 用の位置評価。角が最優先、角の隣 (X/C 打ち) は相手に角を渡しやすいので減点。
+ * 6×6 用の位置評価、角が最優先、角の隣 (X/C 打ち) は相手に角を渡しやすいので減点
  */
 const WEIGHTS: number[] = [
   100, -20, 10, 10, -20, 100,
@@ -100,8 +100,8 @@ const WEIGHTS: number[] = [
 ]
 
 /**
- * CPU の手: 位置評価 + 裏返す枚数 - 相手に与える合法手の数 の最大を選ぶ (同点は小さい index)。
- * 打てる手がなければ -1。
+ * CPU の手: 位置評価 + 裏返す枚数 - 相手に与える合法手の数 の最大を選ぶ (同点は小さい index)
+ * 打てる手がなければ -1
  */
 export function chooseCpuMove(board: Board, player: Player = 2): number {
   let best = -1
@@ -118,7 +118,7 @@ export function chooseCpuMove(board: Board, player: Player = 2): number {
   return best
 }
 
-/** 終局時のスコア: 勝ち = 100 + 石差、引き分け = 50、負け = 自分の石数。 */
+/** 終局時のスコア: 勝ち = 100 + 石差、引き分け = 50、負け = 自分の石数 */
 export function toScore(board: Board): number {
   const c = count(board)
   if (c[1] > c[2]) return 100 + (c[1] - c[2])
