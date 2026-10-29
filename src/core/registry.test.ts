@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { games, gameById } from './registry'
 import { gameCategorySchema, gameGenreSchema } from './types'
+import { SCORE_CAP } from '../../functions/_shared/scores'
 
 describe('game registry', () => {
   it('1本以上のゲームが登録されている', () => {
@@ -25,6 +26,10 @@ describe('game registry', () => {
       }
       expect(typeof g.component).toBe('function')
     })
+  })
+
+  it('全ゲームがサーバの SCORE_CAP に登録されている (漏れるとスコア送信が unknown game で弾かれる)', () => {
+    games.forEach((g) => expect(SCORE_CAP[g.id], g.id).toBeGreaterThan(0))
   })
 
   it('gameById で id から引ける', () => {
