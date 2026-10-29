@@ -1,14 +1,19 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, fireEvent, screen } from '@testing-library/react'
 import { mulberry32 } from '../../core/lib/daily'
-import { SIZE, toScore } from './logic'
+import { SIZE, solved, toggle, isCleared, toScore } from './logic'
 import LightsOut from './LightsOut'
 
-/** scramble と同じ rng 消費で押されたマスを再現する (同じマスを押し直せば解ける) */
+/**
+ * scramble と同じ rng 消費で押されたマスを再現する (同じマスを押し直せば解ける)
+ * 偶然そろって (0,0) の補正が入る seed では、その1手も含める
+ */
 function scrambleClicks(seed: number, clicks = 8): Array<[number, number]> {
   const rng = mulberry32(seed)
   const out: Array<[number, number]> = []
   for (let i = 0; i < clicks; i++) out.push([Math.floor(rng() * SIZE), Math.floor(rng() * SIZE)])
+  const grid = out.reduce((g, [r, c]) => toggle(g, r, c), solved())
+  if (isCleared(grid)) out.push([0, 0])
   return out
 }
 
@@ -29,13 +34,14 @@ describe('LightsOut (reducer)', () => {
     expect(onScore).toHaveBeenLastCalledWith(0)
 
     const clicks = scrambleClicks(seed)
-    for (const [r, c] of clicks) fireEvent.click(light(r, c))
-    // 偶然そろった場合の (0,0) 補正があるとクリアにならないので、その場合はもう1回
-    if (!onGameOver.mock.calls.length) fireEvent.click(light(0, 0))
+    clicks.forEach(([r, c], i) => {
+      expect(onGameOver).not.toHaveBeenCalled()
+      fireEvent.click(light(r, c))
+      expect(movesText()).toBe(`手数: ${i + 1}`)
+    })
 
-    const moves = Number(movesText()!.replace(/\D/g, ''))
     expect(onGameOver).toHaveBeenCalledWith('win')
-    expect(onScore).toHaveBeenLastCalledWith(toScore(moves))
+    expect(onScore).toHaveBeenLastCalledWith(toScore(clicks.length))
   })
 
   it('クリア後のクリックは手数に数えない', () => {
@@ -43,7 +49,7 @@ describe('LightsOut (reducer)', () => {
     const onGameOver = vi.fn()
     render(<LightsOut restartSignal={0} paused={false} onScore={vi.fn()} onGameOver={onGameOver} seed={seed} />)
     for (const [r, c] of scrambleClicks(seed)) fireEvent.click(light(r, c))
-    if (!onGameOver.mock.calls.length) fireEvent.click(light(0, 0))
+    expect(onGameOver).toHaveBeenCalledWith('win')
     const before = movesText()
     fireEvent.click(light(2, 2))
     expect(movesText()).toBe(before)
