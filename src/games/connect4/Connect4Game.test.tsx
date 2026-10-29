@@ -47,7 +47,7 @@ describe('Connect4Game (place)', () => {
     const { rerender } = render(
       <Connect4Game restartSignal={0} paused={false} onScore={onScore} onGameOver={onGameOver} />,
     )
-    // プレイヤーは常に左から空いている列に打つ (AI がいずれ勝つか引き分け)
+    // プレイヤーは常に左から空いている列に打つ
     for (let turn = 0; turn < 50 && !finished(); turn++) {
       const c = [...Array(COLS).keys()].find(isOpen)
       if (c === undefined) break
@@ -63,9 +63,9 @@ describe('Connect4Game (place)', () => {
     act(() => void vi.advanceTimersByTime(2000))
     expect(again).not.toHaveBeenCalled()
 
-    // 負け/引き分けではスコアを通知しない。勝ちなら手数ベースのスコア
-    const result = onGameOver.mock.calls[0][0]
-    if (result === 'win') expect(onScore).toHaveBeenCalledTimes(1)
-    else expect(onScore).not.toHaveBeenCalled()
+    // Math.random=0 固定だとこの打ち方では AI が勝つ。負けはスコアを通知しない
+    expect(status()).toContain('AI の勝ち')
+    expect(onGameOver).toHaveBeenCalledWith('over')
+    expect(onScore).not.toHaveBeenCalled()
   })
 })
