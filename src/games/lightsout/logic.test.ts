@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { solved, toggle, isCleared, scramble, SIZE } from './logic'
+import { solved, toggle, isCleared, scramble, toScore, SIZE } from './logic'
 
 describe('lightsout', () => {
   it('中央の toggle は5マス反転する', () => {
@@ -31,5 +31,31 @@ describe('lightsout', () => {
       undo = toggle(undo, Math.floor(rng2() * SIZE), Math.floor(rng2() * SIZE))
     }
     expect(isCleared(undo)).toBe(true)
+  })
+})
+
+describe('lightsout の端ケース', () => {
+  it('toggle は元の盤面を変更しない (純粋関数)', () => {
+    const g = solved()
+    toggle(g, 2, 2)
+    expect(isCleared(g)).toBe(true)
+  })
+
+  it('scramble が偶然そろっても未クリアの盤面を返す', () => {
+    // 同じマスを2回押すと元に戻るので clicks=2 + 固定 rng で必ずそろう
+    const g = scramble(() => 0, 2)
+    expect(isCleared(g)).toBe(false)
+  })
+
+  it('clicks=0 でも未クリアの盤面を返す', () => {
+    expect(isCleared(scramble(() => 0, 0))).toBe(false)
+  })
+})
+
+describe('lightsout toScore', () => {
+  it('手数が少ないほど高く、0 未満にはならない', () => {
+    expect(toScore(0)).toBe(1000)
+    expect(toScore(5)).toBeGreaterThan(toScore(6))
+    expect(toScore(1000)).toBe(0)
   })
 })
