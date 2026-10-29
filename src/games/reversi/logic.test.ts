@@ -13,7 +13,7 @@ import {
   type Cell,
 } from './logic'
 
-/** 文字列から盤面を作る ('.'=空, 'B'=プレイヤー(黒), 'W'=CPU(白))。上段から6行×6文字。 */
+/** 文字列から盤面を作る ('.'=空, 'B'=プレイヤー(黒), 'W'=CPU(白))、上段から6行×6文字 */
 function boardFrom(rows: string[]): Board {
   return rows.flatMap((row) => [...row].map<Cell>((ch) => (ch === 'B' ? 1 : ch === 'W' ? 2 : 0)))
 }
@@ -56,7 +56,7 @@ describe('flipsFor & applyMove', () => {
       '......',
       '......',
     ])
-    // (2,0) に置くと上 (1,0) と右上 (1,1) を挟める。右 (2,1) は先に黒が無いので挟めない
+    // (2,0) に置くと上 (1,0) と右上 (1,1) を挟める、右 (2,1) は先に黒が無いので挟めない
     expect(flipsFor(b, at(2, 0), 1).sort((x, y) => x - y)).toEqual([at(1, 0), at(1, 1)])
   })
 
@@ -103,7 +103,7 @@ describe('nextTurn', () => {
 
 describe('chooseCpuMove', () => {
   it('取れる角があれば角を選ぶ', () => {
-    // 白は (0,0) に置けば横の黒2個を挟める。他の手より角を優先する
+    // 白は (0,0) に置けば横の黒2個を挟める、他の手より角を優先する
     const corner = boardFrom([
       '.BBW..',
       '......',

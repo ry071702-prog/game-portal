@@ -10,6 +10,7 @@ import {
   BASE_WIDTH,
   PERFECT_GROW,
   PERFECT_GROW_EVERY,
+  MIN_WIDTH,
   type StackState,
 } from './logic'
 
@@ -78,6 +79,11 @@ describe('overlap', () => {
 
   it('完全に外れたら miss', () => {
     expect(overlap(prev, { x: 80, width: 20 })).toEqual({ block: null, result: 'miss' })
+  })
+
+  it('重なりが MIN_WIDTH 未満の極細ブロックは見えないので miss', () => {
+    expect(overlap(prev, { x: 80 - MIN_WIDTH + 0.5, width: 60 }).result).toBe('miss')
+    expect(overlap(prev, { x: 80 - MIN_WIDTH, width: 60 }).result).toBe('cut')
   })
 })
 

@@ -39,6 +39,17 @@ describe('makeQuestion', () => {
     expect(makeQuestion(seq(0.5, 0.8), 0)).toMatchObject({ word: 2, ink: 2 })
   })
 
+  it('prev と全く同じ問題は出さない', () => {
+    const prev: Question = { word: 1, ink: 2, rule: 'ink' }
+    const rng = mulberry32(3)
+    for (let i = 0; i < 200; i++) {
+      expect(makeQuestion(rng, 0, prev)).not.toEqual(prev)
+    }
+    // rng が同じ問題しか作れなくても上限回数で抜けて別の問題を返す
+    // (word=1 (0.25), 食い違い (0.1), 残り3色の先頭 (0) → ink=2)
+    expect(makeQuestion(seq(0.25, 0.1, 0), 0, prev)).not.toEqual(prev)
+  })
+
   it('序盤 (50点以下) はお題が「いろ」固定、以降は「いみ」も出る', () => {
     const rng = mulberry32(7)
     const early = Array.from({ length: 100 }, () => makeQuestion(rng, 50).rule)

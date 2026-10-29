@@ -1,5 +1,5 @@
 // カラーワード (ストループ課題): 「あか」と書かれた青い文字のように、文字の意味と色が食い違う問題に
-// お題 (文字の「いろ」か「いみ」か) で答える。
+// お題 (文字の「いろ」か「いみ」か) で答える
 
 export const DURATION = 30 // 秒
 /** 誤答のペナルティ (残り時間から引く秒数) */
@@ -27,10 +27,21 @@ export interface Question {
 const pick = (rng: () => number): ColorIndex => Math.floor(rng() * COLORS.length) as ColorIndex
 
 /**
- * 問題を1問作る。意味と色は 75% の確率で食い違わせる (一致ばかりだと簡単すぎる)。
- * お題は score が 50 点を超えるまでは「いろ」固定、以降は半々で混ぜる。
+ * 問題を1問作る、意味と色は 75% の確率で食い違わせる (一致ばかりだと簡単すぎる)
+ * お題は score が 50 点を超えるまでは「いろ」固定、以降は半々で混ぜる
+ * prev を渡すと直前と同一の問題は避ける
  */
-export function makeQuestion(rng: () => number = Math.random, score = 0): Question {
+export function makeQuestion(rng: () => number = Math.random, score = 0, prev?: Question): Question {
+  // 直前と全く同じ問題だとタップが効かなかったように見えるので引き直す (rng 次第で無限にならないよう上限つき)
+  for (let i = 0; i < 8; i++) {
+    const q = rollQuestion(rng, score)
+    if (!prev || q.word !== prev.word || q.ink !== prev.ink || q.rule !== prev.rule) return q
+  }
+  const q = rollQuestion(rng, score)
+  return { ...q, word: ((prev!.word + 1) % COLORS.length) as ColorIndex }
+}
+
+function rollQuestion(rng: () => number, score: number): Question {
   const word = pick(rng)
   let ink = word
   if (rng() < 0.75) {
@@ -45,7 +56,7 @@ export function correctAnswer(q: Question): ColorIndex {
   return q.rule === 'ink' ? q.ink : q.word
 }
 
-/** 連続正解数 streak (今回の正解を含む, 1以上) に応じた加点。5連続以降は +20 で頭打ち。 */
+/** 連続正解数 streak (今回の正解を含む, 1以上) に応じた加点、5連続以降は +20 で頭打ち */
 export function pointsFor(streak: number): number {
   return 10 + Math.min(Math.max(streak - 1, 0), 5) * 2
 }
@@ -59,7 +70,7 @@ export interface ColorWordState {
 
 export const initialState: ColorWordState = { score: 0, streak: 0, correct: 0, wrong: 0 }
 
-/** 回答を採点した次の状態。誤答はスコアを減らさず連続正解だけリセット (時間ペナルティは UI 側)。 */
+/** 回答を採点した次の状態、誤答はスコアを減らさず連続正解だけリセット (時間ペナルティは UI 側) */
 export function answer(s: ColorWordState, q: Question, choice: ColorIndex): { state: ColorWordState; ok: boolean } {
   if (choice === correctAnswer(q)) {
     const streak = s.streak + 1
