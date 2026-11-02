@@ -8,4 +8,9 @@ updates:
     groups:
       all-npm:
         patterns: ["*"]
+    ignore:
+      # typescript-eslint 8.72 の peer が typescript <6.1.0  7.0 に上げると npm ERESOLVE で入らない (#44)
+      # typescript-eslint が対応したらこの ignore を消す
+      - dependency-name: "typescript"
+        versions: [">=6.1"]
     open-pull-requests-limit: 3
